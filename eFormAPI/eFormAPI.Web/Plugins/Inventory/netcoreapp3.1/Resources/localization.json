@@ -1,0 +1,137 @@
+[
+  {
+    "Key": "Chemistry",
+    "LocalizedValue": {
+      "da": "Kemi",
+      "en-US": "Chemistry",
+      "uk-UA": "Хімія",
+      "de-DE": "Chemie"
+    }
+  },
+  {
+    "Key": "Overview",
+    "LocalizedValue": {
+      "da": "Oversigt",
+      "en-US": "Overview",
+      "uk-UA": "Огляд",
+      "de-DE": "Überblick"
+    }
+  },
+  {
+    "Key": "ErrorWhileObtainingInventorySettings",
+    "LocalizedValue": {
+      "da": "Fejl under opnåelse af lagerindstillinger",
+      "en-US": "Error while obtaining inventory settings",
+      "uk-UA": "Помилка при отриманні налаштувань",
+      "de-DE": "Fehler beim Abrufen der Inventareinstellungen"
+    }
+  },
+  {
+    "Key": "SettingsHaveBeenUpdatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Indstillinger er blevet opdateret med succes",
+      "en-US": "Settings have been updated successfully",
+      "uk-UA": "Налаштування були успішно оновлені",
+      "de-DE": "Einstellungen wurden erfolgreich aktualisiert"
+    }
+  },
+  {
+    "Key": "ErrorWhileUpdatingSettings",
+    "LocalizedValue": {
+      "da": "Fejl under opdatering af indstillinger",
+      "en-US": "Error while updating settings",
+      "uk-UA": "Помилка при оновленні налаштувань",
+      "de-DE": "Fehler beim Aktualisieren der Einstellungen"
+    }
+  },
+  {
+    "Key": "ErrorWhileObtainingInventoryTags",
+    "LocalizedValue": {
+      "da": "Fejl under hentning af beholdningskoder",
+      "en-US": "Error while obtaining inventory tags",
+      "uk-UA": "Помилка отримання тегів",
+      "de-DE": "Fehler beim Abrufen der Inventar-Tags"
+    }
+  },
+  {
+    "Key": "ErrorWhileObtainingInventoryTag",
+    "LocalizedValue": {
+      "da": "Fejl under hentning af beholdningskode",
+      "en-US": "Error while obtaining inventory tag",
+      "uk-UA": "Помилка під час отримання тегу",
+      "de-DE": "Fehler beim Abrufen des Inventar-Tags"
+    }
+  },
+  {
+    "Key": "InventoryTagCreatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Beholdningstag blev oprettet med succes",
+      "en-US": "Inventory tag created successfully",
+      "uk-UA": "Тег створено успішно",
+      "de-DE": "Inventar-Tag erfolgreich erstellt"
+    }
+  },
+  {
+    "Key": "ErrorWhileCreatingInventoryTag",
+    "LocalizedValue": {
+      "da": "Fejl under oprettelse af beholdningskode",
+      "en-US": "Error while creating inventory tag",
+      "uk-UA": "Помилка під час створення тегу",
+      "de-DE": "Fehler beim Erstellen des Inventar-Tags"
+    }
+  },
+  {
+    "Key": "InventoryTagNotFound",
+    "LocalizedValue": {
+      "da": "Inventar-Tag nicht gefunden",
+      "en-US": "Inventory tag not found",
+      "uk-UA": "Тег не знайдено",
+      "de-DE": "Inventar-Tag nicht gefunden"
+    }
+  },
+  {
+    "Key": "InventoryTagRemovedSuccessfully",
+    "LocalizedValue": {
+      "da": "Beholdningstagget blev fjernet",
+      "en-US": "Inventory tag removed successfully",
+      "uk-UA": "Тег успішно видалено",
+      "de-DE": "Inventar-Tag erfolgreich entfernt"
+    }
+  },
+  {
+    "Key": "ErrorWhileRemovingInventoryTag",
+    "LocalizedValue": {
+      "da": "Fejl under fjernelse af beholdningskode",
+      "en-US": "Error while removing inventory tag",
+      "uk-UA": "Помилка під час видалення тегу",
+      "de-DE": "Fehler beim Entfernen des Inventar-Tags"
+    }
+  },
+  {
+    "Key": "InventoryTagNotFound",
+    "LocalizedValue": {
+      "da": "Inventar-Tag nicht gefunden",
+      "en-US": "Inventory tag not found",
+      "uk-UA": "Тег не знайдено",
+      "de-DE": "Inventar-Tag nicht gefunden"
+    }
+  },
+  {
+    "Key": "InventoryTagUpdatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Beholdningstag blev opdateret",
+      "en-US": "Inventory tag updated successfully",
+      "uk-UA": "Тег успішно оновлено",
+      "de-DE": "Inventory tag updated successfully"
+    }
+  },
+  {
+    "Key": "ErrorWhileUpdatingInventoryTag",
+    "LocalizedValue": {
+      "da": "Fejl under opdatering af lagermærke",
+      "en-US": "Error while updating inventory tag",
+      "uk-UA": "Помилка під час оновлення тегу",
+      "de-DE": "Fehler beim Aktualisieren des Inventar-Tags"
+    }
+  }
+]
