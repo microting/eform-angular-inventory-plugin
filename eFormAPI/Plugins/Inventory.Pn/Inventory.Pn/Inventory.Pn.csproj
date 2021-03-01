@@ -32,10 +32,4 @@
     <Folder Include="Messages\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Microting.eFormInventoryBase">
-      <HintPath>..\..\..\..\..\eform-inventory-base\Microting.eFormInventoryBase\bin\Debug\netcoreapp3.1\Microting.eFormInventoryBase.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
