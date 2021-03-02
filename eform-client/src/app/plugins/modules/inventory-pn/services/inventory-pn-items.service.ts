@@ -10,10 +10,11 @@ import {
 } from 'src/app/common/models/operation.models';
 import { BaseService } from 'src/app/common/services/base.service';
 import { IPaged, PagedEntityRequest } from 'src/app/common/models';
-import { InventoryItemModel } from 'src/app/plugins/modules/inventory-pn/models';
+import {InventoryItemCreateModel, InventoryItemModel, InventoryItemUpdateModel} from 'src/app/plugins/modules/inventory-pn/models';
 
 export let InventoryPnItemsMethods = {
   Items: 'api/inventory-pn/items',
+  ItemsIndex: 'api/inventory-pn/items/index',
 };
 
 @Injectable({
@@ -31,22 +32,22 @@ export class InventoryPnItemsService extends BaseService {
   getAllItems(
     model: PagedEntityRequest
   ): Observable<OperationDataResult<IPaged<InventoryItemModel>>> {
-    return this.post(InventoryPnItemsMethods.Items, model);
+    return this.post(InventoryPnItemsMethods.ItemsIndex, model);
   }
 
-  getSingleItem(planningId: number): Observable<OperationDataResult<any>> {
-    return this.get(InventoryPnItemsMethods.Items + '/' + planningId);
+  getSingleItem(inventoryItemId: number): Observable<OperationDataResult<InventoryItemModel>> {
+    return this.get(InventoryPnItemsMethods.Items + '/' + inventoryItemId);
   }
 
-  updateItem(model: any): Observable<OperationResult> {
+  updateItem(model: InventoryItemUpdateModel): Observable<OperationResult> {
     return this.put(InventoryPnItemsMethods.Items, model);
   }
 
-  createItem(model: any): Observable<OperationResult> {
+  createItem(model: InventoryItemCreateModel): Observable<OperationResult> {
     return this.post(InventoryPnItemsMethods.Items, model);
   }
 
-  deleteItem(fractionId: number): Observable<OperationResult> {
-    return this.delete(InventoryPnItemsMethods.Items + '/' + fractionId);
+  deleteItem(inventoryItemId: number): Observable<OperationResult> {
+    return this.delete(InventoryPnItemsMethods.Items + '/' + inventoryItemId);
   }
 }
