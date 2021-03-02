@@ -31,9 +31,11 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
     using Microting.eFormInventoryBase.Infrastructure.Data;
     using Microting.eFormInventoryBase.Infrastructure.Data.Entities;
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
+    using Infrastructure.Models.Tag;
 
     public class InventoryItemTypeSevice : IInventoryItemTypeSevice
     {
@@ -52,32 +54,62 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
             //_coreService = coreService;
             _dbContext = dbContext;
         }
-        public async Task<OperationResult> CreateItemType(CreateTypeModel createTypeModel)
+        public async Task<OperationResult> CreateItemType(CreateItemTypeModel createItemTypeModel)
         {
             try
             {
+                var tags = new List<InventoryTag>();
+                if(createItemTypeModel.TagIds.Count > 0)
+                {
+                    tags = _dbContext.InventoryTags
+                        .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                        .Where(x => createItemTypeModel.TagIds.Contains(x.Id))
+                        .ToList();
+
+                    if (tags.Count != createItemTypeModel.TagIds.Count)
+                    {
+                        return new OperationResult(false,
+                            _inventoryLocalizationService.GetString("TagsNotFound"));
+                    }
+                }
+
                 var itemType = new ItemType
                 {
-                    Name = createTypeModel.Name,
-                    Description = createTypeModel.Description,
-                    NetWeight = createTypeModel.NetWeight,
-                    GrossWeight = createTypeModel.GrossWeight,
-                    UnitVolume = createTypeModel.UnitVolume,
-                    CostingMethod = createTypeModel.CostingMethod,
-                    ProofitProcent = createTypeModel.ProofitProcent,
-                    Region = createTypeModel.Region,
-                    Aviable = createTypeModel.Aviable,
+                    Name = createItemTypeModel.Name,
+                    Description = createItemTypeModel.Description,
+                    NetWeight = createItemTypeModel.NetWeight,
+                    GrossWeight = createItemTypeModel.GrossWeight,
+                    UnitVolume = createItemTypeModel.UnitVolume,
+                    CostingMethod = createItemTypeModel.CostingMethod,
+                    ProofitProcent = createItemTypeModel.ProofitProcent,
+                    Region = createItemTypeModel.Region,
+                    Aviable = createItemTypeModel.Aviable,
                     CreatedByUserId = _userService.UserId,
-                    GtinEanUpc = createTypeModel.GtinEanUpc,
-                    LastPhysicalInventoryDate = createTypeModel.LastPhysicalInventoryDate,
+                    GtinEanUpc = createItemTypeModel.GtinEanUpc,
+                    LastPhysicalInventoryDate = createItemTypeModel.LastPhysicalInventoryDate,
                     UpdatedByUserId = _userService.UserId,
-                    UnitPrice = createTypeModel.UnitPrice,
-                    No = createTypeModel.No,
-                    Usage = createTypeModel.Usage,
-                    RiscDescription = createTypeModel.RiscDescription,
-                    SalesUnitOfMeasure = createTypeModel.SalesUnitOfMeasure,
+                    UnitPrice = createItemTypeModel.UnitPrice,
+                    No = createItemTypeModel.No,
+                    Usage = createItemTypeModel.Usage,
+                    RiscDescription = createItemTypeModel.RiscDescription,
+                    SalesUnitOfMeasure = createItemTypeModel.SalesUnitOfMeasure,
+                    EformId = createItemTypeModel.EformId,
+                    Comment = createItemTypeModel.Comment,
                 };
                 await itemType.Create(_dbContext);
+
+                foreach (var inventoryTag in tags)
+                {
+                    var itemTypeTag = new ItemTypeTag
+                    {
+                        CreatedByUserId = _userService.UserId,
+                        UpdatedByUserId = _userService.UserId,
+                        InventoryTagId = inventoryTag.Id,
+                        ItemTypeId = itemType.Id,
+                    };
+                    await itemTypeTag.Create(_dbContext);
+                }
+
                 return new OperationResult(true);
             }
             catch (Exception e)
@@ -271,12 +303,14 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 itemTypesFromDb.GrossWeight = itemTypeModel.GrossWeight;
                 itemTypesFromDb.GtinEanUpc = itemTypeModel.GtinEanUpc;
                 itemTypesFromDb.UnitVolume = itemTypeModel.UnitVolume;
+                itemTypesFromDb.UpdatedByUserId = _userService.UserId;
                 itemTypesFromDb.UnitPrice = itemTypeModel.UnitPrice;
                 itemTypesFromDb.NetWeight = itemTypeModel.NetWeight;
                 itemTypesFromDb.Aviable = itemTypeModel.Aviable;
+                itemTypesFromDb.EformId = itemTypeModel.EformId;
+                itemTypesFromDb.Comment = itemTypeModel.Comment;
                 itemTypesFromDb.Region = itemTypeModel.Region;
                 itemTypesFromDb.Usage = itemTypeModel.Usage;
-                itemTypesFromDb.UpdatedByUserId = _userService.UserId;
                 itemTypesFromDb.Name = itemTypeModel.Name;
                 itemTypesFromDb.No = itemTypeModel.No;
 
@@ -338,7 +372,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                             Id = y.DependItemType.Id,
                             No = y.DependItemType.No,
                         })
-                        .ToList(), // todo tags and group, if need
+                        .ToList(), // todo group, if need
                     CostingMethod = x.CostingMethod,
                     Description = x.Description,
                     GrossWeight = x.GrossWeight,
@@ -354,7 +388,31 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     Name = x.Name,
                     Id = x.Id,
                     No = x.No,
-                }); // todo tags
+                    Tags = _dbContext.ItemTypeTags
+                        .Where(y => y.ItemTypeId == x.Id)
+                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                        .Select(y => new InventoryTagModel
+                        {
+                            Name = y.InventoryTag.Name,
+                            Id = y.InventoryTag.Id
+                        })
+                        .ToList()
+                    //_dbContext.InventoryTags
+                    //.Where(
+                    //    z => _dbContext.ItemTypeTags
+                    //    .Where(y => y.ItemTypeId == x.Id)
+                    //    .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                    //    .Select(t => t.InventoryTagId)
+                    //    .Contains(z.Id)
+                    //)
+                    //.Where(z => z.WorkflowState != Constants.WorkflowStates.Removed)
+                    //.Select(z => new InventoryTagModel
+                    //{
+                    //    Name = z.Name,
+                    //    Id = z.Id
+                    //})
+                    //.ToList()
+                });
         }
     }
 }

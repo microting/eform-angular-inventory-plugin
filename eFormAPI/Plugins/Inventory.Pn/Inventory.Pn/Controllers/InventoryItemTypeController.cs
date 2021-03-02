@@ -21,7 +21,6 @@ SOFTWARE.
 namespace Inventory.Pn.Controllers
 {
     using System.Threading.Tasks;
-    using Infrastructure.Models;
     using Infrastructure.Models.ItemType;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -90,13 +89,13 @@ namespace Inventory.Pn.Controllers
         /// <summary>
         /// Creates the type of the inventory.
         /// </summary>
-        /// <param name="createTypeModel">The create inventory type model.</param>
+        /// <param name="createItemTypeModel">The create inventory type model.</param>
         /// <returns>Task&lt;OperationResult&gt;.</returns>
         [HttpPost]
         [Route("api/inventory-pn/inventory-item-types")]
-        public async Task<OperationResult> CreateInventoryType([FromBody]CreateTypeModel createTypeModel)
+        public async Task<OperationResult> CreateInventoryType([FromBody]CreateItemTypeModel createItemTypeModel)
         {
-            return await _inventoryItemTypeSevice.CreateItemType(createTypeModel);
+            return await _inventoryItemTypeSevice.CreateItemType(createItemTypeModel);
         }
     }
 }

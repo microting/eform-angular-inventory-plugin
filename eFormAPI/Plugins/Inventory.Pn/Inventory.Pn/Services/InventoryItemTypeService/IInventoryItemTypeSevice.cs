@@ -32,7 +32,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
 
         Task<OperationResult> UpdateItemType(UpdateItemTypeModel updateItemTypeModel);
 
-        Task<OperationResult> CreateItemType(CreateTypeModel createTypeModel);
+        Task<OperationResult> CreateItemType(CreateItemTypeModel createItemTypeModel);
 
         Task<OperationResult> DeleteItemTypeById(int itemTypeId);
     }

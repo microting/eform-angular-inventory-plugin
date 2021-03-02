@@ -58,5 +58,9 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
         public string RiscDescription { get; set; }
 
         public bool Aviable { get; set; }
+
+        public int EformId { get; set; }
+
+        public string Comment { get; set; }
     }
 }

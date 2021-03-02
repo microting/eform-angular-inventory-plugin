@@ -21,9 +21,10 @@ SOFTWARE.
 namespace Inventory.Pn.Infrastructure.Models.ItemType
 {
     using System;
+    using System.Collections.Generic;
     using Microting.eFormInventoryBase.Infrastructure.Const;
 
-    public class CreateTypeModel
+    public class CreateItemTypeModel
     {
         public string No { get; set; }
 
@@ -56,5 +57,11 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
         public string RiscDescription { get; set; }
 
         public bool Aviable { get; set; }
+
+        public int EformId { get; set; }
+
+        public string Comment { get; set; }
+
+        public List<int> TagIds { get; set; }
     }
 }
