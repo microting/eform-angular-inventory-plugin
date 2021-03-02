@@ -30,23 +30,26 @@ import {
 } from './components';
 import { InventoryPnRouting } from './inventory-pn.routing';
 import {
+  InventoryPnItemGroupsService,
   InventoryPnItemsService,
+  InventoryPnItemTypesService,
   InventoryPnSettingsService,
 } from './services';
 import {
   ButtonsModule,
-  InputsModule, ModalModule,
+  InputsModule,
+  ModalModule,
   TableModule,
   TooltipModule,
 } from 'angular-bootstrap-md';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {RouterModule} from '@angular/router';
-import {NgSelectModule} from '@ng-select/ng-select';
-import {EformSharedModule} from 'src/app/common/modules/eform-shared/eform-shared.module';
-import {SharedPnModule} from 'src/app/plugins/modules/shared/shared-pn.module';
-import {InventoryPnLayoutComponent} from './layouts';
+import { RouterModule } from '@angular/router';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { EformSharedModule } from 'src/app/common/modules/eform-shared/eform-shared.module';
+import { SharedPnModule } from 'src/app/plugins/modules/shared/shared-pn.module';
+import { InventoryPnLayoutComponent } from './layouts';
 
 @NgModule({
   declarations: [
@@ -76,7 +79,7 @@ import {InventoryPnLayoutComponent} from './layouts';
     ItemGroupCreateModalComponent,
     ItemGroupEditModalComponent,
     ItemGroupDeleteModalComponent,
-    InventoryPnLayoutComponent
+    InventoryPnLayoutComponent,
   ],
   imports: [
     CommonModule,
@@ -94,6 +97,11 @@ import {InventoryPnLayoutComponent} from './layouts';
     EformSharedModule,
     SharedPnModule,
   ],
-  providers: [InventoryPnItemsService, InventoryPnSettingsService],
+  providers: [
+    InventoryPnItemsService,
+    InventoryPnSettingsService,
+    InventoryPnItemGroupsService,
+    InventoryPnItemTypesService,
+  ],
 })
 export class InventoryPnModule {}
