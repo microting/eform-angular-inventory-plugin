@@ -21,29 +21,29 @@
         >
       </div>
     </div>
-    <div class="col-md-3 col-sm-6 col-xs-6" *ngIf="foldersTreeDto.length > 0">
-      <div
-        class="md-form"
-        id="folderTasksSelector"
-        (click)="openTasksFoldersModal()"
-      >
-        <input
-          mdbInput
-          type="text"
-          id="folderTasksSelectorInput"
-          [ngModel]="settingsModel.folderTasksName"
-          [disabled]="true"
-          name="folderTasksSelectorInput"
-          class="form-control"
-        />
-        <label
-          for="folderTasksSelectorInput"
-          id="folderTasksSelectorLabel"
-          (click)="openTasksFoldersModal()"
-          >{{ 'Folders for tasks' | translate }}</label
-        >
-      </div>
-    </div>
+<!--    <div class="col-md-3 col-sm-6 col-xs-6" *ngIf="foldersTreeDto.length > 0">-->
+<!--      <div-->
+<!--        class="md-form"-->
+<!--        id="folderTasksSelector"-->
+<!--        (click)="openTasksFoldersModal()"-->
+<!--      >-->
+<!--        <input-->
+<!--          mdbInput-->
+<!--          type="text"-->
+<!--          id="folderTasksSelectorInput"-->
+<!--          [ngModel]="settingsModel.folderTasksName"-->
+<!--          [disabled]="true"-->
+<!--          name="folderTasksSelectorInput"-->
+<!--          class="form-control"-->
+<!--        />-->
+<!--        <label-->
+<!--          for="folderTasksSelectorInput"-->
+<!--          id="folderTasksSelectorLabel"-->
+<!--          (click)="openTasksFoldersModal()"-->
+<!--          >{{ 'Folders for tasks' | translate }}</label-->
+<!--        >-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
   <div class="row p-1 table-responsive no-gutters">
     <table

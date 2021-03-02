@@ -87,11 +87,6 @@ export class InventorySettingsComponent implements OnInit, OnDestroy {
                 this.settingsModel.folderId,
                 this.foldersDto
               ));
-          this.settingsModel.folderTasksId === null
-            ? (this.settingsModel.folderTasksName = null)
-            : (this.settingsModel.folderTasksName = this.foldersDto.find(
-                (x) => x.id === this.settingsModel.folderTasksId
-              ).name);
         }
       });
   }
@@ -109,10 +104,10 @@ export class InventorySettingsComponent implements OnInit, OnDestroy {
     this.foldersModal.show(this.settingsModel.folderId);
   }
 
-  openTasksFoldersModal() {
-    this.tasksFolder = true;
-    this.foldersModal.show(this.settingsModel.folderTasksId);
-  }
+  // openTasksFoldersModal() {
+  //   this.tasksFolder = true;
+  //   this.foldersModal.show(this.settingsModel.folderTasksId);
+  // }
 
   onFolderSelected(folderDto: FolderDto) {
     this.folderUpdateSub$ = this.settingsService
