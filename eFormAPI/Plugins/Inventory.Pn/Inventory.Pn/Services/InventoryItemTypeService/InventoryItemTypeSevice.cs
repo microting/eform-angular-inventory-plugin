@@ -333,8 +333,63 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
             }
         }
 
-        private IQueryable<ItemTypeModel> AddSelectToItemTypeQuery(IQueryable<ItemType> itemTypeQuery)
+        private IQueryable AddSelectToItemTypeQuery(IQueryable<ItemType> itemTypeQuery, bool needSimpleObject)
         {
+            if (needSimpleObject)
+            {
+                return itemTypeQuery
+                    .Select(x => new ItemTypeSimpleModel
+                    {
+                        LastPhysicalInventoryDate = x.LastPhysicalInventoryDate,
+                        SalesUnitOfMeasure = x.SalesUnitOfMeasure,
+                        BaseUnitOfMeasure = x.BaseUnitOfMeasure,
+                        RiscDescription = x.RiscDescription,
+                        ProfitPercent = x.ProfitPercent,
+                        CostingMethod = x.CostingMethod,
+                        StandardCost = x.StandardCost,
+                        Description = x.Description,
+                        GrossWeight = x.GrossWeight,
+                        GtinEanUpc = x.GtinEanUpc,
+                        UnitVolume = x.UnitVolume,
+                        NetWeight = x.NetWeight,
+                        UnitPrice = x.UnitPrice,
+                        UnitCost = x.UnitCost,
+                        Comment = x.Comment,
+                        EformId = x.EformId,
+                        Region = x.Region,
+                        Usage = x.Usage,
+                        Name = x.Name,
+                        Id = x.Id,
+                        No = x.No,
+                        Tags = _dbContext.ItemTypeTags
+                            .Where(y => y.ItemTypeId == x.Id)
+                            .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                            .Select(y => new InventoryTagModel
+                            {
+                                Name = y.InventoryTag.Name,
+                                Id = y.InventoryTag.Id
+                            })
+                            .ToList(),
+                        ItemGroupDependency = _dbContext.ItemGroupDependencys
+                            .Where(y => y.ItemTypeId == x.Id)
+                            .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                            .Select(y => new ItemTypeDependencyItemGroup
+                            {
+                                Id = x.ItemGroup.Id,
+                                Name = x.ItemGroup.Name,
+                            })
+                            .FirstOrDefault(),
+                        ItemTypeDependency = _dbContext.ItemTypeDependencys
+                            .Where(y => y.ItemTypeId == x.Id)
+                            .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                            .Select(y => new ItemTypeDependencyItemType()
+                            {
+                                Name = y.DependItemType.Name,
+                            })
+                            .ToList(),
+                    });
+            }
+
             return itemTypeQuery
                 .Select(x => new ItemTypeModel
                 {
@@ -343,16 +398,38 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     BaseUnitOfMeasure = x.BaseUnitOfMeasure,
                     RiscDescription = x.RiscDescription,
                     ProfitPercent = x.ProfitPercent,
+                    CostingMethod = x.CostingMethod,
+                    StandardCost = x.StandardCost,
+                    Description = x.Description,
+                    GrossWeight = x.GrossWeight,
+                    GtinEanUpc = x.GtinEanUpc,
+                    UnitVolume = x.UnitVolume,
+                    NetWeight = x.NetWeight,
+                    UnitPrice = x.UnitPrice,
+                    UnitCost = x.UnitCost,
+                    Comment = x.Comment,
+                    EformId = x.EformId,
+                    Region = x.Region,
+                    Usage = x.Usage,
+                    Name = x.Name,
+                    Id = x.Id,
+                    No = x.No,
+                    Tags = _dbContext.ItemTypeTags
+                        .Where(y => y.ItemTypeId == x.Id)
+                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                        .Select(y => new InventoryTagModel
+                        {
+                            Name = y.InventoryTag.Name,
+                            Id = y.InventoryTag.Id
+                        })
+                        .ToList(),
                     ItemGroupDependency = _dbContext.ItemGroupDependencys
                         .Where(y => y.ItemTypeId == x.Id)
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                        .Select(y => new ItemGroupModel
+                        .Select(y => new ItemTypeDependencyItemGroup
                         {
                             Id = x.ItemGroup.Id,
-                            Description = x.ItemGroup.Description,
-                            Code = x.ItemGroup.Code,
                             Name = x.ItemGroup.Name,
-                            ParentId = x.ItemGroup.ParentId,
                         })
                         .FirstOrDefault(),
                     ItemTypeDependency = _dbContext.ItemTypeDependencys
@@ -383,31 +460,6 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                             No = y.DependItemType.No,
                         })
                         .ToList(), // todo group, if need
-                    CostingMethod = x.CostingMethod,
-                    StandardCost = x.StandardCost,
-                    Description = x.Description,
-                    GrossWeight = x.GrossWeight,
-                    GtinEanUpc = x.GtinEanUpc,
-                    UnitVolume = x.UnitVolume,
-                    NetWeight = x.NetWeight,
-                    UnitPrice = x.UnitPrice,
-                    UnitCost = x.UnitCost,
-                    Comment = x.Comment,
-                    EformId = x.EformId,
-                    Region = x.Region,
-                    Usage = x.Usage,
-                    Name = x.Name,
-                    Id = x.Id,
-                    No = x.No,
-                    Tags = _dbContext.ItemTypeTags
-                        .Where(y => y.ItemTypeId == x.Id)
-                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                        .Select(y => new InventoryTagModel
-                        {
-                            Name = y.InventoryTag.Name,
-                            Id = y.InventoryTag.Id
-                        })
-                        .ToList()
                 });
         }
     }
