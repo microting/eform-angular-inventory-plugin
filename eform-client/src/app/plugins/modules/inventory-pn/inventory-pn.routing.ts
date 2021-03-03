@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminGuard, AuthGuard, PermissionGuard } from 'src/app/common/guards';
-import { InventoryPnLayoutComponent } from './layouts';
+import { AuthGuard, PermissionGuard } from 'src/app/common/guards';
+import {
+  InventorySettingsComponent, ItemCreateContainerComponent, ItemEditContainerComponent,
+  ItemGroupsContainerComponent,
+  ItemsContainerComponent, ItemTypeCreateContainerComponent, ItemTypeEditContainerComponent,
+  ItemTypesContainerComponent,
+} from './components';
 import { InventoryPnClaims } from './enums';
-import {InventorySettingsComponent} from './components';
+import { InventoryPnLayoutComponent } from './layouts';
 
 export const routes: Routes = [
   {
@@ -20,13 +25,43 @@ export const routes: Routes = [
         data: {
           requiredPermission: InventoryPnClaims.getInventoryItems,
         },
-        // component: PlanningsContainerComponent,
+        component: ItemsContainerComponent,
+      },
+      {
+        path: 'item/edit/:id',
+        canActivate: [PermissionGuard],
+        component: ItemEditContainerComponent,
+      },
+      {
+        path: 'item/create',
+        canActivate: [PermissionGuard],
+        component: ItemCreateContainerComponent,
+      },
+      {
+        path: 'item-groups',
+        canActivate: [PermissionGuard],
+        component: ItemGroupsContainerComponent,
+      },
+      {
+        path: 'item-types',
+        canActivate: [PermissionGuard],
+        component: ItemTypesContainerComponent,
+      },
+      {
+        path: 'item-type/edit/:id',
+        canActivate: [PermissionGuard],
+        component: ItemTypeEditContainerComponent,
+      },
+      {
+        path: 'item-type/create',
+        canActivate: [PermissionGuard],
+        component: ItemTypeCreateContainerComponent,
       },
       {
         path: 'settings',
         canActivate: [AuthGuard],
-        component: InventorySettingsComponent
-      }
+        component: InventorySettingsComponent,
+      },
     ],
   },
 ];
