@@ -20,7 +20,7 @@ SOFTWARE.
 
 namespace Inventory.Pn.Infrastructure.Models.ItemGroup
 {
-    public class UpdateItemGroupModel
+    public class ItemGroupUpdateModel
     {
         public int Id { get; set; }
 

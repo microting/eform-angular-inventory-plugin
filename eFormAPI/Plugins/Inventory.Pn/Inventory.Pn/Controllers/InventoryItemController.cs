@@ -37,36 +37,36 @@ namespace Inventory.Pn.Controllers
         }
 
         [HttpPost]
-        [Route("api/inventory-pn/inventory-item/index")]
+        [Route("api/inventory-pn/item/index")]
         public async Task<OperationDataResult<ItemPnModel>> Index(
             [FromBody] ItemRequestModel itemRequestModel)
         {
             return await _inventoryItemService.GetItems(itemRequestModel);
         }
 
-        [HttpGet]
-        [Route("api/inventory-pn/inventory-item/{id}")]
-        public async Task<OperationDataResult<ItemViewModel>> GetInventoryItemGroupById(int id)
-        {
-            return await _inventoryItemService.GetItemById(id);
-        }
+        //[HttpGet]
+        //[Route("api/inventory-pn/item/{id}")]
+        //public async Task<OperationDataResult<ItemModel>> GetInventoryItemGroupById(int id)
+        //{
+        //    return await _inventoryItemService.GetItemById(id);
+        //}
 
         [HttpPut]
-        [Route("api/inventory-pn/inventory-item")]
+        [Route("api/inventory-pn/item")]
         public async Task<OperationResult> UpdateInventoryItemGroup([FromBody] ItemUpdateModel itemUpdateModel)
         {
             return await _inventoryItemService.UpdateItem(itemUpdateModel);
         }
 
         [HttpDelete]
-        [Route("api/inventory-pn/inventory-item/{id}")]
+        [Route("api/inventory-pn/item/{id}")]
         public async Task<OperationResult> DeleteInventoryItemGroupById(int id)
         {
             return await _inventoryItemService.DeleteItemById(id);
         }
 
         [HttpPost]
-        [Route("api/inventory-pn/inventory-item")]
+        [Route("api/inventory-pn/item")]
         public async Task<OperationResult> CreateInventoryType([FromBody] ItemCreateModel itemCreateModel)
         {
             return await _inventoryItemService.CreateItem(itemCreateModel);

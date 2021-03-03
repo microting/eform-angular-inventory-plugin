@@ -34,6 +34,6 @@ namespace Inventory.Pn.Infrastructure.Models.Item
 
         public string SN { get; set; }
 
-        public bool Aviable { get; set; }
+        public bool Available { get; set; }
     }
 }

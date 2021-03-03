@@ -132,9 +132,9 @@ namespace Inventory.Pn
                 {
                     new MenuItemModel
                     {
-                        Name = localizationService.GetString("Overview"),
-                        E2EId = "inventory-pn-overview",
-                        Link = "/plugins/inventory-pn/overview",
+                        Name = localizationService.GetString("Inventory"),
+                        E2EId = "inventory-pn-inventory",
+                        Link = "/plugins/inventory-pn/inventory",
                         Guards = new List<string> { InventoryClaims.GetInventory },
                         Position = 0,
                     },
@@ -185,16 +185,16 @@ namespace Inventory.Pn
                         {
                             new PluginMenuItemModel
                             {
-                                Name = "Overview",
-                                E2EId = "inventory-pn-overview",
-                                Link = "/plugins/inventory-pn/overview",
+                                Name = "Inventory",
+                                E2EId = "inventory-pn-inventory",
+                                Link = "/plugins/inventory-pn/inventory",
                                 Type = MenuItemTypeEnum.Link,
                                 Position = 0,
                                 MenuTemplate = new PluginMenuTemplateModel()
                                 {
-                                    Name = "Overview",
-                                    E2EId = "inventory-pn-overview",
-                                    DefaultLink = "/plugins/inventory-pn/overview",
+                                    Name = "Inventory",
+                                    E2EId = "inventory-pn-inventory",
+                                    DefaultLink = "/plugins/inventory-pn/inventory",
                                     Permissions = new List<PluginMenuTemplatePermissionModel>()
                                     {
                                         new PluginMenuTemplatePermissionModel
@@ -209,27 +209,27 @@ namespace Inventory.Pn
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.English,
-                                            Name = "Overview",
+                                            Name = "Inventory",
                                             Language = LanguageNames.English,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.German,
-                                            Name = "Überblick",
+                                            Name = "Inventar",
                                             Language = LanguageNames.German,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.Danish,
-                                            Name = "Oversigt",
+                                            Name = "Opgørelse",
                                             Language = LanguageNames.Danish,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.Ukrainian,
-                                            Name = "Огляд",
+                                            Name = "Інвентар",
                                             Language = LanguageNames.Ukrainian,
-                                        }
+                                        },
                                     }
                                 },
                                 Translations = new List<PluginMenuTranslationModel>
@@ -237,66 +237,66 @@ namespace Inventory.Pn
                                     new PluginMenuTranslationModel
                                     {
                                         LocaleName = LocaleNames.English,
-                                        Name = "Overview",
+                                        Name = "Inventory",
                                         Language = LanguageNames.English,
                                     },
                                     new PluginMenuTranslationModel
                                     {
                                         LocaleName = LocaleNames.German,
-                                        Name = "Überblick",
+                                        Name = "Inventar",
                                         Language = LanguageNames.German,
                                     },
                                     new PluginMenuTranslationModel
                                     {
                                         LocaleName = LocaleNames.Danish,
-                                        Name = "Oversigt",
+                                        Name = "Opgørelse",
                                         Language = LanguageNames.Danish,
                                     },
                                     new PluginMenuTranslationModel
                                     {
                                         LocaleName = LocaleNames.Ukrainian,
-                                        Name = "Огляд",
+                                        Name = "Інвентар",
                                         Language = LanguageNames.Ukrainian,
-                                    }
+                                    },
                                 }
                             },
                             new PluginMenuItemModel
                             {
-                                Name = "Type of products",
-                                E2EId = "inventory-pn-type-of-products",
-                                Link = "/plugins/inventory-pn/type-of-products",
+                                Name = "Item types",
+                                E2EId = "inventory-pn-item-types",
+                                Link = "/plugins/inventory-pn/item-types",
                                 Type = MenuItemTypeEnum.Link,
                                 Position = 1,
                                 MenuTemplate = new PluginMenuTemplateModel()
                                 {
-                                    Name = "Type of products",
-                                    E2EId = "inventory-pn-type-of-products",
-                                    DefaultLink = "/plugins/inventory-pn/type-of-products",
+                                    Name = "Item types",
+                                    E2EId = "inventory-pn-item-types",
+                                    DefaultLink = "/plugins/inventory-pn/item-types",
                                     Permissions = new List<PluginMenuTemplatePermissionModel>(),
                                     Translations = new List<PluginMenuTranslationModel>
                                     {
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.English,
-                                            Name = "Type of products",
+                                            Name = "Item types",
                                             Language = LanguageNames.English,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.German,
-                                            Name = "Art der Produkte",
+                                            Name = "Elementtypen",
                                             Language = LanguageNames.German,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.Danish,
-                                            Name = "Produkttype",
+                                            Name = "Elementtype",
                                             Language = LanguageNames.Danish,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.Ukrainian,
-                                            Name = "Тип продукції",
+                                            Name = "Типи елементів",
                                             Language = LanguageNames.Ukrainian,
                                         }
                                     }
@@ -306,66 +306,66 @@ namespace Inventory.Pn
                                     new PluginMenuTranslationModel
                                     {
                                         LocaleName = LocaleNames.English,
-                                        Name = "Type of products",
+                                        Name = "Item types",
                                         Language = LanguageNames.English,
                                     },
                                     new PluginMenuTranslationModel
                                     {
                                         LocaleName = LocaleNames.German,
-                                        Name = "Art der Produkte",
+                                        Name = "Elementtypen",
                                         Language = LanguageNames.German,
                                     },
                                     new PluginMenuTranslationModel
                                     {
                                         LocaleName = LocaleNames.Danish,
-                                        Name = "Produkttype",
+                                        Name = "Elementtype",
                                         Language = LanguageNames.Danish,
                                     },
                                     new PluginMenuTranslationModel
                                     {
                                         LocaleName = LocaleNames.Ukrainian,
-                                        Name = "Тип продукції",
+                                        Name = "Типи елементів",
                                         Language = LanguageNames.Ukrainian,
                                     }
                                 }
                             },
                             new PluginMenuItemModel
                             {
-                                Name = "Type of storage",
-                                E2EId = "inventory-pn-type-of-storage",
-                                Link = "/plugins/inventory-pn/type-of-storage",
+                                Name = "Item groups",
+                                E2EId = "inventory-pn-item-groups",
+                                Link = "/plugins/inventory-pn/item-groups",
                                 Type = MenuItemTypeEnum.Link,
                                 Position = 2,
                                 MenuTemplate = new PluginMenuTemplateModel()
                                 {
-                                    Name = "Pairing",
-                                    E2EId = "inventory-pn-type-of-storage",
-                                    DefaultLink = "/plugins/inventory-pn/type-of-storage",
+                                    Name = "Item groups",
+                                    E2EId = "inventory-pn-item-groups",
+                                    DefaultLink = "/plugins/inventory-pn/item-groups",
                                     Permissions = new List<PluginMenuTemplatePermissionModel>(),
                                     Translations = new List<PluginMenuTranslationModel>
                                     {
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.English,
-                                            Name = "Type of storage",
+                                            Name = "Item groups",
                                             Language = LanguageNames.English,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.German,
-                                            Name = "Art der Lagerung",
+                                            Name = "Artikel-Gruppen",
                                             Language = LanguageNames.German,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.Danish,
-                                            Name = "Type opbevaring",
+                                            Name = "Varegrupper",
                                             Language = LanguageNames.Danish,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.Ukrainian,
-                                            Name = "Тип зберігання",
+                                            Name = "Групи товарів",
                                             Language = LanguageNames.Ukrainian,
                                         }
                                     }
@@ -375,164 +375,28 @@ namespace Inventory.Pn
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.English,
-                                            Name = "Type of storage",
+                                            Name = "Item groups",
                                             Language = LanguageNames.English,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.German,
-                                            Name = "Art der Lagerung",
+                                            Name = "Artikel-Gruppen",
                                             Language = LanguageNames.German,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.Danish,
-                                            Name = "Type opbevaring",
+                                            Name = "Varegrupper",
                                             Language = LanguageNames.Danish,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.Ukrainian,
-                                            Name = "Тип зберігання",
+                                            Name = "Групи товарів",
                                             Language = LanguageNames.Ukrainian,
                                         }
                                     }
-                            },
-                            new PluginMenuItemModel
-                            {
-                                Name = "Pictograms",
-                                E2EId = "inventory-pn-pictograms",
-                                Link = "/plugins/inventory-pn/pictograms",
-                                Type = MenuItemTypeEnum.Link,
-                                Position = 0,
-                                MenuTemplate = new PluginMenuTemplateModel()
-                                {
-                                    Name = "Pictograms",
-                                    E2EId = "inventory-pn-pictograms",
-                                    DefaultLink = "/plugins/inventory-pn/pictograms",
-                                    Translations = new List<PluginMenuTranslationModel>
-                                    {
-                                        new PluginMenuTranslationModel
-                                        {
-                                            LocaleName = LocaleNames.English,
-                                            Name = "Pictograms",
-                                            Language = LanguageNames.English,
-                                        },
-                                        new PluginMenuTranslationModel
-                                        {
-                                            LocaleName = LocaleNames.German,
-                                            Name = "Piktogramm",
-                                            Language = LanguageNames.German,
-                                        },
-                                        new PluginMenuTranslationModel
-                                        {
-                                            LocaleName = LocaleNames.Danish,
-                                            Name = "Piktogrammer",
-                                            Language = LanguageNames.Danish,
-                                        },
-                                        new PluginMenuTranslationModel
-                                        {
-                                            LocaleName = LocaleNames.Ukrainian,
-                                            Name = "Піктограми",
-                                            Language = LanguageNames.Ukrainian,
-                                        }
-                                    }
-                                },
-                                Translations = new List<PluginMenuTranslationModel>
-                                {
-                                    new PluginMenuTranslationModel
-                                    {
-                                        LocaleName = LocaleNames.English,
-                                        Name = "Pictograms",
-                                        Language = LanguageNames.English,
-                                    },
-                                    new PluginMenuTranslationModel
-                                    {
-                                        LocaleName = LocaleNames.German,
-                                        Name = "Piktogramm",
-                                        Language = LanguageNames.German,
-                                    },
-                                    new PluginMenuTranslationModel
-                                    {
-                                        LocaleName = LocaleNames.Danish,
-                                        Name = "Piktogrammer",
-                                        Language = LanguageNames.Danish,
-                                    },
-                                    new PluginMenuTranslationModel
-                                    {
-                                        LocaleName = LocaleNames.Ukrainian,
-                                        Name = "Піктограми",
-                                        Language = LanguageNames.Ukrainian,
-                                    }
-                                }
-                            },
-                            new PluginMenuItemModel
-                            {
-                                Name = "Danger labels",
-                                E2EId = "inventory-pn-danger-labels",
-                                Link = "/plugins/inventory-pn/danger-labels",
-                                Type = MenuItemTypeEnum.Link,
-                                Position = 0,
-                                MenuTemplate = new PluginMenuTemplateModel()
-                                {
-                                    Name = "Danger labels",
-                                    E2EId = "inventory-pn-danger-labels",
-                                    DefaultLink = "/plugins/inventory-pn/danger-labels",
-                                    Translations = new List<PluginMenuTranslationModel>
-                                    {
-                                        new PluginMenuTranslationModel
-                                        {
-                                            LocaleName = LocaleNames.English,
-                                            Name = "Danger labels",
-                                            Language = LanguageNames.English,
-                                        },
-                                        new PluginMenuTranslationModel
-                                        {
-                                            LocaleName = LocaleNames.German,
-                                            Name = "Gefahrenzeichen",
-                                            Language = LanguageNames.German,
-                                        },
-                                        new PluginMenuTranslationModel
-                                        {
-                                            LocaleName = LocaleNames.Danish,
-                                            Name = "Fareetiketter",
-                                            Language = LanguageNames.Danish,
-                                        },
-                                        new PluginMenuTranslationModel
-                                        {
-                                            LocaleName = LocaleNames.Ukrainian,
-                                            Name = "Знаки небезпеки",
-                                            Language = LanguageNames.Ukrainian,
-                                        }
-                                    }
-                                },
-                                Translations = new List<PluginMenuTranslationModel>
-                                {
-                                    new PluginMenuTranslationModel
-                                    {
-                                        LocaleName = LocaleNames.English,
-                                        Name = "Danger labels",
-                                        Language = LanguageNames.English,
-                                    },
-                                    new PluginMenuTranslationModel
-                                    {
-                                        LocaleName = LocaleNames.German,
-                                        Name = "Gefahrenzeichen",
-                                        Language = LanguageNames.German,
-                                    },
-                                    new PluginMenuTranslationModel
-                                    {
-                                        LocaleName = LocaleNames.Danish,
-                                        Name = "Fareetiketter",
-                                        Language = LanguageNames.Danish,
-                                    },
-                                    new PluginMenuTranslationModel
-                                    {
-                                        LocaleName = LocaleNames.Ukrainian,
-                                        Name = "Знаки небезпеки",
-                                        Language = LanguageNames.Ukrainian,
-                                    }
-                                }
                             },
                         }
                     }

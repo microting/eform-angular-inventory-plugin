@@ -18,25 +18,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace Inventory.Pn.Infrastructure.Models.Item
+namespace Inventory.Pn.Infrastructure.Models.ItemGroup
 {
-    using System;
-    using ItemType;
-
-    public class ItemViewModel
+    public class ItemGroupCreateModel
     {
-        public int Id { get; set; }
+        public int? ParentId { get; set; }
+        
+        public string Name { get; set; }
 
-        public ItemTypeViewModel ItemType { get; set; }
+        public string Description { get; set; }
 
-        public string Location { get; set; }
-
-        public int CustomerId { get; set; }
-
-        public DateTime ExpirationDate { get; set; }
-
-        public string SN { get; set; }
-
-        public bool Aviable { get; set; }
+        public string Code { get; set; }
     }
 }

@@ -28,7 +28,7 @@ namespace Inventory.Pn.Services.InventoryItemService
     {
         Task<OperationDataResult<ItemPnModel>> GetItems(ItemRequestModel itemRequest);
 
-        Task<OperationDataResult<ItemViewModel>> GetItemById(int itemId);
+        //Task<OperationDataResult<ItemModel>> GetItemById(int itemId);
 
         Task<OperationResult> UpdateItem(ItemUpdateModel itemModel);
 
