@@ -4,17 +4,7 @@
     "LocalizedValue": {
       "da": "Opgørelse",
       "en-US": "Inventory",
-      "uk-UA": "Інвентар",
       "de-DE": "Inventar"
-    }
-  },
-  {
-    "Key": "Overview",
-    "LocalizedValue": {
-      "da": "Oversigt",
-      "en-US": "Overview",
-      "uk-UA": "Огляд",
-      "de-DE": "Überblick"
     }
   },
   {
@@ -22,7 +12,6 @@
     "LocalizedValue": {
       "da": "Fejl under opnåelse af lagerindstillinger",
       "en-US": "Error while obtaining inventory settings",
-      "uk-UA": "Помилка при отриманні налаштувань",
       "de-DE": "Fehler beim Abrufen der Inventareinstellungen"
     }
   },
@@ -31,7 +20,6 @@
     "LocalizedValue": {
       "da": "Indstillinger er blevet opdateret med succes",
       "en-US": "Settings have been updated successfully",
-      "uk-UA": "Налаштування були успішно оновлені",
       "de-DE": "Einstellungen wurden erfolgreich aktualisiert"
     }
   },
@@ -40,7 +28,6 @@
     "LocalizedValue": {
       "da": "Fejl under opdatering af indstillinger",
       "en-US": "Error while updating settings",
-      "uk-UA": "Помилка при оновленні налаштувань",
       "de-DE": "Fehler beim Aktualisieren der Einstellungen"
     }
   },
@@ -49,7 +36,6 @@
     "LocalizedValue": {
       "da": "Fejl under hentning af beholdningskoder",
       "en-US": "Error while obtaining inventory tags",
-      "uk-UA": "Помилка отримання тегів",
       "de-DE": "Fehler beim Abrufen der Inventar-Tags"
     }
   },
@@ -58,7 +44,6 @@
     "LocalizedValue": {
       "da": "Fejl under hentning af beholdningskode",
       "en-US": "Error while obtaining inventory tag",
-      "uk-UA": "Помилка під час отримання тегу",
       "de-DE": "Fehler beim Abrufen des Inventar-Tags"
     }
   },
@@ -67,7 +52,6 @@
     "LocalizedValue": {
       "da": "Beholdningstag blev oprettet med succes",
       "en-US": "Inventory tag created successfully",
-      "uk-UA": "Тег створено успішно",
       "de-DE": "Inventar-Tag erfolgreich erstellt"
     }
   },
@@ -76,7 +60,6 @@
     "LocalizedValue": {
       "da": "Fejl under oprettelse af beholdningskode",
       "en-US": "Error while creating inventory tag",
-      "uk-UA": "Помилка під час створення тегу",
       "de-DE": "Fehler beim Erstellen des Inventar-Tags"
     }
   },
@@ -85,7 +68,6 @@
     "LocalizedValue": {
       "da": "Inventar-Tag nicht gefunden",
       "en-US": "Inventory tag not found",
-      "uk-UA": "Тег не знайдено",
       "de-DE": "Inventar-Tag nicht gefunden"
     }
   },
@@ -94,7 +76,6 @@
     "LocalizedValue": {
       "da": "Beholdningstagget blev fjernet",
       "en-US": "Inventory tag removed successfully",
-      "uk-UA": "Тег успішно видалено",
       "de-DE": "Inventar-Tag erfolgreich entfernt"
     }
   },
@@ -103,17 +84,7 @@
     "LocalizedValue": {
       "da": "Fejl under fjernelse af beholdningskode",
       "en-US": "Error while removing inventory tag",
-      "uk-UA": "Помилка під час видалення тегу",
       "de-DE": "Fehler beim Entfernen des Inventar-Tags"
-    }
-  },
-  {
-    "Key": "InventoryTagNotFound",
-    "LocalizedValue": {
-      "da": "Inventar-Tag nicht gefunden",
-      "en-US": "Inventory tag not found",
-      "uk-UA": "Тег не знайдено",
-      "de-DE": "Inventar-Tag nicht gefunden"
     }
   },
   {
@@ -121,7 +92,6 @@
     "LocalizedValue": {
       "da": "Beholdningstag blev opdateret",
       "en-US": "Inventory tag updated successfully",
-      "uk-UA": "Тег успішно оновлено",
       "de-DE": "Inventory tag updated successfully"
     }
   },
@@ -130,8 +100,151 @@
     "LocalizedValue": {
       "da": "Fejl under opdatering af lagermærke",
       "en-US": "Error while updating inventory tag",
-      "uk-UA": "Помилка під час оновлення тегу",
       "de-DE": "Fehler beim Aktualisieren des Inventar-Tags"
+    }
+  },
+  {
+    "Key": "TagsNotFound",
+    "LocalizedValue": {
+      "da": "Mærker ikke fundet",
+      "en-US": "Tags not found",
+      "de-DE": "Tags nicht gefunden"
+    }
+  },
+  {
+    "Key": "ErrorWhileCreatingItemType",
+    "LocalizedValue": {
+      "da": "Fejl under oprettelse af artikeltype",
+      "en-US": "Error while creating item type",
+      "de-DE": "Fejl under oprettelse af artikeltype"
+    }
+  },
+  {
+    "Key": "InventoryItemTypeNotFount",
+    "LocalizedValue": {
+      "da": "Varetype blev ikke fundet",
+      "en-US": "Item type not found",
+      "de-DE": "Artikeltyp nicht gefunden"
+    }
+  },
+  {
+    "Key": "ErrorWhileGetInventoryItemType",
+    "LocalizedValue": {
+      "da": "Fejl under hent varetype",
+      "en-US": "Error while get item type",
+      "de-DE": "Fejl under hent varetype"
+    }
+  },
+  {
+    "Key": "ErrorObtainingLists",
+    "LocalizedValue": {
+      "da": "Fejl ved indhentning af varetyper",
+      "en-US": "Error obtaining item types",
+      "de-DE": "Fehler beim Abrufen der Elementtypen"
+    }
+  },
+  {
+    "Key": "InventoryItemTypeNotFount",
+    "LocalizedValue": {
+      "da": "Varetype blev ikke fundet",
+      "en-US": "Item type not found",
+      "de-DE": "Artikeltyp nicht gefunden"
+    }
+  },
+  {
+    "Key": "ErrorWhileUpdateInventoryItemType",
+    "LocalizedValue": {
+      "da": "Error while update item type",
+      "en-US": "Error while update item type",
+      "de-DE": "Fehler beim Aktualisieren des Elementtyps"
+    }
+  },
+  {
+    "Key": "ErrorObtainingItems",
+    "LocalizedValue": {
+      "da": "Fejl ved hentning af varer",
+      "en-US": "Error obtaining items",
+      "de-DE": "Fehler beim Abrufen der Elemente"
+    }
+  },
+  {
+    "Key": "ItemNotFound",
+    "LocalizedValue": {
+      "da": "Varen blev ikke fundet",
+      "en-US": "Item not found",
+      "de-DE": "Artikel nicht gefunden"
+    }
+  },
+  {
+    "Key": "ErrorWhileUpdateItem",
+    "LocalizedValue": {
+      "da": "Fejl under opdateringselementet",
+      "en-US": "Error while update item",
+      "de-DE": "Fehler beim Aktualisieren des Elements"
+    }
+  },
+  {
+    "Key": "ErrorWhileCreatingItem",
+    "LocalizedValue": {
+      "da": "Fejl under oprettelse af element",
+      "en-US": "Error while creating item",
+      "de-DE": "Fehler beim Erstellen des Elements"
+    }
+  },
+  {
+    "Key": "ErrorWhileDeleteItem",
+    "LocalizedValue": {
+      "da": "Fejl under sletning af element",
+      "en-US": "Error while delete item",
+      "de-DE": "Fehler beim Löschen des Elements"
+    }
+  },
+  {
+    "Key": "ErrorObtainingItemGroups",
+    "LocalizedValue": {
+      "da": "Fejl ved indhentning af varegrupper",
+      "en-US": "Error obtaining item groups",
+      "de-DE": "Fehler beim Abrufen der Elementgruppen"
+    }
+  },
+  {
+    "Key": "ItemGroupNotFound",
+    "LocalizedValue": {
+      "da": "Varegruppe blev ikke fundet",
+      "en-US": "Item group not found",
+      "de-DE": "Varegruppe blev ikke fundet"
+    }
+  },
+  {
+    "Key": "ErrorWhileGetItemGroup",
+    "LocalizedValue": {
+      "da": "Fejl under hent varegruppe",
+      "en-US": "Error while get item group",
+      "de-DE": "Fehler beim Abrufen der Artikelgruppe"
+    }
+  },
+  {
+    "Key": "ErrorWhileUpdateItemGroup",
+    "LocalizedValue": {
+      "da": "Fejl under opdatering af varegruppe",
+      "en-US": "Error while update item group",
+      "de-DE": "Fehler beim Aktualisieren der Elementgruppe"
+    }
+  },
+  {
+    "Key": "ErrorWhileCreatingItemGroup",
+    "LocalizedValue": {
+      "da": "Fejl under oprettelse af varegruppe",
+      "en-US": "Error while creating item group",
+      "de-DE": "Fejl under oprettelse af varegruppe"
+    }
+  },
+  {
+    "Key": "ErrorWhileDeleteItemGroup",
+    "LocalizedValue": {
+      "da": "Fejl under sletning af varegruppe",
+      "en-US": "Error while delete item group",
+      "de-DE": "Fehler beim Löschen der Artikelgruppe"
     }
   }
 ]
