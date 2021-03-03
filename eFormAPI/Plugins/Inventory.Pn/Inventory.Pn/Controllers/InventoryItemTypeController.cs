@@ -57,7 +57,7 @@ namespace Inventory.Pn.Controllers
         /// <returns>Task&lt;OperationDataResult&lt;ItemTypeModel&gt;&gt;.</returns>
         [HttpGet]
         [Route("api/inventory-pn/item-types/{id}")]
-        public async Task<OperationDataResult<ItemTypeModel>> GetInventoryTypeById(int id)
+        public async Task<OperationDataResult<ItemTypeSimpleModel>> GetInventoryTypeById(int id)
         {
             return await _inventoryItemTypeSevice.GetItemTypeById(id);
         }

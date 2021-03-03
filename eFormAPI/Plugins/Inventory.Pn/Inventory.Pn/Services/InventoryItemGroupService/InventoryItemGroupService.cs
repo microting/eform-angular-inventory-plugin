@@ -262,17 +262,15 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                 .Select(x => new ItemGroupModel
                 {
                     Description = x.Description,
-                    ParentId = x.ParentId,
                     Name = x.Name,
                     Code = x.Code,
                     Id = x.Id,
                     Parent = _dbContext.ItemGroups
-                        .Select(y => new ItemGroupModel()
+                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                        .Select(y => new ItemGroupDependencyItemGroup()
                         {
                             Name = y.Name,
-                            Code = y.Code,
                             Id = y.Id,
-                            Description = y.Description,
                         })
                         .FirstOrDefault(y => y.Id == x.ParentId),
                 });
