@@ -174,12 +174,6 @@ namespace Inventory.Pn
                                  Name = "Opgørelse",
                                  Language = LanguageNames.Danish,
                             },
-                            new PluginMenuTranslationModel
-                            {
-                                LocaleName = LocaleNames.Ukrainian,
-                                Name = "Інвентар",
-                                Language = LanguageNames.Ukrainian,
-                            },
                         },
                         ChildItems = new List<PluginMenuItemModel>
                         {
@@ -224,12 +218,6 @@ namespace Inventory.Pn
                                             Name = "Opgørelse",
                                             Language = LanguageNames.Danish,
                                         },
-                                        new PluginMenuTranslationModel
-                                        {
-                                            LocaleName = LocaleNames.Ukrainian,
-                                            Name = "Інвентар",
-                                            Language = LanguageNames.Ukrainian,
-                                        },
                                     }
                                 },
                                 Translations = new List<PluginMenuTranslationModel>
@@ -251,12 +239,6 @@ namespace Inventory.Pn
                                         LocaleName = LocaleNames.Danish,
                                         Name = "Opgørelse",
                                         Language = LanguageNames.Danish,
-                                    },
-                                    new PluginMenuTranslationModel
-                                    {
-                                        LocaleName = LocaleNames.Ukrainian,
-                                        Name = "Інвентар",
-                                        Language = LanguageNames.Ukrainian,
                                     },
                                 }
                             },
@@ -293,12 +275,6 @@ namespace Inventory.Pn
                                             Name = "Elementtype",
                                             Language = LanguageNames.Danish,
                                         },
-                                        new PluginMenuTranslationModel
-                                        {
-                                            LocaleName = LocaleNames.Ukrainian,
-                                            Name = "Типи елементів",
-                                            Language = LanguageNames.Ukrainian,
-                                        }
                                     }
                                 },
                                 Translations = new List<PluginMenuTranslationModel>
@@ -321,12 +297,6 @@ namespace Inventory.Pn
                                         Name = "Elementtype",
                                         Language = LanguageNames.Danish,
                                     },
-                                    new PluginMenuTranslationModel
-                                    {
-                                        LocaleName = LocaleNames.Ukrainian,
-                                        Name = "Типи елементів",
-                                        Language = LanguageNames.Ukrainian,
-                                    }
                                 }
                             },
                             new PluginMenuItemModel
@@ -362,12 +332,6 @@ namespace Inventory.Pn
                                             Name = "Varegrupper",
                                             Language = LanguageNames.Danish,
                                         },
-                                        new PluginMenuTranslationModel
-                                        {
-                                            LocaleName = LocaleNames.Ukrainian,
-                                            Name = "Групи товарів",
-                                            Language = LanguageNames.Ukrainian,
-                                        }
                                     }
                                 },
                                 Translations = new List<PluginMenuTranslationModel>
@@ -390,12 +354,6 @@ namespace Inventory.Pn
                                             Name = "Varegrupper",
                                             Language = LanguageNames.Danish,
                                         },
-                                        new PluginMenuTranslationModel
-                                        {
-                                            LocaleName = LocaleNames.Ukrainian,
-                                            Name = "Групи товарів",
-                                            Language = LanguageNames.Ukrainian,
-                                        }
                                     }
                             },
                         }
