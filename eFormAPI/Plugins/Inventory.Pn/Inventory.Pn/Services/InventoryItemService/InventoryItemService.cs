@@ -117,34 +117,34 @@ namespace Inventory.Pn.Services.InventoryItemService
             }
         }
 
-        public async Task<OperationDataResult<ItemViewModel>> GetItemById(int itemId)
-        {
-            try
-            {
-                var itemQuery = _dbContext.Items
-                    .Where(x => x.Id == itemId)
-                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
-                    .AsQueryable();
+        //public async Task<OperationDataResult<ItemModel>> GetItemById(int itemId)
+        //{
+        //    try
+        //    {
+        //        var itemQuery = _dbContext.Items
+        //            .Where(x => x.Id == itemId)
+        //            .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+        //            .AsQueryable();
 
-                var item = await AddSelectToItemQuery(itemQuery)
-                    .FirstOrDefaultAsync();
+        //        var item = await AddSelectToItemQuery(itemQuery)
+        //            .FirstOrDefaultAsync();
 
-                if (item == null)
-                {
-                    return new OperationDataResult<ItemViewModel>(false,
-                        _inventoryLocalizationService.GetString("ItemGroupNotFound"));
-                }
+        //        if (item == null)
+        //        {
+        //            return new OperationDataResult<ItemModel>(false,
+        //                _inventoryLocalizationService.GetString("ItemNotFound"));
+        //        }
 
-                return new OperationDataResult<ItemViewModel>(true, item);
-            }
-            catch (Exception e)
-            {
-                Trace.TraceError(e.Message);
-                return new OperationDataResult<ItemViewModel>(false,
-                    _inventoryLocalizationService.GetString("ErrorWhileGetItems"));
-            }
+        //        return new OperationDataResult<ItemModel>(true, item);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Trace.TraceError(e.Message);
+        //        return new OperationDataResult<ItemModel>(false,
+        //            _inventoryLocalizationService.GetString("ErrorWhileGetItems"));
+        //    }
 
-        }
+        //}
 
         public async Task<OperationResult> UpdateItem(ItemUpdateModel itemUpdateModel)
         {
@@ -162,7 +162,7 @@ namespace Inventory.Pn.Services.InventoryItemService
                 }
 
                 item.SN = itemUpdateModel.SN;
-                item.Aviable = itemUpdateModel.Aviable;
+                item.Available = itemUpdateModel.Available;
                 item.CustomerId = itemUpdateModel.CustomerId;
                 item.ExpirationDate = itemUpdateModel.ExpirationDate;
                 item.ItemTypeId = itemUpdateModel.ItemTypeId;
@@ -187,7 +187,7 @@ namespace Inventory.Pn.Services.InventoryItemService
             {
                 var item = new Item
                 {
-                    Aviable = createItemModel.Aviable,
+                    Available = createItemModel.Available,
                     CustomerId = createItemModel.CustomerId,
                     CreatedByUserId = _userService.UserId,
                     UpdatedByUserId = _userService.UserId,
@@ -235,11 +235,11 @@ namespace Inventory.Pn.Services.InventoryItemService
             }
         }
 
-        private IQueryable<ItemViewModel> AddSelectToItemQuery(IQueryable<Item> inventoryItemQuery)
+        private IQueryable<ItemModel> AddSelectToItemQuery(IQueryable<Item> inventoryItemQuery)
         {
-            return inventoryItemQuery.Select(x => new ItemViewModel
+            return inventoryItemQuery.Select(x => new ItemModel
             {
-                Aviable = x.Aviable,
+                Available = x.Available,
                 CustomerId = (int) x.CustomerId,
                 ExpirationDate = x.ExpirationDate,
                 Id = x.Id,
@@ -248,9 +248,10 @@ namespace Inventory.Pn.Services.InventoryItemService
                 ItemType = _dbContext.ItemTypes
                     .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                     .Where(y => y.Id == x.ItemTypeId)
-                    .Select(y => new ItemTypeViewModel
+                    .Select(y => new ItemDependencyItemType
                     {
                         Name = y.Name,
+                        Id = x.Id,
                     })
                     .FirstOrDefault(),
             });

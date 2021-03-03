@@ -20,7 +20,7 @@ SOFTWARE.
 
 namespace Inventory.Pn.Infrastructure.Models.ItemGroup
 {
-    public class ItemGroupRequest
+    public class ItemGroupRequestModel
     {
         public string NameFilter { get; set; }
 

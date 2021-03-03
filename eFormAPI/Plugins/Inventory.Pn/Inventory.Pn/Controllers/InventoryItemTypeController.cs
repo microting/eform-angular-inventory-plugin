@@ -1,4 +1,4 @@
-﻿/*
+/*
 The MIT License (MIT)
 Copyright (c) 2007 - 2021 Microting A/S
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -41,10 +41,10 @@ namespace Inventory.Pn.Controllers
         /// Indexes the specified inventory item type request.
         /// </summary>
         /// <param name="itemTypeRequest">The inventory item type request.</param>
-        /// <returns>Task&lt;OperationDataResult&lt;InventoryItemTypesPnModel&gt;&gt;.</returns>
+        /// <returns>Task&lt;OperationDataResult&lt;ItemTypesPnModel&gt;&gt;.</returns>
         [HttpPost]
-        [Route("api/inventory-pn/inventory-item-types/index")]
-        public async Task<OperationDataResult<InventoryItemTypesPnModel>> Index(
+        [Route("api/inventory-pn/item-types/index")]
+        public async Task<OperationDataResult<ItemTypesPnModel>> Index(
             [FromBody] ItemTypeRequest itemTypeRequest)
         {
             return await _inventoryItemTypeSevice.GetItemTypes(itemTypeRequest);
@@ -54,10 +54,10 @@ namespace Inventory.Pn.Controllers
         /// Gets the inventory type by identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>Task&lt;OperationDataResult&lt;ItemTypeViewModel&gt;&gt;.</returns>
+        /// <returns>Task&lt;OperationDataResult&lt;ItemTypeModel&gt;&gt;.</returns>
         [HttpGet]
-        [Route("api/inventory-pn/inventory-item-types/{id}")]
-        public async Task<OperationDataResult<ItemTypeViewModel>> GetInventoryTypeById(int id)
+        [Route("api/inventory-pn/item-types/{id}")]
+        public async Task<OperationDataResult<ItemTypeModel>> GetInventoryTypeById(int id)
         {
             return await _inventoryItemTypeSevice.GetItemTypeById(id);
         }
@@ -65,13 +65,13 @@ namespace Inventory.Pn.Controllers
         /// <summary>
         /// Updates the type of the inventory.
         /// </summary>
-        /// <param name="updateItemTypeModel">The update inventory type model.</param>
+        /// <param name="itemTypeUpdateModel">The update inventory type model.</param>
         /// <returns>Task&lt;OperationResult&gt;.</returns>
         [HttpPut]
-        [Route("api/inventory-pn/inventory-item-types")]
-        public async Task<OperationResult> UpdateInventoryType([FromBody] UpdateItemTypeModel updateItemTypeModel)
+        [Route("api/inventory-pn/item-types")]
+        public async Task<OperationResult> UpdateInventoryType([FromBody] ItemTypeUpdateModel itemTypeUpdateModel)
         {
-            return await _inventoryItemTypeSevice.UpdateItemType(updateItemTypeModel);
+            return await _inventoryItemTypeSevice.UpdateItemType(itemTypeUpdateModel);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Inventory.Pn.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns>Task&lt;OperationResult&gt;.</returns>
         [HttpDelete]
-        [Route("api/inventory-pn/inventory-item-types/{id}")]
+        [Route("api/inventory-pn/item-types/{id}")]
         public async Task<OperationResult> DeleteInventoryTypeById(int id)
         {
             return await _inventoryItemTypeSevice.DeleteItemTypeById(id);
@@ -89,13 +89,13 @@ namespace Inventory.Pn.Controllers
         /// <summary>
         /// Creates the type of the inventory.
         /// </summary>
-        /// <param name="createItemTypeModel">The create inventory type model.</param>
+        /// <param name="itemTypeCreateModel">The create inventory type model.</param>
         /// <returns>Task&lt;OperationResult&gt;.</returns>
         [HttpPost]
-        [Route("api/inventory-pn/inventory-item-types")]
-        public async Task<OperationResult> CreateInventoryType([FromBody]CreateItemTypeModel createItemTypeModel)
+        [Route("api/inventory-pn/item-types")]
+        public async Task<OperationResult> CreateInventoryType([FromBody]ItemTypeCreateModel itemTypeCreateModel)
         {
-            return await _inventoryItemTypeSevice.CreateItemType(createItemTypeModel);
+            return await _inventoryItemTypeSevice.CreateItemType(itemTypeCreateModel);
         }
     }
 }

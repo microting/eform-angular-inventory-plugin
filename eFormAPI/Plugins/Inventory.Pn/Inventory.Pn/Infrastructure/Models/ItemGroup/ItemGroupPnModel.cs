@@ -26,7 +26,7 @@ namespace Inventory.Pn.Infrastructure.Models.ItemGroup
     {
         public int Total { get; set; }
 
-        public List<ItemGroupViewModel> ItemGroups { get; set; }
-            = new List<ItemGroupViewModel>();
+        public List<ItemGroupModel> ItemGroups { get; set; }
+            = new List<ItemGroupModel>();
     }
 }

@@ -23,16 +23,19 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
     using System;
     using System.Collections.Generic;
     using Microting.eFormInventoryBase.Infrastructure.Const;
+    using Tag;
 
-    public class CreateItemTypeModel
+    public class ItemTypeModel
     {
-        public string No { get; set; }
+        public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string No { get; set; }
 
         public string GtinEanUpc { get; set; }
 
         public string Description { get; set; }
+
+        public string BaseUnitOfMeasure { get; set; }
 
         public int NetWeight { get; set; }
 
@@ -40,11 +43,15 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 
         public int UnitVolume { get; set; }
 
+        public int StandardCost { get; set; }
+
+        public int UnitCost { get; set; }
+
         public CostingMethod CostingMethod { get; set; }
 
         public int UnitPrice { get; set; }
 
-        public int ProofitProcent { get; set; }
+        public int ProfitPercent { get; set; }
 
         public UnitOfMeasure SalesUnitOfMeasure { get; set; }
 
@@ -52,16 +59,22 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 
         public int Region { get; set; }
 
+        public ItemTypeDependencyItemGroup ItemGroupDependency { get; set; }
+
         public string Usage { get; set; }
 
         public string RiscDescription { get; set; }
 
-        public bool Aviable { get; set; }
+        public string Name { get; set; }
 
         public int EformId { get; set; }
 
         public string Comment { get; set; }
 
-        public List<int> TagIds { get; set; }
+        public List<ItemTypeModel> ItemTypeDependency { get; set; }
+            = new List<ItemTypeModel>();
+
+        public List<InventoryTagModel> Tags { get; set; }
+            = new List<InventoryTagModel>();
     }
 }

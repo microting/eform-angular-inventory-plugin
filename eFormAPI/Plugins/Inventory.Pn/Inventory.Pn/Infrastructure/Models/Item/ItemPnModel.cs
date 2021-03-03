@@ -26,7 +26,7 @@ namespace Inventory.Pn.Infrastructure.Models.Item
     {
         public int Total { get; set; }
 
-        public List<ItemViewModel> Items { get; set; }
-            = new List<ItemViewModel>();
+        public List<ItemModel> Items { get; set; }
+            = new List<ItemModel>();
     }
 }

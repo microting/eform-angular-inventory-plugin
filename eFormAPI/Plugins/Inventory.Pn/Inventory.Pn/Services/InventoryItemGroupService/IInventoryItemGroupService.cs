@@ -26,13 +26,13 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
 
     public interface IInventoryItemGroupService
     {
-        Task<OperationDataResult<ItemGroupPnModel>> GetItemGroups(ItemGroupRequest inventoryItemGroupRequest);
+        Task<OperationDataResult<ItemGroupPnModel>> GetItemGroups(ItemGroupRequestModel inventoryItemGroupRequestModel);
 
-        Task<OperationDataResult<ItemGroupViewModel>> GetItemGroupById(int itemGroupId);
+        Task<OperationDataResult<ItemGroupModel>> GetItemGroupById(int itemGroupId);
 
-        Task<OperationResult> UpdateItemGroup(UpdateItemGroupModel itemGroupModel);
+        Task<OperationResult> UpdateItemGroup(ItemGroupUpdateModel model);
 
-        Task<OperationResult> CreateItemGroup(CreateItemGroupModel createItemGroupModel);
+        Task<OperationResult> CreateItemGroup(ItemGroupCreateModel itemGroupCreateModel);
 
         Task<OperationResult> DeleteItemGroupById(int itemGroupId);
     }

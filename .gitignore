@@ -350,3 +350,5 @@ MigrationBackup/
 .ionide/
 
 eform-client/.idea/
+
+eFormAPI/eFormAPI.Web/

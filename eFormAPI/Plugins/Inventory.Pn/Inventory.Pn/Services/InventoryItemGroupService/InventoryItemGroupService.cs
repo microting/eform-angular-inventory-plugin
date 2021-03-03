@@ -54,7 +54,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
         }
 
 
-        public async Task<OperationDataResult<ItemGroupPnModel>> GetItemGroups(ItemGroupRequest itemGroupRequest)
+        public async Task<OperationDataResult<ItemGroupPnModel>> GetItemGroups(ItemGroupRequestModel itemGroupRequestModel)
         {
             try
             {
@@ -63,17 +63,17 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                     .AsQueryable();
 
                 // sort
-                if (!string.IsNullOrEmpty(itemGroupRequest.Sort))
+                if (!string.IsNullOrEmpty(itemGroupRequestModel.Sort))
                 {
-                    if (itemGroupRequest.IsSortDsc)
+                    if (itemGroupRequestModel.IsSortDsc)
                     {
                         inventoryItemGroupQuery = inventoryItemGroupQuery
-                            .CustomOrderByDescending(itemGroupRequest.Sort);
+                            .CustomOrderByDescending(itemGroupRequestModel.Sort);
                     }
                     else
                     {
                         inventoryItemGroupQuery = inventoryItemGroupQuery
-                            .CustomOrderBy(itemGroupRequest.Sort);
+                            .CustomOrderBy(itemGroupRequestModel.Sort);
                     }
                 }
                 else
@@ -83,10 +83,10 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                 }
 
                 // filter by name
-                if (!string.IsNullOrEmpty(itemGroupRequest.NameFilter))
+                if (!string.IsNullOrEmpty(itemGroupRequestModel.NameFilter))
                 {
                     inventoryItemGroupQuery = inventoryItemGroupQuery
-                        .Where(x => x.Name == itemGroupRequest.NameFilter);
+                        .Where(x => x.Name == itemGroupRequestModel.NameFilter);
                 }
 
 
@@ -96,8 +96,8 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                 // pagination
                 inventoryItemGroupQuery
                     = inventoryItemGroupQuery
-                        .Skip(itemGroupRequest.Offset)
-                        .Take(itemGroupRequest.PageSize);
+                        .Skip(itemGroupRequestModel.Offset)
+                        .Take(itemGroupRequestModel.PageSize);
 
                 // add select and take objects from db
                 var inventoryItemGroupsFromDb = await AddSelectToItemGroupQuery(inventoryItemGroupQuery).ToListAsync();
@@ -118,7 +118,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
         }
 
 
-        public async Task<OperationDataResult<ItemGroupViewModel>> GetItemGroupById(int itemGroupId)
+        public async Task<OperationDataResult<ItemGroupModel>> GetItemGroupById(int itemGroupId)
         {
             try
             {
@@ -132,26 +132,26 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
 
                 if (itemGroup == null)
                 {
-                    return new OperationDataResult<ItemGroupViewModel>(false,
+                    return new OperationDataResult<ItemGroupModel>(false,
                         _inventoryLocalizationService.GetString("ItemGroupNotFound"));
                 }
 
-                return new OperationDataResult<ItemGroupViewModel>(true, itemGroup);
+                return new OperationDataResult<ItemGroupModel>(true, itemGroup);
             }
             catch (Exception e)
             {
                 Trace.TraceError(e.Message);
-                return new OperationDataResult<ItemGroupViewModel>(false,
+                return new OperationDataResult<ItemGroupModel>(false,
                     _inventoryLocalizationService.GetString("ErrorWhileGetItemGroup"));
             }
         }
 
-        public async Task<OperationResult> UpdateItemGroup(UpdateItemGroupModel itemGroupModel)
+        public async Task<OperationResult> UpdateItemGroup(ItemGroupUpdateModel model)
         {
             try
             {
                 var itemGroup = await _dbContext.ItemGroups
-                    .Where(x => x.Id == itemGroupModel.Id)
+                    .Where(x => x.Id == model.Id)
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .FirstOrDefaultAsync();
 
@@ -161,10 +161,10 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                         _inventoryLocalizationService.GetString("ItemGroupNotFound"));
                 }
 
-                itemGroup.Description = itemGroupModel.Description;
-                itemGroup.Code = itemGroupModel.Code;
-                itemGroup.Name = itemGroupModel.Name;
-                itemGroup.ParentId = itemGroupModel.ParentId;
+                itemGroup.Description = model.Description;
+                itemGroup.Code = model.Code;
+                itemGroup.Name = model.Name;
+                itemGroup.ParentId = model.ParentId;
                 itemGroup.UpdatedByUserId = _userService.UserId;
 
                 await itemGroup.Update(_dbContext);
@@ -179,18 +179,18 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
             }
         }
 
-        public async Task<OperationResult> CreateItemGroup(CreateItemGroupModel createItemGroupModel)
+        public async Task<OperationResult> CreateItemGroup(ItemGroupCreateModel itemGroupCreateModel)
         {
             try
             {
                 var itemGroup = new ItemGroup
                 {
-                    Description = createItemGroupModel.Description,
-                    ParentId = createItemGroupModel.ParentId,
+                    Description = itemGroupCreateModel.Description,
+                    ParentId = itemGroupCreateModel.ParentId,
                     CreatedByUserId = _userService.UserId,
                     UpdatedByUserId = _userService.UserId,
-                    Name = createItemGroupModel.Name,
-                    Code = createItemGroupModel.Code,
+                    Name = itemGroupCreateModel.Name,
+                    Code = itemGroupCreateModel.Code,
                 };
                 await itemGroup.Create(_dbContext);
                 return new OperationResult(true);
@@ -256,10 +256,10 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
             }
         }
 
-        private IQueryable<ItemGroupViewModel> AddSelectToItemGroupQuery(IQueryable<ItemGroup> inventoryItemGroupQuery)
+        private IQueryable<ItemGroupModel> AddSelectToItemGroupQuery(IQueryable<ItemGroup> inventoryItemGroupQuery)
         {
             return inventoryItemGroupQuery
-                .Select(x => new ItemGroupViewModel
+                .Select(x => new ItemGroupModel
                 {
                     Description = x.Description,
                     ParentId = x.ParentId,
@@ -267,7 +267,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                     Code = x.Code,
                     Id = x.Id,
                     Parent = _dbContext.ItemGroups
-                        .Select(y => new ItemGroupViewModel()
+                        .Select(y => new ItemGroupModel()
                         {
                             Name = y.Name,
                             Code = y.Code,

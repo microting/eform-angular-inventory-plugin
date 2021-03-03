@@ -26,13 +26,13 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
 
     public interface IInventoryItemTypeSevice
     {
-        Task<OperationDataResult<InventoryItemTypesPnModel>> GetItemTypes(ItemTypeRequest itemTypeRequest);
+        Task<OperationDataResult<ItemTypesPnModel>> GetItemTypes(ItemTypeRequest itemTypeRequest);
 
-        Task<OperationDataResult<ItemTypeViewModel>> GetItemTypeById(int itemTypeId);
+        Task<OperationDataResult<ItemTypeModel>> GetItemTypeById(int itemTypeId);
 
-        Task<OperationResult> UpdateItemType(UpdateItemTypeModel updateItemTypeModel);
+        Task<OperationResult> UpdateItemType(ItemTypeUpdateModel itemTypeUpdateModel);
 
-        Task<OperationResult> CreateItemType(CreateItemTypeModel createItemTypeModel);
+        Task<OperationResult> CreateItemType(ItemTypeCreateModel itemTypeCreateModel);
 
         Task<OperationResult> DeleteItemTypeById(int itemTypeId);
     }

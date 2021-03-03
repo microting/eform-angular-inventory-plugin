@@ -20,22 +20,10 @@ SOFTWARE.
 
 namespace Inventory.Pn.Infrastructure.Models.Item
 {
-    using System;
-
-    public class ItemUpdateModel
+    public class ItemDependencyItemType
     {
         public int Id { get; set; }
 
-        public int ItemTypeId { get; set; }
-
-        public string Location { get; set; }
-
-        public int CustomerId { get; set; }
-
-        public DateTime ExpirationDate { get; set; }
-
-        public string SN { get; set; }
-
-        public bool Available { get; set; }
+        public string Name { get; set; }
     }
 }

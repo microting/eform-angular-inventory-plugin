@@ -20,10 +20,14 @@ SOFTWARE.
 
 namespace Inventory.Pn.Infrastructure.Models.ItemGroup
 {
-    public class CreateItemGroupModel
+    public class ItemGroupModel
     {
+        public int Id { get; set; }
+
         public int? ParentId { get; set; }
-        
+
+        public virtual ItemGroupModel Parent { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }

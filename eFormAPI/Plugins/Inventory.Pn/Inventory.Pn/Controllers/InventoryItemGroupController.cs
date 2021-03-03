@@ -38,39 +38,39 @@ namespace Inventory.Pn.Controllers
         }
 
         [HttpPost]
-        [Route("api/inventory-pn/inventory-item-groups/index")]
+        [Route("api/inventory-pn/item-groups/index")]
         public async Task<OperationDataResult<ItemGroupPnModel>> Index(
-            [FromBody] ItemGroupRequest inventoryItemTypeRequest)
+            [FromBody] ItemGroupRequestModel inventoryItemTypeRequestModel)
         {
-            return await _inventoryItemGroupService.GetItemGroups(inventoryItemTypeRequest);
+            return await _inventoryItemGroupService.GetItemGroups(inventoryItemTypeRequestModel);
         }
 
         [HttpGet]
-        [Route("api/inventory-pn/inventory-item-groups/{id}")]
-        public async Task<OperationDataResult<ItemGroupViewModel>> GetInventoryItemGroupById(int id)
+        [Route("api/inventory-pn/item-groups/{id}")]
+        public async Task<OperationDataResult<ItemGroupModel>> GetInventoryItemGroupById(int id)
         {
             return await _inventoryItemGroupService.GetItemGroupById(id);
         }
 
         [HttpPut]
-        [Route("api/inventory-pn/inventory-item-groups")]
-        public async Task<OperationResult> UpdateInventoryItemGroup([FromBody] UpdateItemGroupModel updateInventoryTypeModel)
+        [Route("api/inventory-pn/item-groups")]
+        public async Task<OperationResult> UpdateInventoryItemGroup([FromBody] ItemGroupUpdateModel itemGroupUpdateInventoryTypeModel)
         {
-            return await _inventoryItemGroupService.UpdateItemGroup(updateInventoryTypeModel);
+            return await _inventoryItemGroupService.UpdateItemGroup(itemGroupUpdateInventoryTypeModel);
         }
 
         [HttpDelete]
-        [Route("api/inventory-pn/inventory-item-group/{id}")]
+        [Route("api/inventory-pn/item-group/{id}")]
         public async Task<OperationResult> DeleteInventoryItemGroupById(int id)
         {
             return await _inventoryItemGroupService.DeleteItemGroupById(id);
         }
 
         [HttpPost]
-        [Route("api/inventory-pn/inventory-item-groups")]
-        public async Task<OperationResult> CreateInventoryType([FromBody] CreateItemGroupModel createInventoryTypeModel)
+        [Route("api/inventory-pn/item-groups")]
+        public async Task<OperationResult> CreateInventoryType([FromBody] ItemGroupCreateModel itemGroupCreateInventoryTypeModel)
         {
-            return await _inventoryItemGroupService.CreateItemGroup(createInventoryTypeModel);
+            return await _inventoryItemGroupService.CreateItemGroup(itemGroupCreateInventoryTypeModel);
         }
     }
 }
