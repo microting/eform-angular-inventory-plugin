@@ -1,1 +1,53 @@
-<p>item-groups-container works!</p>
+<subheader-pn>
+  <div class="p-3">
+    <button
+      mdbBtn
+      id="itemCreateBtn"
+      class="btn-success btn-small-height"
+      mdbTooltip="{{ 'Create item group' | translate }}"
+      [routerLink]="['./create']"
+    >
+      {{ 'New item group' | translate }}
+    </button>
+  </div>
+</subheader-pn>
+
+<div class="container-fluid">
+  <app-item-groups-header
+    [itemGroupsRequestModel]="itemGroupsRequestModel"
+    (nameFilterChanged)="onNameFilterChanged($event)"
+  ></app-item-groups-header>
+  <app-item-groups-table
+    [itemGroupsRequestModel]="itemGroupsRequestModel"
+    [localPageSettings]="localPageSettings"
+    [itemGroupsModel]="itemGroupsModel"
+    (showDeleteItemGroupModal)="showDeleteItemGroupModal($event)"
+    (sortTable)="sortTable($event)"
+  ></app-item-groups-table>
+  <div class="row justify-content-between mr-2 ml-2">
+    <div class="col-md-1">
+      <page-size-pn
+        [pageSize]="localPageSettings.pageSize"
+        (onPageSizeChanged)="
+          localPageSettings.pageSize = $event;
+          itemGroupsRequestModel.pageIndex = 1;
+          updateLocalPageSettings()
+        "
+      >
+      </page-size-pn>
+    </div>
+    <div class="col-md-4 ml-auto d-flex justify-content-end p-2">
+      <pagination-pn
+        *ngIf="itemGroupsModel.total > itemGroupsRequestModel.pageSize"
+        [limit]="itemGroupsRequestModel.pageSize"
+        [size]="itemGroupsModel.total"
+        [offset]="itemGroupsRequestModel.offset"
+        (onPageChanged)="changePage($event)"
+      ></pagination-pn>
+    </div>
+  </div>
+</div>
+<app-item-group-delete-modal
+  #deleteItemGroupModal
+  (deleteItemGroup)="deleteItemGroup($event)"
+></app-item-group-delete-modal>

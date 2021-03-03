@@ -9,10 +9,11 @@ import {
   OperationResult,
 } from 'src/app/common/models/operation.models';
 import { BaseService } from 'src/app/common/services/base.service';
-import { IPaged, PagedEntityRequest } from 'src/app/common/models';
+import { Paged, PagedEntityRequest } from 'src/app/common/models';
 import {
   InventoryItemGroupCreateModel,
   InventoryItemGroupModel,
+  InventoryItemGroupsRequestModel,
   InventoryItemGroupUpdateModel,
 } from '../models';
 
@@ -34,8 +35,8 @@ export class InventoryPnItemGroupsService extends BaseService {
   }
 
   getAllItemGroups(
-    model: PagedEntityRequest
-  ): Observable<OperationDataResult<IPaged<InventoryItemGroupModel>>> {
+    model: InventoryItemGroupsRequestModel
+  ): Observable<OperationDataResult<Paged<InventoryItemGroupModel>>> {
     return this.post(InventoryPnItemGroupsMethods.ItemGroupsIndex, model);
   }
 

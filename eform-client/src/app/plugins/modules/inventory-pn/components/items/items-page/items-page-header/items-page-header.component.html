@@ -1,1 +1,14 @@
-<p>items-page-header works!</p>
+<div class="row pl-1">
+  <div class="col-md-2">
+    <div class="md-form">
+      <input
+        mdbInput
+        type="text"
+        (input)="onSNFilterChanged($event.target.value)"
+        class="form-control input-sm"
+        id="SNFilterInput"
+      />
+      <label for="SNFilterInput">{{ 'SN' }}</label>
+    </div>
+  </div>
+</div>

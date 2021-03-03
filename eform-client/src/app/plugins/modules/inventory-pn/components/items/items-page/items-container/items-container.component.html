@@ -1,1 +1,53 @@
-<p>items-container works!</p>
+<subheader-pn>
+  <div class="p-3">
+    <button
+      mdbBtn
+      id="itemCreateBtn"
+      class="btn-success btn-small-height"
+      mdbTooltip="{{ 'Create item' | translate }}"
+      [routerLink]="['./create']"
+    >
+      {{ 'New item' | translate }}
+    </button>
+  </div>
+</subheader-pn>
+
+<div class="container-fluid">
+  <app-items-page-header
+    [itemsRequestModel]="itemsRequestModel"
+    (SNFilterChanged)="onSNFilterChanged($event)"
+  ></app-items-page-header>
+  <app-items-page-table
+    [itemsRequestModel]="itemsRequestModel"
+    [localPageSettings]="localPageSettings"
+    [itemsModel]="itemsModel"
+    (showDeleteItemModal)="showDeleteItemModal($event)"
+    (sortTable)="sortTable($event)"
+  ></app-items-page-table>
+  <div class="row justify-content-between mr-2 ml-2">
+    <div class="col-md-1">
+      <page-size-pn
+        [pageSize]="localPageSettings.pageSize"
+        (onPageSizeChanged)="
+          localPageSettings.pageSize = $event;
+          itemsRequestModel.pageIndex = 1;
+          updateLocalPageSettings()
+        "
+      >
+      </page-size-pn>
+    </div>
+    <div class="col-md-4 ml-auto d-flex justify-content-end p-2">
+      <pagination-pn
+        *ngIf="itemsModel.total > itemsRequestModel.pageSize"
+        [limit]="itemsRequestModel.pageSize"
+        [size]="itemsModel.total"
+        [offset]="itemsRequestModel.offset"
+        (onPageChanged)="changePage($event)"
+      ></pagination-pn>
+    </div>
+  </div>
+</div>
+<app-item-delete-modal
+  #deleteItemModal
+  (itemDelete)="deleteItem($event)"
+></app-item-delete-modal>

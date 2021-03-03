@@ -1,10 +1,10 @@
 import { PagedEntityRequest } from 'src/app/common/models';
 
 export class InventoryItemsRequestModel extends PagedEntityRequest {
-  snFilter: string;
+  SNFilter: string;
 
   constructor() {
     super();
-    this.snFilter = '';
+    this.SNFilter = '';
   }
 }

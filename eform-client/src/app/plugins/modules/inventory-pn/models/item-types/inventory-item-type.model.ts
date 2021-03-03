@@ -1,8 +1,27 @@
+import { InventoryItemGroupModel } from '../item-groups/inventory-item-group.model';
+import { CostingMethod, UnitOfMeasure } from '../../enums';
+
 export class InventoryItemTypeModel {
   id: number;
-  parentId: number | null;
-  parent: InventoryItemTypeModel;
-  name: string;
+  no: string;
+  gtinEanUpc: string;
   description: string;
-  code: string;
+  netWeight: number;
+  grossWeight: number;
+  unitVolume: number;
+  costingMethod: CostingMethod | number;
+  unitPrice: number;
+  profitPercent: number;
+  salesUnitOfMeasure: UnitOfMeasure | number;
+  lastPhysicalInventoryDate: string;
+  region: number;
+  itemGroupDependency: InventoryItemGroupModel;
+  usage: string;
+  riscDescription: string;
+  available: boolean;
+  name: string;
+  eformId: number;
+  comment: string;
+  itemTypeDependency: InventoryItemTypeModel[];
+  tags: any[]; // InventoryTagModel
 }

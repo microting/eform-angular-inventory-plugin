@@ -9,8 +9,13 @@ import {
   OperationResult,
 } from 'src/app/common/models/operation.models';
 import { BaseService } from 'src/app/common/services/base.service';
-import { IPaged, PagedEntityRequest } from 'src/app/common/models';
-import {InventoryItemCreateModel, InventoryItemModel, InventoryItemUpdateModel} from 'src/app/plugins/modules/inventory-pn/models';
+import { Paged, PagedEntityRequest } from 'src/app/common/models';
+import {
+  InventoryItemCreateModel,
+  InventoryItemModel,
+  InventoryItemsRequestModel,
+  InventoryItemUpdateModel,
+} from 'src/app/plugins/modules/inventory-pn/models';
 
 export let InventoryPnItemsMethods = {
   Items: 'api/inventory-pn/items',
@@ -30,12 +35,14 @@ export class InventoryPnItemsService extends BaseService {
   }
 
   getAllItems(
-    model: PagedEntityRequest
-  ): Observable<OperationDataResult<IPaged<InventoryItemModel>>> {
+    model: InventoryItemsRequestModel
+  ): Observable<OperationDataResult<Paged<InventoryItemModel>>> {
     return this.post(InventoryPnItemsMethods.ItemsIndex, model);
   }
 
-  getSingleItem(inventoryItemId: number): Observable<OperationDataResult<InventoryItemModel>> {
+  getSingleItem(
+    inventoryItemId: number
+  ): Observable<OperationDataResult<InventoryItemModel>> {
     return this.get(InventoryPnItemsMethods.Items + '/' + inventoryItemId);
   }
 

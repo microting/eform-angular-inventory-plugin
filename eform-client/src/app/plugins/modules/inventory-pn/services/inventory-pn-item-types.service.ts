@@ -9,11 +9,12 @@ import {
   OperationResult,
 } from 'src/app/common/models/operation.models';
 import { BaseService } from 'src/app/common/services/base.service';
-import { IPaged, PagedEntityRequest } from 'src/app/common/models';
+import { Paged, PagedEntityRequest } from 'src/app/common/models';
 import {
   InventoryItemTypeUpdateModel,
   InventoryItemTypeModel,
   InventoryItemCreateModel,
+  InventoryItemTypesRequestModel,
 } from '../models';
 
 export let InventoryPnItemTypesMethods = {
@@ -34,8 +35,8 @@ export class InventoryPnItemTypesService extends BaseService {
   }
 
   getAllItemTypes(
-    model: PagedEntityRequest
-  ): Observable<OperationDataResult<IPaged<InventoryItemTypeModel>>> {
+    model: InventoryItemTypesRequestModel
+  ): Observable<OperationDataResult<Paged<InventoryItemTypeModel>>> {
     return this.post(InventoryPnItemTypesMethods.ItemTypesIndex, model);
   }
 
