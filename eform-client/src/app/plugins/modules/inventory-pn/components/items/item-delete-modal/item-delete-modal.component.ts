@@ -17,7 +17,7 @@ import { InventoryItemModel } from '../../../models';
 export class ItemDeleteModalComponent implements OnInit {
   @ViewChild('frame', { static: false }) frame;
   @Output()
-  deleteItem: EventEmitter<InventoryItemModel> = new EventEmitter<InventoryItemModel>();
+  deleteItem: EventEmitter<number> = new EventEmitter<number>();
   itemModel: InventoryItemModel = new InventoryItemModel();
 
   constructor() {}
@@ -34,6 +34,6 @@ export class ItemDeleteModalComponent implements OnInit {
   }
 
   delete() {
-    this.deleteItem.emit(this.itemModel);
+    this.deleteItem.emit(this.itemModel.id);
   }
 }

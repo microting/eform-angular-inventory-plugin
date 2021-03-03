@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {EformSharedTagsModule} from 'src/app/common/modules/eform-shared-tags/eform-shared-tags.module';
 import {
   InventoryFoldersModalComponent,
   InventorySettingsComponent,
@@ -27,10 +28,12 @@ import {
   ItemTypesContainerComponent,
   ItemTypesHeaderComponent,
   ItemTypesTableComponent,
+  ItemTypeTagsComponent,
 } from './components';
 import { InventoryPnRouting } from './inventory-pn.routing';
 import {
   InventoryPnItemGroupsService,
+  InventoryPnItemGroupTagsService,
   InventoryPnItemsService,
   InventoryPnItemTypesService,
   InventoryPnSettingsService,
@@ -40,7 +43,7 @@ import {
   InputsModule,
   ModalModule,
   TableModule,
-  TooltipModule,
+  TooltipModule, WavesModule,
 } from 'angular-bootstrap-md';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -57,6 +60,7 @@ import { InventoryPnLayoutComponent } from './layouts';
     InventoryFoldersModalComponent,
     InventorySiteRemoveModalComponent,
     InventorySiteAddModalComponent,
+    InventoryPnLayoutComponent,
     ItemsContainerComponent,
     ItemsPageHeaderComponent,
     ItemsPageTableComponent,
@@ -79,7 +83,8 @@ import { InventoryPnLayoutComponent } from './layouts';
     ItemGroupCreateModalComponent,
     ItemGroupEditModalComponent,
     ItemGroupDeleteModalComponent,
-    InventoryPnLayoutComponent,
+
+    ItemTypeTagsComponent,
   ],
   imports: [
     CommonModule,
@@ -96,12 +101,15 @@ import { InventoryPnLayoutComponent } from './layouts';
     ModalModule,
     EformSharedModule,
     SharedPnModule,
+    WavesModule,
+    EformSharedTagsModule,
   ],
   providers: [
     InventoryPnItemsService,
     InventoryPnSettingsService,
     InventoryPnItemGroupsService,
     InventoryPnItemTypesService,
+    InventoryPnItemGroupTagsService,
   ],
 })
 export class InventoryPnModule {}

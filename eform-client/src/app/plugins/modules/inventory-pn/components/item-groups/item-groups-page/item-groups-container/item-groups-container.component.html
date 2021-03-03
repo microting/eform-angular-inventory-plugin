@@ -2,12 +2,12 @@
   <div class="p-3">
     <button
       mdbBtn
-      id="itemCreateBtn"
+      id="itemGroupCreateBtn"
       class="btn-success btn-small-height"
       mdbTooltip="{{ 'Create item group' | translate }}"
       [routerLink]="['./create']"
     >
-      {{ 'New item group' | translate }}
+      {{ 'New group' | translate }}
     </button>
   </div>
 </subheader-pn>
@@ -49,5 +49,5 @@
 </div>
 <app-item-group-delete-modal
   #deleteItemGroupModal
-  (deleteItemGroup)="deleteItemGroup($event)"
+  (deleteItemGroup)="onDeleteItemGroup($event)"
 ></app-item-group-delete-modal>

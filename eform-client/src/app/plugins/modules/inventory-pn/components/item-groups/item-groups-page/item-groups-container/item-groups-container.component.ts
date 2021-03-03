@@ -9,7 +9,11 @@ import {
 import { SharedPnService } from '../../../../../shared/services';
 import { InventoryPnItemGroupsService } from '../../../../services';
 import { debounceTime } from 'rxjs/operators';
-import { PluginClaimsHelper, sortTable } from 'src/app/common/helpers';
+import {
+  PluginClaimsHelper,
+  updateTableSorting,
+  updateTablePage,
+} from 'src/app/common/helpers';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
 @AutoUnsubscribe()
@@ -76,7 +80,7 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteItemGroup(itemGroupId: number) {
+  onDeleteItemGroup(itemGroupId: number) {
     this.deleteItemGroupSub$ = this.inventoryItemGroupsService
       .deleteItemGroup(itemGroupId)
       .subscribe((data) => {
@@ -92,20 +96,22 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
   }
 
   sortTable(sort: string) {
-    this.localPageSettings = { ...sortTable(sort, this.localPageSettings) };
+    this.localPageSettings = {
+      ...updateTableSorting(sort, this.localPageSettings),
+    };
     this.updateLocalPageSettings();
   }
 
-  changePage(e: any) {
-    if (e || e === 0) {
-      this.itemGroupsRequestModel.offset = e;
-      if (e === 0) {
-        this.itemGroupsRequestModel.pageIndex = 0;
-      } else {
-        this.itemGroupsRequestModel.pageIndex = Math.floor(
-          e / this.itemGroupsRequestModel.pageSize
-        );
-      }
+  changePage(offset: number | null) {
+    const updatedRequestModel = updateTablePage(
+      offset,
+      this.itemGroupsRequestModel
+    );
+    if (updatedRequestModel) {
+      this.itemGroupsRequestModel = {
+        ...this.itemGroupsRequestModel,
+        ...updatedRequestModel,
+      };
       this.getItemGroups();
     }
   }

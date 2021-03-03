@@ -1,16 +1,19 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import {
+  PluginClaimsHelper,
+  updateTablePage,
+  updateTableSorting,
+} from 'src/app/common/helpers';
 import { Paged, PageSettingsModel } from 'src/app/common/models';
 import { SharedPnService } from 'src/app/plugins/modules/shared/services';
-import { debounceTime } from 'rxjs/operators';
-import { PluginClaimsHelper, sortTable } from 'src/app/common/helpers';
-import { InventoryPnClaims } from '../../../../enums';
-import { InventoryPnItemsService } from '../../../../services';
 import {
   InventoryItemModel,
   InventoryItemsRequestModel,
 } from '../../../../models';
-import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { InventoryPnItemsService } from '../../../../services';
 
 @AutoUnsubscribe()
 @Component({
@@ -40,10 +43,6 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
 
   get pluginClaimsHelper() {
     return PluginClaimsHelper;
-  }
-
-  get inventoryPnClaims() {
-    return InventoryPnClaims;
   }
 
   ngOnInit() {
@@ -80,7 +79,7 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteItem(inventoryItemId: number) {
+  onDeleteItem(inventoryItemId: number) {
     this.deleteItemSub$ = this.inventoryItemsService
       .deleteItem(inventoryItemId)
       .subscribe((data) => {
@@ -91,26 +90,24 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
       });
   }
 
-
   showDeleteItemModal(model: InventoryItemModel) {
     this.deleteItemModal.show(model);
   }
 
   sortTable(sort: string) {
-    this.localPageSettings = { ...sortTable(sort, this.localPageSettings) };
+    this.localPageSettings = {
+      ...updateTableSorting(sort, this.localPageSettings),
+    };
     this.updateLocalPageSettings();
   }
 
-  changePage(e: any) {
-    if (e || e === 0) {
-      this.itemsRequestModel.offset = e;
-      if (e === 0) {
-        this.itemsRequestModel.pageIndex = 0;
-      } else {
-        this.itemsRequestModel.pageIndex = Math.floor(
-          e / this.itemsRequestModel.pageSize
-        );
-      }
+  changePage(offset: number) {
+    const updatedRequestModel = updateTablePage(offset, this.itemsRequestModel);
+    if (updatedRequestModel) {
+      this.itemsRequestModel = {
+        ...this.itemsRequestModel,
+        ...updatedRequestModel,
+      };
       this.getItems();
     }
   }
