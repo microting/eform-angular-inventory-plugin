@@ -1,11 +1,14 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Paged, PageSettingsModel} from 'src/app/common/models';
-import {InventoryItemTypeSimpleModel, InventoryItemTypesRequestModel} from '../../../../models';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Paged, PageSettingsModel } from 'src/app/common/models';
+import {
+  InventoryItemTypeSimpleModel,
+  InventoryItemTypesRequestModel,
+} from '../../../../models';
 
 @Component({
   selector: 'app-item-types-table',
   templateUrl: './item-types-table.component.html',
-  styleUrls: ['./item-types-table.component.scss']
+  styleUrls: ['./item-types-table.component.scss'],
 })
 export class ItemTypesTableComponent implements OnInit {
   @Input() localPageSettings: PageSettingsModel = new PageSettingsModel();

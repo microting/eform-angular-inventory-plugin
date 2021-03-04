@@ -10,7 +10,6 @@ import {
 } from 'src/app/common/models';
 import { SharedPnService } from '../../../../../shared/services';
 import {
-  InventoryItemTypeModel,
   InventoryItemTypeSimpleModel,
   InventoryItemTypesRequestModel,
 } from '../../../../models';
@@ -31,7 +30,7 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
 
   nameSearchSubject = new Subject();
   localPageSettings: PageSettingsModel = new PageSettingsModel();
-  itemTypesModel: Paged<InventoryItemTypeModel> = new Paged<InventoryItemTypeModel>();
+  itemTypesModel: Paged<InventoryItemTypeSimpleModel> = new Paged<InventoryItemTypeSimpleModel>();
   itemTypesRequestModel: InventoryItemTypesRequestModel = new InventoryItemTypesRequestModel();
   availableTags: CommonDictionaryModel[] = [];
 

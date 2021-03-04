@@ -14,7 +14,7 @@ import {
   InventoryItemTypeUpdateModel,
   InventoryItemTypeModel,
   InventoryItemCreateModel,
-  InventoryItemTypesRequestModel,
+  InventoryItemTypesRequestModel, InventoryItemTypeSimpleModel,
 } from '../models';
 
 export let InventoryPnItemTypesMethods = {
@@ -36,7 +36,7 @@ export class InventoryPnItemTypesService extends BaseService {
 
   getAllItemTypes(
     model: InventoryItemTypesRequestModel
-  ): Observable<OperationDataResult<Paged<InventoryItemTypeModel>>> {
+  ): Observable<OperationDataResult<Paged<InventoryItemTypeSimpleModel>>> {
     return this.post(InventoryPnItemTypesMethods.ItemTypesIndex, model);
   }
 

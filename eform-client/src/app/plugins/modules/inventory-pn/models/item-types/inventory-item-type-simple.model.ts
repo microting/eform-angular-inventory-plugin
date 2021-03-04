@@ -1,26 +1,17 @@
-import {CostingMethod, UnitOfMeasure} from '../../enums';
-import {InventoryItemGroupModel} from '../item-groups';
+import { SharedTagModel } from 'src/app/common/models';
 
 export class InventoryItemTypeSimpleModel {
   id: number;
-  no: string;
-  gtinEanUpc: string;
+  createdBy: string;
+  createdDate: Date ;
   description: string;
-  netWeight: number;
-  grossWeight: number;
-  unitVolume: number;
-  costingMethod: CostingMethod | number;
-  unitPrice: number;
-  profitPercent: number;
-  salesUnitOfMeasure: UnitOfMeasure | number;
-  lastPhysicalInventoryDate: string;
-  region: number;
-  itemGroupDependency: InventoryItemGroupModel;
+  parentTypeName: string;
   usage: string;
-  riscDescription: string;
+  riskDescription: string;
+  pictogramImageName: string;
+  dangerLabelImageName: string;
   available: boolean;
   name: string;
-  eformId: number;
   comment: string;
-  tags: any[]; // InventoryTagModel
+  tags: SharedTagModel[];
 }

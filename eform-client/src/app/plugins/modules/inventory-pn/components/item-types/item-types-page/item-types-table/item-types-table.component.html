@@ -1,0 +1,382 @@
+<div class="row p-1 mt-4 table-responsive no-gutters">
+  <table
+    mdbTable
+    striped="true"
+    hover="true"
+    small="true"
+    class="z-depth-1 text-center"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="idTableHeader"
+          (click)="onSortTable('Id')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            ID
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'Id'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Id' &&
+                !itemTypesRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Id' &&
+                itemTypesRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="dateTableHeader"
+          (click)="onSortTable('Date')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            {{ 'Date' | translate }}
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'Name'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Date' &&
+                !itemTypesRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Date' &&
+                itemTypesRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="createdByTableHeader"
+          (click)="onSortTable('CreatedBy')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            {{ 'Created by' | translate }}
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'CreatedBy'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'CreatedBy' &&
+                !itemTypesRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'CreatedBy' &&
+                itemTypesRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="itemTypeTableHeader"
+          (click)="onSortTable('ItemType')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            {{ 'Parent group' | translate }}
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'ItemType'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'ItemType' &&
+                !itemTypesRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'ItemType' &&
+                itemTypesRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="nameTableHeader"
+          (click)="onSortTable('Name')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            {{ 'Name' | translate }}
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'Name'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Name' &&
+                !itemTypesRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Name' &&
+                itemTypesRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="usageTableHeader"
+          (click)="onSortTable('Usage')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            {{ 'Usage' | translate }}
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'Usage'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Usage' &&
+                !itemTypesRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Usage' &&
+                itemTypesRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="descriptionTableHeader"
+          (click)="onSortTable('Description')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            {{ 'Description' | translate }}
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'Description'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Description' &&
+                !itemTypesRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Description' &&
+                itemTypesRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th scope="col">
+          {{ 'Pictogram' | translate }}
+        </th>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="riscDescriptionTableHeader"
+          (click)="onSortTable('RiskDescription')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            {{ 'Risk description' | translate }}
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'RiskDescription'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'RiskDescription' &&
+                !itemTypesRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'RiskDescription' &&
+                itemTypesRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th scope="col">
+          {{ 'Danger label' | translate }}
+        </th>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="statusTableHeader"
+          (click)="onSortTable('Status')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            {{ 'Status' | translate }}
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'Status'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Status' &&
+                !itemTypesRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Status' &&
+                itemTypesRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th scope="col">
+          {{ 'Tags' | translate }}
+        </th>
+        <th scope="col">
+          {{ 'Actions' | translate }}
+        </th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <tr *ngFor="let itemTypeModel of itemTypesModel.entities; let i = index">
+        <td id="itemTypeId">
+          {{ itemTypeModel.id }}
+        </td>
+        <td id="itemTypeDate">
+          <date-formatter
+            [date]="itemTypeModel.createdDate"
+            [Format]="'datetime'"
+          ></date-formatter>
+        </td>
+        <td id="itemTypeCreatedBy">
+          {{ itemTypeModel.createdBy }}
+        </td>
+        <td id="itemParentType">
+          {{ itemTypeModel.parentTypeName }}
+        </td>
+        <td id="itemTypeName">
+          {{ itemTypeModel.name }}
+        </td>
+        <td id="itemTypeUsage">
+          {{ itemTypeModel.usage }}
+        </td>
+        <td id="itemTypeDescription">
+          {{ itemTypeModel.description }}
+        </td>
+        <td id="itemTypePictogram">
+          {{ itemTypeModel.pictogramImageName }}
+        </td>
+        <td id="itemTypeRiscDescription">
+          {{ itemTypeModel.riskDescription }}
+        </td>
+        <td id="itemTypeDangerLabel">
+          {{ itemTypeModel.dangerLabelImageName }}
+        </td>
+        <td id="itemTypeComment">
+          {{ itemTypeModel.comment }}
+        </td>
+        <td id="itemTypeStatus">
+          {{ itemTypeModel.available }}
+        </td>
+        <td id="itemTypeTags">
+          <div class="d-flex justify-content-center">
+            <div>
+              <p
+                class="badge badge-primary mb-1"
+                id="assignedTag"
+                *ngFor="let tag of itemTypeModel.tags"
+              >
+                <fa-icon icon="tag"></fa-icon>
+                {{ tag.name }}
+              </p>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex flex-row justify-content-center">
+            <button
+              id="editItemGroupBtn"
+              class="btn btn-accent text-black-50 btn-icon mb-2"
+              mdbTooltip="{{ 'Edit item type' | translate }}"
+              [routerLink]="['./edit', itemTypeModel.id]"
+            >
+              <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+            <button
+              id="deleteItemBtn"
+              class="btn btn-danger btn-icon mb-2"
+              mdbTooltip="{{ 'Delete item group' | translate }}"
+              (click)="onShowDeleteItemTypeModal(itemTypeModel)"
+            >
+              <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
