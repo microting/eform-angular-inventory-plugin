@@ -90,7 +90,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     UnitPrice = itemTypeCreateModel.UnitPrice,
                     No = itemTypeCreateModel.No,
                     Usage = itemTypeCreateModel.Usage,
-                    RiscDescription = itemTypeCreateModel.RiscDescription,
+                    RiskDescription = itemTypeCreateModel.RiskDescription,
                     SalesUnitOfMeasure = itemTypeCreateModel.SalesUnitOfMeasure,
                     EformId = itemTypeCreateModel.EformId,
                     Comment = itemTypeCreateModel.Comment,
@@ -301,7 +301,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 itemTypesFromDb.LastPhysicalInventoryDate = model.LastPhysicalInventoryDate;
                 itemTypesFromDb.SalesUnitOfMeasure = model.SalesUnitOfMeasure;
                 itemTypesFromDb.BaseUnitOfMeasure = model.BaseUnitOfMeasure;
-                itemTypesFromDb.RiscDescription = model.RiscDescription;
+                itemTypesFromDb.RiskDescription = model.RiskDescription;
                 itemTypesFromDb.UpdatedByUserId = _userService.UserId;
                 itemTypesFromDb.ProfitPercent = model.ProfitPercent;
                 itemTypesFromDb.CostingMethod = model.CostingMethod;
@@ -339,7 +339,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 .Select(x => new ItemTypeSimpleModel
                 {
                     
-                    RiscDescription = x.RiscDescription,
+                    RiskDescription = x.RiskDescription,
                     Description = x.Description,
                     EformId = x.EformId,
                     Usage = x.Usage,
@@ -380,7 +380,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     LastPhysicalInventoryDate = x.LastPhysicalInventoryDate,
                     SalesUnitOfMeasure = x.SalesUnitOfMeasure,
                     BaseUnitOfMeasure = x.BaseUnitOfMeasure,
-                    RiscDescription = x.RiscDescription,
+                    RiskDescription = x.RiskDescription,
                     ProfitPercent = x.ProfitPercent,
                     CostingMethod = x.CostingMethod,
                     StandardCost = x.StandardCost,
@@ -424,7 +424,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                             LastPhysicalInventoryDate = y.DependItemType.LastPhysicalInventoryDate,
                             SalesUnitOfMeasure = y.DependItemType.SalesUnitOfMeasure,
                             BaseUnitOfMeasure = y.DependItemType.BaseUnitOfMeasure,
-                            RiscDescription = y.DependItemType.RiscDescription,
+                            RiskDescription = y.DependItemType.RiskDescription,
                             ProfitPercent = y.DependItemType.ProfitPercent,
                             CostingMethod = y.DependItemType.CostingMethod,
                             StandardCost = y.DependItemType.StandardCost,

@@ -63,7 +63,7 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 
         public string Usage { get; set; }
 
-        public string RiscDescription { get; set; }
+        public string RiskDescription { get; set; }
 
         public string Name { get; set; }
 
