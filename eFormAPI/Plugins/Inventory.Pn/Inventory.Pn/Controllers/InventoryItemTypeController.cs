@@ -30,11 +30,11 @@ namespace Inventory.Pn.Controllers
     [Authorize]
     public class InventoryItemTypeController : Controller
     {
-        private readonly IInventoryItemTypeSevice _inventoryItemTypeSevice;
+        private readonly IInventoryItemTypeService _inventoryItemTypeService;
 
-        public InventoryItemTypeController(IInventoryItemTypeSevice inventoryItemTypeSevice)
+        public InventoryItemTypeController(IInventoryItemTypeService inventoryItemTypeService)
         {
-            _inventoryItemTypeSevice = inventoryItemTypeSevice;
+            _inventoryItemTypeService = inventoryItemTypeService;
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Inventory.Pn.Controllers
         public async Task<OperationDataResult<ItemTypesPnModel>> Index(
             [FromBody] ItemTypeRequest itemTypeRequest)
         {
-            return await _inventoryItemTypeSevice.GetItemTypes(itemTypeRequest);
+            return await _inventoryItemTypeService.GetItemTypes(itemTypeRequest);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Inventory.Pn.Controllers
         [Route("api/inventory-pn/item-types/{id}")]
         public async Task<OperationDataResult<ItemTypeSimpleModel>> GetInventoryTypeById(int id)
         {
-            return await _inventoryItemTypeSevice.GetItemTypeById(id);
+            return await _inventoryItemTypeService.GetItemTypeById(id);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Inventory.Pn.Controllers
         [Route("api/inventory-pn/item-types")]
         public async Task<OperationResult> UpdateInventoryType([FromBody] ItemTypeUpdateModel itemTypeUpdateModel)
         {
-            return await _inventoryItemTypeSevice.UpdateItemType(itemTypeUpdateModel);
+            return await _inventoryItemTypeService.UpdateItemType(itemTypeUpdateModel);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Inventory.Pn.Controllers
         [Route("api/inventory-pn/item-types/{id}")]
         public async Task<OperationResult> DeleteInventoryTypeById(int id)
         {
-            return await _inventoryItemTypeSevice.DeleteItemTypeById(id);
+            return await _inventoryItemTypeService.DeleteItemTypeById(id);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Inventory.Pn.Controllers
         [Route("api/inventory-pn/item-types")]
         public async Task<OperationResult> CreateInventoryType([FromBody]ItemTypeCreateModel itemTypeCreateModel)
         {
-            return await _inventoryItemTypeSevice.CreateItemType(itemTypeCreateModel);
+            return await _inventoryItemTypeService.CreateItemType(itemTypeCreateModel);
         }
     }
 }

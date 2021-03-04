@@ -30,7 +30,7 @@ namespace Inventory.Pn.Services.InventoryPnSettingsService
 
     public interface IInventoryPnSettingsService
     {
-        Task<OperationDataResult<InventoryBaseSettings>> GetSettings();
+        Task<OperationDataResult<InventorySettingsModel>> GetSettings();
 
         Task<OperationResult> UpdateSettings(InventoryBaseSettings inventoryBaseSettings);
 

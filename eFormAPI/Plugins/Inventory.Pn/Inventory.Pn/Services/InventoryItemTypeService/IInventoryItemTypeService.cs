@@ -18,10 +18,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace Inventory.Pn.Infrastructure.Models.Settings
+namespace Inventory.Pn.Services.InventoryItemTypeService
 {
-    public class InventoryBaseBaseToken
+    using System.Threading.Tasks;
+    using Infrastructure.Models.ItemType;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+
+    public interface IInventoryItemTypeService
     {
-        public string Token { get; set; }
+        Task<OperationDataResult<ItemTypesPnModel>> GetItemTypes(ItemTypeRequest itemTypeRequest);
+
+        Task<OperationDataResult<ItemTypeSimpleModel>> GetItemTypeById(int itemTypeId);
+
+        Task<OperationResult> UpdateItemType(ItemTypeUpdateModel itemTypeUpdateModel);
+
+        Task<OperationResult> CreateItemType(ItemTypeCreateModel itemTypeCreateModel);
+
+        Task<OperationResult> DeleteItemTypeById(int itemTypeId);
     }
 }

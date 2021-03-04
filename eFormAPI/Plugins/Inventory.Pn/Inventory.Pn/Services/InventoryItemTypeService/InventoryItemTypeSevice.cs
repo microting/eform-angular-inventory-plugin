@@ -20,7 +20,6 @@ SOFTWARE.
 
 namespace Inventory.Pn.Services.InventoryItemTypeService
 {
-    using Infrastructure.Models.ItemGroup;
     using Infrastructure.Models.ItemType;
     using InventoryLocalizationService;
     using Microsoft.EntityFrameworkCore;
@@ -36,15 +35,16 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
     using System.Linq;
     using System.Threading.Tasks;
     using Infrastructure.Models.Tag;
+    using Microting.eFormInventoryBase.Infrastructure.Const;
 
-    public class InventoryItemTypeSevice : IInventoryItemTypeSevice
+    public class InventoryItemTypeService : IInventoryItemTypeService
     {
         private readonly InventoryPnDbContext _dbContext;
         private readonly IInventoryLocalizationService _inventoryLocalizationService;
         private readonly IUserService _userService;
         //private readonly IEFormCoreService _coreService;
 
-        public InventoryItemTypeSevice(InventoryPnDbContext dbContext,
+        public InventoryItemTypeService(InventoryPnDbContext dbContext,
             IInventoryLocalizationService inventoryLocalizationService,
             IUserService userService/*,
             IEFormCoreService coreService*/)
@@ -338,27 +338,28 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
             return itemTypeQuery
                 .Select(x => new ItemTypeSimpleModel
                 {
-                    LastPhysicalInventoryDate = x.LastPhysicalInventoryDate,
-                    SalesUnitOfMeasure = x.SalesUnitOfMeasure,
-                    BaseUnitOfMeasure = x.BaseUnitOfMeasure,
+                    
                     RiscDescription = x.RiscDescription,
-                    ProfitPercent = x.ProfitPercent,
-                    CostingMethod = x.CostingMethod,
-                    StandardCost = x.StandardCost,
                     Description = x.Description,
-                    GrossWeight = x.GrossWeight,
-                    GtinEanUpc = x.GtinEanUpc,
-                    UnitVolume = x.UnitVolume,
-                    NetWeight = x.NetWeight,
-                    UnitPrice = x.UnitPrice,
-                    UnitCost = x.UnitCost,
-                    Comment = x.Comment,
                     EformId = x.EformId,
-                    Region = x.Region,
                     Usage = x.Usage,
                     Name = x.Name,
                     Id = x.Id,
-                    No = x.No,
+                    CreatedDate = x.CreatedAt,
+                    CreatedBy = GetUserNameByUserId(x.CreatedByUserId),
+                    DangerLabelImageName = _dbContext.ItemTypeUploadedDatas
+                        .Where(y => y.ItemTypeId == x.Id)
+                        .Where(y => y.Type == TypeUploadedData.Danger)
+                        .FirstOrDefault(y => y.WorkflowState != Constants.WorkflowStates.Removed).FileName,
+                    PictogramImageName = _dbContext.ItemTypeUploadedDatas
+                        .Where(y => y.ItemTypeId == x.Id)
+                        .Where(y => y.Type == TypeUploadedData.Pictogram)
+                        .FirstOrDefault(y => y.WorkflowState != Constants.WorkflowStates.Removed).FileName,
+                    ParentTypeName = _dbContext.ItemTypeDependencys
+                        .Where(y => y.ItemTypeId == x.Id)
+                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                        .Select(y => y.DependItemType.Name)
+                        .FirstOrDefault(),
                     Tags = _dbContext.ItemTypeTags
                         .Where(y => y.ItemTypeId == x.Id)
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
@@ -368,26 +369,8 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                             Id = y.InventoryTag.Id
                         })
                         .ToList(),
-                    ItemGroupDependency = _dbContext.ItemGroupDependencys
-                        .Where(y => y.ItemTypeId == x.Id)
-                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                        .Select(y => new ItemTypeDependencyItemGroup
-                        {
-                            Id = x.ItemGroup.Id,
-                            Name = x.ItemGroup.Name,
-                        })
-                        .FirstOrDefault(),
-                    ItemTypeDependency = _dbContext.ItemTypeDependencys
-                        .Where(y => y.ItemTypeId == x.Id)
-                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                        .Select(y => new ItemTypeDependencyItemType()
-                        {
-                            Name = y.DependItemType.Name,
-                        })
-                        .ToList(),
                 });
         }
-
 
         private IQueryable<ItemTypeModel> AddSelectToItemTypeQueryForFullObject(IQueryable<ItemType> itemTypeQuery)
         {
@@ -462,6 +445,13 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                         })
                         .ToList(), // todo group, if need
                 });
+        }
+
+        private string GetUserNameByUserId(int userId)
+        {
+            var user = _userService.GetByIdAsync(userId).Result;
+
+            return $"{user.FirstName} {user.LastName}";
         }
     }
 }

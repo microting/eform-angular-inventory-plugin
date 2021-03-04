@@ -20,16 +20,13 @@ SOFTWARE.
 
 namespace Inventory.Pn.Infrastructure.Models.Settings
 {
+    using System.Collections.Generic;
+    using Microting.eForm.Dto;
+
     public class InventoryBaseSettings
     {
-        public int StartTime { get; set; }
-
-        public int EndTime { get; set; }
-
-        public string ReportHeaderName { get; set; }
-
-        public string ReportSubHeaderName { get; set; }
-
-        public string ReportImageName { get; set; }
+        public int FolderId { get; set; }
+        
+        public List<SiteNameDto> AssignedSites { get; set; }
     }
 }

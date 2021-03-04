@@ -81,7 +81,7 @@ namespace Inventory.Pn
             services.AddSingleton<IInventoryLocalizationService, InventoryLocalizationService>();
             services.AddTransient<IInventoryPnSettingsService, InventoryPnSettingsService>();
             services.AddTransient<IInventoryTagsService, InventoryTagsService>();
-            services.AddTransient<IInventoryItemTypeSevice, InventoryItemTypeSevice>();
+            services.AddTransient<IInventoryItemTypeService, InventoryItemTypeService>();
             services.AddTransient<IInventoryItemGroupService, InventoryItemGroupService>();
             services.AddTransient<IInventoryItemService, InventoryItemService>();
             services.AddSingleton<IRebusService, RebusService>();

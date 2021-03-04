@@ -33,44 +33,58 @@ namespace Inventory.Pn.Services.InventoryPnSettingsService
     using Microting.eFormInventoryBase.Infrastructure.Data;
     using System;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class InventoryPnSettingsService : IInventoryPnSettingsService
     {
         private readonly ILogger<InventoryPnSettingsService> _logger;
-        private readonly IInventoryLocalizationService _itemsPlanningLocalizationService;
+        private readonly IInventoryLocalizationService _inventoryLocalizationService;
         private readonly InventoryPnDbContext _dbContext;
         private readonly IPluginDbOptions<InventoryBaseSettings> _options;
         private readonly IUserService _userService;
+        private readonly IEFormCoreService _coreService;
 
 
         public InventoryPnSettingsService(ILogger<InventoryPnSettingsService> logger,
-            IInventoryLocalizationService itemsPlanningLocalizationService,
+            IInventoryLocalizationService inventoryLocalizationService,
             InventoryPnDbContext dbContext,
             IPluginDbOptions<InventoryBaseSettings> options,
-            IUserService userService)
+            IUserService userService,
+            IEFormCoreService coreService)
         {
             _logger = logger;
             _dbContext = dbContext;
             _options = options;
             _userService = userService;
-            _itemsPlanningLocalizationService = itemsPlanningLocalizationService;
+            _inventoryLocalizationService = inventoryLocalizationService;
+            _coreService = coreService;
         }
 
-        public Task<OperationDataResult<InventoryBaseSettings>> GetSettings()
+        public async Task<OperationDataResult<InventorySettingsModel>> GetSettings()
         {
+            var sdkCore =
+                await _coreService.GetCore();
+            await using var sdkDbContext = sdkCore.DbContextHelper.GetDbContext();
             try
             {
                 var option = _options.Value;
 
-                return Task.FromResult(new OperationDataResult<InventoryBaseSettings>(true, option));
+                var settings = new InventorySettingsModel
+                {
+                    AssignedSites = option.AssignedSites,
+                    FolderId = option.FolderId,
+                    FolderName = sdkDbContext.Folders.FirstOrDefault(x => x.Id == option.FolderId)?.Name,
+                };
+
+                return new OperationDataResult<InventorySettingsModel>(true, settings);
             }
             catch(Exception e)
             {
                 Trace.TraceError(e.Message);
                 _logger.LogError(e.Message);
-                return Task.FromResult(new OperationDataResult<InventoryBaseSettings>(false,
-                    _itemsPlanningLocalizationService.GetString("ErrorWhileObtainingInventorySettings")));
+                return new OperationDataResult<InventorySettingsModel>(false,
+                    _inventoryLocalizationService.GetString("ErrorWhileObtainingInventorySettings"));
             }
         }
 
@@ -80,22 +94,19 @@ namespace Inventory.Pn.Services.InventoryPnSettingsService
             {
                 await _options.UpdateDb(settings =>
                 {
-                    settings.StartTime = itemsPlanningBaseSettings.StartTime;
-                    settings.EndTime = itemsPlanningBaseSettings.EndTime;
-                    settings.ReportHeaderName = itemsPlanningBaseSettings.ReportHeaderName;
-                    settings.ReportSubHeaderName = itemsPlanningBaseSettings.ReportSubHeaderName;
-                    settings.ReportImageName = itemsPlanningBaseSettings.ReportImageName;
+                    settings.AssignedSites = itemsPlanningBaseSettings.AssignedSites;
+                    settings.FolderId = itemsPlanningBaseSettings.FolderId;
                 }, _dbContext, _userService.UserId);
 
                 return new OperationResult(true,
-                    _itemsPlanningLocalizationService.GetString("SettingsHaveBeenUpdatedSuccessfully"));
+                    _inventoryLocalizationService.GetString("SettingsHaveBeenUpdatedSuccessfully"));
             }
             catch (Exception e)
             {
                 Trace.TraceError(e.Message);
                 _logger.LogError(e.Message);
                 return new OperationResult(false,
-                    _itemsPlanningLocalizationService.GetString("ErrorWhileUpdatingSettings"));
+                    _inventoryLocalizationService.GetString("ErrorWhileUpdatingSettings"));
             }
         }
     }

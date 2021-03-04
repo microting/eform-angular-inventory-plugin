@@ -18,22 +18,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace Inventory.Pn.Services.InventoryItemTypeService
+namespace Inventory.Pn.Infrastructure.Models.Settings
 {
-    using System.Threading.Tasks;
-    using Infrastructure.Models.ItemType;
-    using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using System.Collections.Generic;
+    using Microting.eForm.Dto;
 
-    public interface IInventoryItemTypeSevice
+    public class InventorySettingsModel
     {
-        Task<OperationDataResult<ItemTypesPnModel>> GetItemTypes(ItemTypeRequest itemTypeRequest);
+        public int FolderId { get; set; }
 
-        Task<OperationDataResult<ItemTypeSimpleModel>> GetItemTypeById(int itemTypeId);
+        public string FolderName { get; set; }
 
-        Task<OperationResult> UpdateItemType(ItemTypeUpdateModel itemTypeUpdateModel);
-
-        Task<OperationResult> CreateItemType(ItemTypeCreateModel itemTypeCreateModel);
-
-        Task<OperationResult> DeleteItemTypeById(int itemTypeId);
+        public List<SiteNameDto> AssignedSites { get; set; }
     }
 }
