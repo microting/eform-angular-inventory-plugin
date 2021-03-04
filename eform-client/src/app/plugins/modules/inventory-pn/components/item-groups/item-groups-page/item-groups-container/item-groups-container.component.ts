@@ -48,6 +48,7 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getLocalPageSettings();
+    this.getItemGroups();
   }
 
   getLocalPageSettings() {

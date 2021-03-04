@@ -20,11 +20,7 @@ export const routes: Routes = [
     },
     children: [
       {
-        path: 'items',
-        canActivate: [PermissionGuard],
-        data: {
-          requiredPermission: InventoryPnClaims.getInventoryItems,
-        },
+        path: 'inventory',
         component: ItemsContainerComponent,
       },
       {

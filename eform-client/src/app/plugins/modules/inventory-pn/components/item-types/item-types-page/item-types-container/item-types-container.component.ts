@@ -14,7 +14,7 @@ import {
   InventoryItemTypesRequestModel,
 } from '../../../../models';
 import {
-  InventoryPnItemGroupTagsService,
+  InventoryPnItemTypeTagsService,
   InventoryPnItemTypesService,
 } from '../../../../services';
 
@@ -41,7 +41,7 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
   constructor(
     private sharedPnService: SharedPnService,
     private itemTypesService: InventoryPnItemTypesService,
-    private tagsService: InventoryPnItemGroupTagsService
+    private tagsService: InventoryPnItemTypeTagsService
   ) {
     this.nameSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
       this.itemTypesRequestModel.nameFilter = val.toString();
@@ -52,6 +52,7 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getLocalPageSettings();
     this.getTags();
+    this.getItemTypes();
   }
 
   getLocalPageSettings() {

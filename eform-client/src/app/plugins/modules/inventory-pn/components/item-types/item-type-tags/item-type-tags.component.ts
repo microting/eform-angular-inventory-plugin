@@ -15,7 +15,7 @@ import {
 } from 'src/app/common/models';
 import { Subscription } from 'rxjs';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { InventoryPnItemGroupTagsService } from '../../../services';
+import { InventoryPnItemTypeTagsService } from '../../../services';
 
 @AutoUnsubscribe()
 @Component({
@@ -31,7 +31,7 @@ export class ItemTypeTagsComponent implements OnInit, OnDestroy {
   createTag$: Subscription;
   updateTag$: Subscription;
 
-  constructor(private tagsService: InventoryPnItemGroupTagsService) {}
+  constructor(private tagsService: InventoryPnItemTypeTagsService) {}
 
   show() {
     this.tagsModal.show();

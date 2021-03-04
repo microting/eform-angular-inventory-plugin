@@ -33,7 +33,7 @@ import {
 import { InventoryPnRouting } from './inventory-pn.routing';
 import {
   InventoryPnItemGroupsService,
-  InventoryPnItemGroupTagsService,
+  InventoryPnItemTypeTagsService,
   InventoryPnItemsService,
   InventoryPnItemTypesService,
   InventoryPnSettingsService,
@@ -109,7 +109,7 @@ import { InventoryPnLayoutComponent } from './layouts';
     InventoryPnSettingsService,
     InventoryPnItemGroupsService,
     InventoryPnItemTypesService,
-    InventoryPnItemGroupTagsService,
+    InventoryPnItemTypeTagsService,
   ],
 })
 export class InventoryPnModule {}

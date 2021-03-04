@@ -262,37 +262,6 @@
         <th scope="col">
           {{ 'Danger label' | translate }}
         </th>
-        <th
-          scope="col"
-          class="table-header-sortable"
-          id="statusTableHeader"
-          (click)="onSortTable('Status')"
-        >
-          <div class="d-flex align-items-center justify-content-center">
-            {{ 'Status' | translate }}
-            <i
-              class="material-icons text-black-50"
-              *ngIf="localPageSettings.sort != 'Status'"
-              >unfold_more</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'Status' &&
-                !itemTypesRequestModel.isSortDsc
-              "
-              >expand_less</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'Status' &&
-                itemTypesRequestModel.isSortDsc
-              "
-              >expand_more</i
-            >
-          </div>
-        </th>
         <th scope="col">
           {{ 'Tags' | translate }}
         </th>
@@ -338,9 +307,6 @@
         </td>
         <td id="itemTypeComment">
           {{ itemTypeModel.comment }}
-        </td>
-        <td id="itemTypeStatus">
-          {{ itemTypeModel.available }}
         </td>
         <td id="itemTypeTags">
           <div class="d-flex justify-content-center">
