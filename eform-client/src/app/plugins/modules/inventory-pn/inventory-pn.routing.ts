@@ -14,17 +14,17 @@ export const routes: Routes = [
   {
     path: '',
     component: InventoryPnLayoutComponent,
-    canActivate: [PermissionGuard],
-    data: {
-      requiredPermission: InventoryPnClaims.accessInventoryPlugin,
-    },
+    // canActivate: [PermissionGuard],
+    // data: {
+    //   requiredPermission: InventoryPnClaims.accessInventoryPlugin,
+    // },
     children: [
       {
         path: 'items',
-        canActivate: [PermissionGuard],
-        data: {
-          requiredPermission: InventoryPnClaims.getInventoryItems,
-        },
+        // canActivate: [PermissionGuard],
+        // data: {
+        //   requiredPermission: InventoryPnClaims.getInventoryItems,
+        // },
         component: ItemsContainerComponent,
       },
       {

@@ -5,7 +5,25 @@ import {
 
 export const InventoryPnLocalSettings = [
   new ApplicationPageModel({
-      name: 'InventoryItems',
+      name: 'Items',
+      settings: new PageSettingsModel({
+        pageSize: 10,
+        sort: 'Id',
+        isSortDsc: false
+      })
+    },
+  ),
+  new ApplicationPageModel({
+      name: 'ItemGroups',
+      settings: new PageSettingsModel({
+        pageSize: 10,
+        sort: 'Id',
+        isSortDsc: false
+      })
+    },
+  ),
+  new ApplicationPageModel({
+      name: 'ItemTypes',
       settings: new PageSettingsModel({
         pageSize: 10,
         sort: 'Id',

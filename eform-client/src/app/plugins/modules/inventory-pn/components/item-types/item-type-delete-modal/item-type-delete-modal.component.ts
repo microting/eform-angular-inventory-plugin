@@ -6,7 +6,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { InventoryItemTypeModel } from '../../../models';
+import {InventoryItemTypeSimpleModel} from '../../../models';
 
 @Component({
   selector: 'app-item-type-delete-modal',
@@ -17,14 +17,14 @@ import { InventoryItemTypeModel } from '../../../models';
 export class ItemTypeDeleteModalComponent implements OnInit {
   @ViewChild('frame', { static: false }) frame;
   @Output()
-  deleteItemType: EventEmitter<InventoryItemTypeModel> = new EventEmitter<InventoryItemTypeModel>();
-  itemTypeModel: InventoryItemTypeModel = new InventoryItemTypeModel();
+  deleteItemType: EventEmitter<InventoryItemTypeSimpleModel> = new EventEmitter<InventoryItemTypeSimpleModel>();
+  itemTypeModel: InventoryItemTypeSimpleModel = new InventoryItemTypeSimpleModel();
 
   constructor() {}
 
   ngOnInit() {}
 
-  show(model: InventoryItemTypeModel) {
+  show(model: InventoryItemTypeSimpleModel) {
     this.itemTypeModel = model;
     this.frame.show();
   }

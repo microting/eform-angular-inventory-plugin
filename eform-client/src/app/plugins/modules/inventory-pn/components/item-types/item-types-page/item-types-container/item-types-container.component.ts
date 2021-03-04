@@ -11,6 +11,7 @@ import {
 import { SharedPnService } from '../../../../../shared/services';
 import {
   InventoryItemTypeModel,
+  InventoryItemTypeSimpleModel,
   InventoryItemTypesRequestModel,
 } from '../../../../models';
 import {
@@ -36,6 +37,7 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
 
   getInventoryTypesSub$: Subscription;
   getTagsSub$: Subscription;
+  deleteItemTypeSub$: Subscription;
 
   constructor(
     private sharedPnService: SharedPnService,
@@ -112,7 +114,7 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  showDeleteItemTypeModal(model: InventoryItemTypeModel) {
+  showDeleteItemTypeModal(model: InventoryItemTypeSimpleModel) {
     this.deleteItemTypeModal.show(model);
   }
 
@@ -171,7 +173,14 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {}
 
-  onDeleteItemType(model: InventoryItemTypeModel) {
-
+  onDeleteItemType(model: InventoryItemTypeSimpleModel) {
+    this.deleteItemTypeSub$ = this.itemTypesService
+      .deleteItemType(model.id)
+      .subscribe((data) => {
+        if (data && data.success) {
+          this.getItemTypes();
+          this.deleteItemTypeModal.hide();
+        }
+      });
   }
 }
