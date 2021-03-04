@@ -21,18 +21,15 @@ SOFTWARE.
 namespace Inventory.Pn.Infrastructure.Models.ItemType
 {
     using System.Collections.Generic;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
 
-    public class ItemTypeRequest
+    public class ItemTypeRequest : PaginationModel
     {
         public string NameFilter { get; set; }
 
         public string Sort { get; set; }
         
-        public int Offset { get; set; }
-
         public bool IsSortDsc { get; set; }
-
-        public int PageSize { get; set; }
 
         public List<int> TagIds { get; set; }
             = new List<int>();

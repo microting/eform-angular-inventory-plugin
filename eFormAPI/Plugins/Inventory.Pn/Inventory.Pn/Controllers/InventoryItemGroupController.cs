@@ -20,12 +20,14 @@ SOFTWARE.
 
 namespace Inventory.Pn.Controllers
 {
-    using System.Threading.Tasks;
     using Infrastructure.Models.ItemGroup;
     using Microsoft.AspNetCore.Authorization;
-    using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using Microsoft.AspNetCore.Mvc;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Services.InventoryItemGroupService;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     [Authorize]
     public class InventoryItemGroupController : Controller
@@ -71,6 +73,14 @@ namespace Inventory.Pn.Controllers
         public async Task<OperationResult> CreateInventoryType([FromBody] ItemGroupCreateModel itemGroupCreateInventoryTypeModel)
         {
             return await _inventoryItemGroupService.CreateItemGroup(itemGroupCreateInventoryTypeModel);
+        }
+
+
+        [HttpGet]
+        [Route("api/inventory-pn/item-groups/dictionary")]
+        public async Task<OperationDataResult<List<CommonDictionaryModel>>> Dictionary()
+        {
+            return await _inventoryItemGroupService.GetItemGroupsDictionary();
         }
     }
 }

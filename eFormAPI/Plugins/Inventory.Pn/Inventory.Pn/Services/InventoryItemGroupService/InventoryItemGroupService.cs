@@ -21,6 +21,7 @@ SOFTWARE.
 namespace Inventory.Pn.Services.InventoryItemGroupService
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
@@ -31,6 +32,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Extensions;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Microting.eFormInventoryBase.Infrastructure.Data;
     using Microting.eFormInventoryBase.Infrastructure.Data.Entities;
 
@@ -253,6 +255,29 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                 Trace.TraceError(e.Message);
                 return new OperationResult(false,
                     _inventoryLocalizationService.GetString("ErrorWhileDeleteItemGroup"));
+            }
+        }
+
+        public async Task<OperationDataResult<List<CommonDictionaryModel>>> GetItemGroupsDictionary()
+        {
+            try
+            {
+                var inventoryItemGroups = await _dbContext.ItemGroups
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Select(x => new CommonDictionaryModel
+                    {
+                        Description = x.Description,
+                        Name = x.Name,
+                        Id = x.Id,
+                    })
+                    .ToListAsync();
+                return new OperationDataResult<List<CommonDictionaryModel>>(true, inventoryItemGroups);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+                return new OperationDataResult<List<CommonDictionaryModel>>(false,
+                    _inventoryLocalizationService.GetString("ErrorObtainingItemGroups"));
             }
         }
 

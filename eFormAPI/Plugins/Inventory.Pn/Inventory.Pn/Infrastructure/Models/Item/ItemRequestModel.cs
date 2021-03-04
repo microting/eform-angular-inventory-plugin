@@ -20,16 +20,14 @@ SOFTWARE.
 
 namespace Inventory.Pn.Infrastructure.Models.Item
 {
-    public class ItemRequestModel
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
+
+    public class ItemRequestModel : PaginationModel
     {
         public string SnFilter { get; set; }
 
         public string Sort { get; set; }
 
-        public int Offset { get; set; }
-
         public bool IsSortDsc { get; set; }
-
-        public int PageSize { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿/*
+/*
 The MIT License (MIT)
 Copyright (c) 2007 - 2021 Microting A/S
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -95,7 +95,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     EformId = itemTypeCreateModel.EformId,
                     Comment = itemTypeCreateModel.Comment,
                     BaseUnitOfMeasure = itemTypeCreateModel.BaseUnitOfMeasure,
-                    ItemGroupId = itemTypeCreateModel.ItemGroup?.Id,
+                    ItemGroupId = itemTypeCreateModel.ItemGroupId,
                     StandardCost = itemTypeCreateModel.StandardCost,
                     UnitCost = itemTypeCreateModel.UnitCost,
                 };

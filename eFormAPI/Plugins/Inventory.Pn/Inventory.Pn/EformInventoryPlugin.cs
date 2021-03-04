@@ -1,4 +1,4 @@
-﻿/*
+/*
 The MIT License (MIT)
 Copyright (c) 2007 - 2021 Microting A/S
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,6 +38,9 @@ namespace Inventory.Pn
     using Microting.eFormInventoryBase.Infrastructure.Const;
     using Microting.eFormInventoryBase.Infrastructure.Data;
     using Microting.eFormInventoryBase.Infrastructure.Data.Factories;
+    using Services.InventoryItemGroupService;
+    using Services.InventoryItemService;
+    using Services.InventoryItemTypeService;
     using Services.InventoryLocalizationService;
     using Services.InventoryPnSettingsService;
     using Services.InventoryTagsService;
@@ -45,9 +48,6 @@ namespace Inventory.Pn
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using Services.InventoryItemGroupService;
-    using Services.InventoryItemService;
-    using Services.InventoryItemTypeService;
 
     public class EformInventoryPlugin : IEformPlugin
     {
@@ -194,8 +194,8 @@ namespace Inventory.Pn
                                         new PluginMenuTemplatePermissionModel
                                         {
                                             ClaimName = InventoryClaims.GetInventory,
-                                            PermissionName = "Obtain chemistry",
-                                            PermissionTypeName = "Chemistry",
+                                            PermissionName = "Obtain inventory",
+                                            PermissionTypeName = "Inventory",
                                         },
                                     },
                                     Translations = new List<PluginMenuTranslationModel>
@@ -203,19 +203,19 @@ namespace Inventory.Pn
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.English,
-                                            Name = "Inventory",
+                                            Name = "Items",
                                             Language = LanguageNames.English,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.German,
-                                            Name = "Inventar",
+                                            Name = "Gegenst",
                                             Language = LanguageNames.German,
                                         },
                                         new PluginMenuTranslationModel
                                         {
                                             LocaleName = LocaleNames.Danish,
-                                            Name = "Opgørelse",
+                                            Name = "Element",
                                             Language = LanguageNames.Danish,
                                         },
                                     }

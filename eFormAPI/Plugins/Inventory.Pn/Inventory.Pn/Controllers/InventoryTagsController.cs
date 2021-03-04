@@ -22,7 +22,6 @@ namespace Inventory.Pn.Controllers
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Infrastructure.Models;
     using Infrastructure.Models.Tag;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -45,7 +44,7 @@ namespace Inventory.Pn.Controllers
         /// </summary>
         /// <returns>Inventory tags.</returns>
         [HttpGet]
-        [Route("api/inventory-pn/tags")]
+        [Route("api/inventory-pn/item-type-tags")]
         public async Task<OperationDataResult<List<InventoryTagModel>>> GetInventoryTags()
         {
             return await _inventoryTagsService.GetInventoryTags();
@@ -57,7 +56,7 @@ namespace Inventory.Pn.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns>Task&lt;OperationDataResult&lt;InventoryTagModel&gt;&gt;.</returns>
         [HttpGet]
-        [Route("api/inventory-pn/tags/{id}")]
+        [Route("api/inventory-pn/item-type-tags/{id}")]
         public async Task<OperationDataResult<InventoryTagModel>> GetInventoryTagById(int id)
         {
             return await _inventoryTagsService.GetInventoryTagById(id);
@@ -66,25 +65,25 @@ namespace Inventory.Pn.Controllers
         /// <summary>
         /// Creates the inventory tag.
         /// </summary>
-        /// <param name="requestModel">The request model.</param>
+        /// <param name="inventoryTagModel">The inventory tag model.</param>
         /// <returns>Task&lt;OperationResult&gt;.</returns>
         [HttpPost]
-        [Route("api/inventory-pn/tags")]
-        public async Task<OperationResult> CreateInventoryTag([FromBody] InventoryTagModel requestModel)
+        [Route("api/inventory-pn/item-type-tags")]
+        public async Task<OperationResult> CreateInventoryTag([FromBody] InventoryTagModel inventoryTagModel)
         {
-            return await _inventoryTagsService.CreateInventoryTag(requestModel);
+            return await _inventoryTagsService.CreateInventoryTag(inventoryTagModel);
         }
 
         /// <summary>
         /// Updates the inventory tag.
         /// </summary>
-        /// <param name="requestModel">The request model.</param>
+        /// <param name="inventoryTagModel">The request model.</param>
         /// <returns>Task&lt;OperationResult&gt;.</returns>
         [HttpPut]
-        [Route("api/inventory-pn/tags")]
-        public async Task<OperationResult> UpdateInventoryTag([FromBody] InventoryTagModel requestModel)
+        [Route("api/inventory-pn/item-type-tags")]
+        public async Task<OperationResult> UpdateInventoryTag([FromBody] InventoryTagModel inventoryTagModel)
         {
-            return await _inventoryTagsService.UpdateInventoryTag(requestModel);
+            return await _inventoryTagsService.UpdateInventoryTag(inventoryTagModel);
         }
 
         /// <summary>
@@ -93,7 +92,7 @@ namespace Inventory.Pn.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns>Task&lt;OperationResult&gt;.</returns>
         [HttpDelete]
-        [Route("api/inventory-pn/tags/{id}")]
+        [Route("api/inventory-pn/item-type-tags/{id}")]
         public async Task<OperationResult> DeleteInventoryTag(int id)
         {
             return await _inventoryTagsService.DeleteInventoryTag(id);

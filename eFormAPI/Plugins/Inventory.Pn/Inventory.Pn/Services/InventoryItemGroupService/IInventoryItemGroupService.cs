@@ -20,9 +20,11 @@ SOFTWARE.
 
 namespace Inventory.Pn.Services.InventoryItemGroupService
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Infrastructure.Models.ItemGroup;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
 
     public interface IInventoryItemGroupService
     {
@@ -35,5 +37,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
         Task<OperationResult> CreateItemGroup(ItemGroupCreateModel itemGroupCreateModel);
 
         Task<OperationResult> DeleteItemGroupById(int itemGroupId);
+
+        Task<OperationDataResult<List<CommonDictionaryModel>>> GetItemGroupsDictionary();
     }
 }

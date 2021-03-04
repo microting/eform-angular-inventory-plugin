@@ -20,16 +20,14 @@ SOFTWARE.
 
 namespace Inventory.Pn.Infrastructure.Models.ItemGroup
 {
-    public class ItemGroupRequestModel
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
+
+    public class ItemGroupRequestModel : PaginationModel
     {
         public string NameFilter { get; set; }
 
         public string Sort { get; set; }
 
-        public int Offset { get; set; }
-
         public bool IsSortDsc { get; set; }
-
-        public int PageSize { get; set; }
     }
 }

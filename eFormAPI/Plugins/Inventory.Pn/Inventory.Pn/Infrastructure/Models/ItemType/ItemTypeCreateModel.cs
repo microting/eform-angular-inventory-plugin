@@ -57,7 +57,7 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 
         public int Region { get; set; }
         
-        public ItemGroupModel ItemGroup { get; set; }
+        public int ItemGroupId { get; set; }
 
         public string Usage { get; set; }
 
