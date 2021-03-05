@@ -86,7 +86,7 @@ namespace Inventory.Pn.Services.InventoryItemService
                 if (!string.IsNullOrEmpty(itemRequest.SnFilter))
                 {
                     inventoryItemQuery = inventoryItemQuery
-                        .Where(x => x.SN == itemRequest.SnFilter);
+                        .Where(x => x.SN.Contains(itemRequest.SnFilter));
                 }
 
 

@@ -88,7 +88,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                 if (!string.IsNullOrEmpty(itemGroupRequestModel.NameFilter))
                 {
                     inventoryItemGroupQuery = inventoryItemGroupQuery
-                        .Where(x => x.Name == itemGroupRequestModel.NameFilter);
+                        .Where(x => x.Name.Contains(itemGroupRequestModel.NameFilter));
                 }
 
 

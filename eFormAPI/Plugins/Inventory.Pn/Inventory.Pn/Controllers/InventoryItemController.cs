@@ -38,7 +38,7 @@ namespace Inventory.Pn.Controllers
         }
 
         [HttpPost]
-        [Route("api/inventory-pn/item/index")]
+        [Route("api/inventory-pn/items/index")]
         public async Task<OperationDataResult<Paged<ItemModel>>> Index(
             [FromBody] ItemRequestModel itemRequestModel)
         {
@@ -46,28 +46,28 @@ namespace Inventory.Pn.Controllers
         }
 
         //[HttpGet]
-        //[Route("api/inventory-pn/item/{id}")]
+        //[Route("api/inventory-pn/items/{id}")]
         //public async Task<OperationDataResult<ItemModel>> GetInventoryItemGroupById(int id)
         //{
         //    return await _inventoryItemService.GetItemById(id);
         //}
 
         [HttpPut]
-        [Route("api/inventory-pn/item")]
+        [Route("api/inventory-pn/items")]
         public async Task<OperationResult> UpdateInventoryItemGroup([FromBody] ItemUpdateModel itemUpdateModel)
         {
             return await _inventoryItemService.UpdateItem(itemUpdateModel);
         }
 
         [HttpDelete]
-        [Route("api/inventory-pn/item/{id}")]
+        [Route("api/inventory-pn/items/{id}")]
         public async Task<OperationResult> DeleteInventoryItemGroupById(int id)
         {
             return await _inventoryItemService.DeleteItemById(id);
         }
 
         [HttpPost]
-        [Route("api/inventory-pn/item")]
+        [Route("api/inventory-pn/items")]
         public async Task<OperationResult> CreateInventoryType([FromBody] ItemCreateModel itemCreateModel)
         {
             return await _inventoryItemService.CreateItem(itemCreateModel);

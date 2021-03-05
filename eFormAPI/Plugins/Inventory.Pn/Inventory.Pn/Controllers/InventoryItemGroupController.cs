@@ -62,7 +62,7 @@ namespace Inventory.Pn.Controllers
         }
 
         [HttpDelete]
-        [Route("api/inventory-pn/item-group/{id}")]
+        [Route("api/inventory-pn/item-groups/{id}")]
         public async Task<OperationResult> DeleteInventoryItemGroupById(int id)
         {
             return await _inventoryItemGroupService.DeleteItemGroupById(id);
