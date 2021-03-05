@@ -3,7 +3,7 @@ export class InventoryItemUpdateModel {
   itemTypeId: number;
   location: string;
   customerId: number;
-  expirationDate: string;
-  sN: string;
-  aviable: boolean;
+  expirationDate: string | Date;
+  SN: string;
+  available: boolean;
 }

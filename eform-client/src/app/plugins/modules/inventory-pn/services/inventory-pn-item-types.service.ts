@@ -1,25 +1,27 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
+import { CommonDictionaryModel, Paged } from 'src/app/common/models';
 import {
   OperationDataResult,
   OperationResult,
 } from 'src/app/common/models/operation.models';
 import { BaseService } from 'src/app/common/services/base.service';
-import { Paged, PagedEntityRequest } from 'src/app/common/models';
 import {
-  InventoryItemTypeUpdateModel,
-  InventoryItemTypeModel,
   InventoryItemCreateModel,
-  InventoryItemTypesRequestModel, InventoryItemTypeSimpleModel,
+  InventoryItemTypeModel,
+  InventoryItemTypeSimpleModel,
+  InventoryItemTypesRequestModel,
+  InventoryItemTypeUpdateModel,
 } from '../models';
 
-export let InventoryPnItemTypesMethods = {
+const InventoryPnItemTypesMethods = {
   ItemTypes: 'api/inventory-pn/item-types',
   ItemTypesIndex: 'api/inventory-pn/item-types/index',
+  ItemTypesDictionary: 'api/inventory-pn/item-types/dictionary',
 };
 
 @Injectable({
@@ -38,6 +40,12 @@ export class InventoryPnItemTypesService extends BaseService {
     model: InventoryItemTypesRequestModel
   ): Observable<OperationDataResult<Paged<InventoryItemTypeSimpleModel>>> {
     return this.post(InventoryPnItemTypesMethods.ItemTypesIndex, model);
+  }
+
+  getAllItemTypesDictionary(): Observable<
+    OperationDataResult<CommonDictionaryModel[]>
+  > {
+    return this.get(InventoryPnItemTypesMethods.ItemTypesDictionary);
   }
 
   getSingleItemType(

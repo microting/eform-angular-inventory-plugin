@@ -47,6 +47,16 @@
     </div>
   </div>
 </div>
+<app-item-create-modal
+  #createItemModal
+  [itemTypesList]="itemTypesList"
+  (createItem)="onCreateItem($event)"
+></app-item-create-modal>
+<app-item-edit-modal
+  #editItemModal
+  [itemTypesList]="itemTypesList"
+  (updateItem)="onUpdateItem($event)"
+></app-item-edit-modal>
 <app-item-delete-modal
   #deleteItemModal
   (deleteItem)="onDeleteItem($event)"

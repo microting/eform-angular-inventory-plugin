@@ -155,7 +155,7 @@
             id="editItemGroupBtn"
             class="btn btn-accent text-black-50 btn-icon mb-2"
             mdbTooltip="{{ 'Edit item group' | translate }}"
-            [routerLink]="['./edit', itemGroupModel.id]"
+            (click)="onShowEditItemGroupModal(itemGroupModel)"
           >
             <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
           </button>

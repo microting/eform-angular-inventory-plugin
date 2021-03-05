@@ -9,7 +9,11 @@ import {
   OperationResult,
 } from 'src/app/common/models/operation.models';
 import { BaseService } from 'src/app/common/services/base.service';
-import { Paged, PagedEntityRequest } from 'src/app/common/models';
+import {
+  CommonDictionaryModel,
+  Paged,
+  PagedEntityRequest,
+} from 'src/app/common/models';
 import {
   InventoryItemGroupCreateModel,
   InventoryItemGroupModel,
@@ -20,6 +24,7 @@ import {
 export let InventoryPnItemGroupsMethods = {
   ItemGroups: 'api/inventory-pn/item-groups',
   ItemGroupsIndex: 'api/inventory-pn/item-groups/index',
+  ItemGroupsDictionary: 'api/inventory-pn/item-groups/dictionary',
 };
 
 @Injectable({
@@ -46,6 +51,12 @@ export class InventoryPnItemGroupsService extends BaseService {
     return this.get(
       InventoryPnItemGroupsMethods.ItemGroups + '/' + itemGroupId
     );
+  }
+
+  getAllItemGroupsDictionary(): Observable<
+    OperationDataResult<CommonDictionaryModel[]>
+  > {
+    return this.get(InventoryPnItemGroupsMethods.ItemGroupsDictionary);
   }
 
   updateItemGroup(

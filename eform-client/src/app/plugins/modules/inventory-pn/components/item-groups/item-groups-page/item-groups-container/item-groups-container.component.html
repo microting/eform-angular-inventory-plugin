@@ -5,7 +5,7 @@
       id="itemGroupCreateBtn"
       class="btn-success btn-small-height"
       mdbTooltip="{{ 'Create item group' | translate }}"
-      [routerLink]="['./create']"
+      (click)="showCreateItemGroupModal()"
     >
       {{ 'New group' | translate }}
     </button>
@@ -22,6 +22,7 @@
     [localPageSettings]="localPageSettings"
     [itemGroupsModel]="itemGroupsModel"
     (showDeleteItemGroupModal)="showDeleteItemGroupModal($event)"
+    (showEditItemGroupModal)="showEditItemGroupModal($event)"
     (sortTable)="sortTable($event)"
   ></app-item-groups-table>
   <div class="row justify-content-between mr-2 ml-2">
@@ -47,6 +48,16 @@
     </div>
   </div>
 </div>
+<app-item-group-create-modal
+  #createItemGroupModal
+  [itemGroupsList]="itemGroupsList"
+  (createItemGroup)="onCreateItemGroup($event)"
+></app-item-group-create-modal>
+<app-item-group-edit-modal
+  #editItemGroupModal
+  [itemGroupsList]="itemGroupsList"
+  (updateItemGroup)="onUpdateItemGroup($event)"
+></app-item-group-edit-modal>
 <app-item-group-delete-modal
   #deleteItemGroupModal
   (deleteItemGroup)="onDeleteItemGroup($event)"

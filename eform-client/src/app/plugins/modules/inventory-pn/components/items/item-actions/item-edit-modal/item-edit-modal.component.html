@@ -7,7 +7,7 @@
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>{{ 'New item group' | translate }}?</h3>
+        <h3>{{ 'Edit item' | translate }}?</h3>
         <button class="close" data-dismiss="modal" (click)="frame.hide()">
           <span>×</span>
         </button>
@@ -19,29 +19,31 @@
               <ng-select
                 class="custom"
                 dropdownPosition="'bottom'"
-                [placeholder]="'Parent group' | translate"
-                [(ngModel)]="selectedItemGroupModel.parentId"
+                [placeholder]="'Item type' | translate"
+                [(ngModel)]="selectedItemModel.itemTypeId"
                 [bindValue]="'id'"
                 [bindLabel]="'name'"
-                [items]="itemGroupsList"
-                id="itemGroupsEditListParentSelector"
+                [items]="itemTypesList"
+                id="itemEditTypeSelector"
               ></ng-select>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <div class="md-form">
+              <div class="md-form" [owlDateTimeTrigger]="dt1">
                 <input
                   mdbInput
+                  [owlDateTime]="dt1"
+                  [(ngModel)]="selectedItemModel.expirationDate"
                   type="text"
-                  [(ngModel)]="selectedItemGroupModel.name"
-                  name="itemGroupEditNameInput"
+                  id="itemEditExpiresInput"
+                  name="itemEditExpiresInput"
                   class="form-control"
-                  id="itemGroupEditNameInput"
                 />
-                <label for="itemGroupEditNameInput">{{
-                  'Name' | translate
-                }}</label>
+                <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                <label for="itemEditExpiresInput">{{
+                  'Expires' | translate
+                  }}</label>
               </div>
             </div>
           </div>
@@ -51,14 +53,14 @@
                 <input
                   mdbInput
                   type="text"
-                  [(ngModel)]="selectedItemGroupModel.description"
-                  name="itemGroupEditDescriptionInput"
+                  [(ngModel)]="selectedItemModel.location"
+                  name="itemEditLocationInput"
                   class="form-control"
-                  id="itemGroupEditDescriptionInput"
+                  id="itemEditLocationInput"
                 />
-                <label for="itemGroupEditDescriptionInput">{{
-                  'Description' | translate
-                }}</label>
+                <label for="itemEditLocationInput">{{
+                  'Location' | translate
+                  }}</label>
               </div>
             </div>
           </div>
@@ -68,15 +70,30 @@
                 <input
                   mdbInput
                   type="text"
-                  [(ngModel)]="selectedItemGroupModel.code"
-                  name="itemGroupEditCodeInput"
+                  [(ngModel)]="selectedItemModel.SN"
+                  name="itemEditSNInput"
                   class="form-control"
-                  id="itemGroupEditCodeInput"
+                  id="itemEditSNInput"
                 />
-                <label for="itemGroupEditCodeInput">{{
-                  'Code' | translate
-                }}</label>
+                <label for="itemEditSNInput">{{ 'SN' }}</label>
               </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <ng-select
+                class="custom"
+                dropdownPosition="'bottom'"
+                [placeholder]="'Status' | translate"
+                [(ngModel)]="selectedItemModel.available"
+                [bindValue]="'value'"
+                [bindLabel]="'text'"
+                [items]="[
+                  { value: true, text: ('On' | translate) },
+                  { value: false, text: ('Off' | translate) }
+                ]"
+                id="itemEditAvailableSelector"
+              ></ng-select>
             </div>
           </div>
         </div>
@@ -84,15 +101,15 @@
       <div class="modal-footer">
         <button
           mdbBtn
-          id="itemGroupUpdateConfirmBtn"
+          id="itemEditConfirmBtn"
           class="btn-success btn-small-height"
-          (click)="onUpdateItemGroup()"
+          (click)="create()"
         >
-          {{ 'Update' | translate }}
+          {{ 'Delete' | translate }}
         </button>
         <button
           mdbBtn
-          id="itemGroupUpdateCancelBtn"
+          id="itemEditCancelBtn"
           class="btn-accent text-black-50 btn-small-height"
           (click)="frame.hide()"
         >

@@ -6,7 +6,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { InventoryItemModel } from '../../../models';
+import { InventoryItemModel } from '../../../../models';
 
 @Component({
   selector: 'app-item-delete-modal',

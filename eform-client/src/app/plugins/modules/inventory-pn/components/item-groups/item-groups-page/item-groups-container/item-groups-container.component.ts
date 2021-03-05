@@ -1,10 +1,16 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { Paged, PageSettingsModel } from 'src/app/common/models';
+import {
+  CommonDictionaryModel,
+  Paged,
+  PageSettingsModel,
+} from 'src/app/common/models';
 import {
   InventoryItemModel,
   InventoryItemGroupsRequestModel,
   InventoryItemGroupModel,
+  InventoryItemGroupCreateModel,
+  InventoryItemGroupUpdateModel,
 } from '../../../../models';
 import { SharedPnService } from '../../../../../shared/services';
 import { InventoryPnItemGroupsService } from '../../../../services';
@@ -24,12 +30,18 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 })
 export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
   @ViewChild('deleteItemGroupModal', { static: false }) deleteItemGroupModal;
+  @ViewChild('createItemGroupModal', { static: false }) createItemGroupModal;
+  @ViewChild('editItemGroupModal', { static: false }) editItemGroupModal;
   nameSearchSubject = new Subject();
   localPageSettings: PageSettingsModel = new PageSettingsModel();
   itemGroupsModel: Paged<InventoryItemGroupModel> = new Paged<InventoryItemGroupModel>();
   itemGroupsRequestModel: InventoryItemGroupsRequestModel = new InventoryItemGroupsRequestModel();
+  itemGroupsList: CommonDictionaryModel[];
 
   getItemGroupsSub$: Subscription;
+  getItemGroupsDictionarySub$: Subscription;
+  createItemGroupSub$: Subscription;
+  updateItemGroupSub$: Subscription;
   deleteItemGroupSub$: Subscription;
 
   constructor(
@@ -49,6 +61,7 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getLocalPageSettings();
     this.getItemGroups();
+    this.getItemGroupsDictionary();
   }
 
   getLocalPageSettings() {
@@ -81,19 +94,26 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
       });
   }
 
-  onDeleteItemGroup(itemGroupId: number) {
-    this.deleteItemGroupSub$ = this.inventoryItemGroupsService
-      .deleteItemGroup(itemGroupId)
+  getItemGroupsDictionary() {
+    this.getItemGroupsDictionarySub$ = this.inventoryItemGroupsService
+      .getAllItemGroupsDictionary()
       .subscribe((data) => {
         if (data && data.success) {
-          this.deleteItemGroupModal.hide();
-          this.getItemGroups();
+          this.itemGroupsList = data.model;
         }
       });
   }
 
   showDeleteItemGroupModal(model: InventoryItemGroupModel) {
     this.deleteItemGroupModal.show(model);
+  }
+
+  showCreateItemGroupModal() {
+    this.createItemGroupModal.show();
+  }
+
+  showEditItemGroupModal(model: InventoryItemGroupModel) {
+    this.editItemGroupModal.show(model);
   }
 
   sortTable(sort: string) {
@@ -122,4 +142,37 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {}
+
+  onCreateItemGroup(model: InventoryItemGroupCreateModel) {
+    this.createItemGroupSub$ = this.inventoryItemGroupsService
+      .createItemGroup(model)
+      .subscribe((data) => {
+        if (data && data.success) {
+          this.createItemGroupModal.hide();
+          this.getItemGroups();
+        }
+      });
+  }
+
+  onUpdateItemGroup(model: InventoryItemGroupUpdateModel) {
+    this.updateItemGroupSub$ = this.inventoryItemGroupsService
+      .updateItemGroup(model)
+      .subscribe((data) => {
+        if (data && data.success) {
+          this.editItemGroupModal.hide();
+          this.getItemGroups();
+        }
+      });
+  }
+
+  onDeleteItemGroup(itemGroupId: number) {
+    this.deleteItemGroupSub$ = this.inventoryItemGroupsService
+      .deleteItemGroup(itemGroupId)
+      .subscribe((data) => {
+        if (data && data.success) {
+          this.deleteItemGroupModal.hide();
+          this.getItemGroups();
+        }
+      });
+  }
 }

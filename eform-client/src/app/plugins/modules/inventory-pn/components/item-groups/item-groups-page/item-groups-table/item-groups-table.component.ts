@@ -27,6 +27,8 @@ export class ItemGroupsTableComponent implements OnInit {
   @Output() sortTable: EventEmitter<string> = new EventEmitter<string>();
   @Output()
   showDeleteItemGroupModal: EventEmitter<InventoryItemGroupModel> = new EventEmitter<InventoryItemGroupModel>();
+  @Output()
+  showEditItemGroupModal: EventEmitter<InventoryItemGroupModel> = new EventEmitter<InventoryItemGroupModel>();
 
   constructor() {}
 
@@ -38,5 +40,9 @@ export class ItemGroupsTableComponent implements OnInit {
 
   onShowDeleteItemGroupModal(model: InventoryItemGroupModel) {
     this.showDeleteItemGroupModal.emit(model);
+  }
+
+  onShowEditItemGroupModal(model: InventoryItemGroupModel) {
+    this.showEditItemGroupModal.emit(model);
   }
 }

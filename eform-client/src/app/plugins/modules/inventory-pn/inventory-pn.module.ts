@@ -1,16 +1,30 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {EformSharedTagsModule} from 'src/app/common/modules/eform-shared-tags/eform-shared-tags.module';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { TranslateModule } from '@ngx-translate/core';
+import {
+  ButtonsModule,
+  InputsModule,
+  ModalModule,
+  TableModule,
+  TooltipModule,
+  WavesModule,
+} from 'angular-bootstrap-md';
+import {OwlDateTimeModule} from 'ng-pick-datetime-ex';
+import { EformSharedTagsModule } from 'src/app/common/modules/eform-shared-tags/eform-shared-tags.module';
+import { EformSharedModule } from 'src/app/common/modules/eform-shared/eform-shared.module';
+import { SharedPnModule } from '../shared/shared-pn.module';
 import {
   InventoryFoldersModalComponent,
   InventorySettingsComponent,
   InventorySiteAddModalComponent,
   InventorySiteRemoveModalComponent,
-  ItemCreateContainerComponent,
-  ItemCreateFormComponent,
+  ItemCreateModalComponent,
   ItemDeleteModalComponent,
-  ItemEditContainerComponent,
-  ItemEditFormComponent,
+  ItemEditModalComponent,
   ItemGroupCreateModalComponent,
   ItemGroupDeleteModalComponent,
   ItemGroupEditModalComponent,
@@ -31,28 +45,14 @@ import {
   ItemTypeTagsComponent,
 } from './components';
 import { InventoryPnRouting } from './inventory-pn.routing';
+import { InventoryPnLayoutComponent } from './layouts';
 import {
   InventoryPnItemGroupsService,
-  InventoryPnItemTypeTagsService,
   InventoryPnItemsService,
   InventoryPnItemTypesService,
+  InventoryPnItemTypeTagsService,
   InventoryPnSettingsService,
 } from './services';
-import {
-  ButtonsModule,
-  InputsModule,
-  ModalModule,
-  TableModule,
-  TooltipModule, WavesModule,
-} from 'angular-bootstrap-md';
-import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { RouterModule } from '@angular/router';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { EformSharedModule } from 'src/app/common/modules/eform-shared/eform-shared.module';
-import { SharedPnModule } from 'src/app/plugins/modules/shared/shared-pn.module';
-import { InventoryPnLayoutComponent } from './layouts';
 
 @NgModule({
   declarations: [
@@ -65,10 +65,8 @@ import { InventoryPnLayoutComponent } from './layouts';
     ItemsPageHeaderComponent,
     ItemsPageTableComponent,
     ItemDeleteModalComponent,
-    ItemCreateContainerComponent,
-    ItemCreateFormComponent,
-    ItemEditContainerComponent,
-    ItemEditFormComponent,
+    ItemCreateModalComponent,
+    ItemEditModalComponent,
     ItemTypesContainerComponent,
     ItemTypesHeaderComponent,
     ItemTypesTableComponent,
@@ -103,6 +101,7 @@ import { InventoryPnLayoutComponent } from './layouts';
     SharedPnModule,
     WavesModule,
     EformSharedTagsModule,
+    OwlDateTimeModule,
   ],
   providers: [
     InventoryPnItemsService,

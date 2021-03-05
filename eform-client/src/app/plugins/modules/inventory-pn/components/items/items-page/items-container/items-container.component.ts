@@ -7,13 +7,24 @@ import {
   updateTablePage,
   updateTableSorting,
 } from 'src/app/common/helpers';
-import { Paged, PageSettingsModel } from 'src/app/common/models';
+import {
+  CommonDictionaryModel,
+  Paged,
+  PageSettingsModel,
+} from 'src/app/common/models';
 import { SharedPnService } from 'src/app/plugins/modules/shared/services';
 import {
+  InventoryItemCreateModel,
+  InventoryItemGroupCreateModel,
+  InventoryItemGroupUpdateModel,
   InventoryItemModel,
   InventoryItemsRequestModel,
+  InventoryItemUpdateModel,
 } from '../../../../models';
-import { InventoryPnItemsService } from '../../../../services';
+import {
+  InventoryPnItemsService,
+  InventoryPnItemTypesService,
+} from '../../../../services';
 
 @AutoUnsubscribe()
 @Component({
@@ -23,17 +34,24 @@ import { InventoryPnItemsService } from '../../../../services';
 })
 export class ItemsContainerComponent implements OnInit, OnDestroy {
   @ViewChild('deleteItemModal', { static: false }) deleteItemModal;
+  @ViewChild('createItemModal', { static: false }) createItemModal;
+  @ViewChild('editItemModal', { static: false }) editItemModal;
   SNSearchSubject = new Subject();
   localPageSettings: PageSettingsModel = new PageSettingsModel();
   itemsModel: Paged<InventoryItemModel> = new Paged<InventoryItemModel>();
   itemsRequestModel: InventoryItemsRequestModel = new InventoryItemsRequestModel();
+  itemTypesList: CommonDictionaryModel[] = [];
 
   getItemsSub$: Subscription;
+  getItemGroupsDictionarySub$: Subscription;
+  updateItemSub$: Subscription;
+  createItemSub$: Subscription;
   deleteItemSub$: Subscription;
 
   constructor(
     private sharedPnService: SharedPnService,
-    private inventoryItemsService: InventoryPnItemsService
+    private itemsService: InventoryPnItemsService,
+    private itemTypesService: InventoryPnItemTypesService
   ) {
     this.SNSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
       this.itemsRequestModel.SNFilter = val.toString();
@@ -48,6 +66,7 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getLocalPageSettings();
     this.getItems();
+    this.getItemTypesDictionary();
   }
 
   getLocalPageSettings() {
@@ -72,7 +91,7 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
       ...this.itemsRequestModel,
       ...this.localPageSettings,
     };
-    this.getItemsSub$ = this.inventoryItemsService
+    this.getItemsSub$ = this.itemsService
       .getAllItems(this.itemsRequestModel)
       .subscribe((data) => {
         if (data && data.success) {
@@ -81,8 +100,18 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
       });
   }
 
+  getItemTypesDictionary() {
+    this.getItemGroupsDictionarySub$ = this.itemTypesService
+      .getAllItemTypesDictionary()
+      .subscribe((data) => {
+        if (data && data.success) {
+          this.itemTypesList = data.model;
+        }
+      });
+  }
+
   onDeleteItem(inventoryItemId: number) {
-    this.deleteItemSub$ = this.inventoryItemsService
+    this.deleteItemSub$ = this.itemsService
       .deleteItem(inventoryItemId)
       .subscribe((data) => {
         if (data && data.success) {
@@ -116,6 +145,28 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
 
   onSNFilterChanged(name: string) {
     this.SNSearchSubject.next(name);
+  }
+
+  onCreateItem(model: InventoryItemCreateModel) {
+    this.createItemSub$ = this.itemsService
+      .createItem(model)
+      .subscribe((data) => {
+        if (data && data.success) {
+          this.createItemModal.hide();
+          this.getItems();
+        }
+      });
+  }
+
+  onUpdateItem(model: InventoryItemUpdateModel) {
+    this.updateItemSub$ = this.itemsService
+      .updateItem(model)
+      .subscribe((data) => {
+        if (data && data.success) {
+          this.editItemModal.hide();
+          this.getItems();
+        }
+      });
   }
 
   ngOnDestroy(): void {}

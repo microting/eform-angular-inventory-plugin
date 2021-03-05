@@ -2,9 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard, PermissionGuard } from 'src/app/common/guards';
 import {
-  InventorySettingsComponent, ItemCreateContainerComponent, ItemEditContainerComponent,
+  InventorySettingsComponent,
   ItemGroupsContainerComponent,
-  ItemsContainerComponent, ItemTypeCreateContainerComponent, ItemTypeEditContainerComponent,
+  ItemsContainerComponent,
+  ItemTypeCreateContainerComponent,
+  ItemTypeEditContainerComponent,
   ItemTypesContainerComponent,
 } from './components';
 import { InventoryPnClaims } from './enums';
@@ -22,14 +24,6 @@ export const routes: Routes = [
       {
         path: 'inventory',
         component: ItemsContainerComponent,
-      },
-      {
-        path: 'item/edit/:id',
-        component: ItemEditContainerComponent,
-      },
-      {
-        path: 'item/create',
-        component: ItemCreateContainerComponent,
       },
       {
         path: 'item-groups',
