@@ -55,7 +55,7 @@
 ></app-item-group-create-modal>
 <app-item-group-edit-modal
   #editItemGroupModal
-  [itemGroupsList]="itemGroupsList"
+  [itemGroupsList]="itemGroupsFilteredList"
   (updateItemGroup)="onUpdateItemGroup($event)"
 ></app-item-group-edit-modal>
 <app-item-group-delete-modal

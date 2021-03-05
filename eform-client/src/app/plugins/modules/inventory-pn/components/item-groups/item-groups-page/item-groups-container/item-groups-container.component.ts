@@ -36,6 +36,7 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
   itemGroupsModel: Paged<InventoryItemGroupModel> = new Paged<InventoryItemGroupModel>();
   itemGroupsRequestModel: InventoryItemGroupsRequestModel = new InventoryItemGroupsRequestModel();
   itemGroupsList: CommonDictionaryModel[];
+  itemGroupsFilteredList: CommonDictionaryModel[];
 
   getItemGroupsSub$: Subscription;
   getItemGroupsDictionarySub$: Subscription;
@@ -112,6 +113,9 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
   }
 
   showEditItemGroupModal(model: InventoryItemGroupModel) {
+    this.itemGroupsFilteredList = [
+      ...this.itemGroupsList.filter((x) => x.id !== model.id),
+    ];
     this.editItemGroupModal.show(model);
   }
 
