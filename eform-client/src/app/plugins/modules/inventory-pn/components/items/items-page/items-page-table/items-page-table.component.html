@@ -221,7 +221,7 @@
               id="editItemBtn"
               class="btn btn-accent text-black-50 btn-icon mb-2"
               mdbTooltip="{{ 'Edit item' | translate }}"
-              [routerLink]="['./edit', itemModel.id]"
+              (click)="onShowEditItemModal(itemModel)"
             >
               <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
             </button>

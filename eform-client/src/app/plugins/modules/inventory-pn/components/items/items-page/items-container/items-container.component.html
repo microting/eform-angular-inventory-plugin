@@ -5,7 +5,7 @@
       id="itemCreateBtn"
       class="btn-success btn-small-height"
       mdbTooltip="{{ 'Create item' | translate }}"
-      [routerLink]="['./create']"
+      (click)="showCreateItemModal()"
     >
       {{ 'New item' | translate }}
     </button>
@@ -22,6 +22,7 @@
     [localPageSettings]="localPageSettings"
     [itemsModel]="itemsModel"
     (showDeleteItemModal)="showDeleteItemModal($event)"
+    (showEditItemModal)="showEditItemModal($event)"
     (sortTable)="sortTable($event)"
   ></app-items-page-table>
   <div class="row justify-content-between mr-2 ml-2">

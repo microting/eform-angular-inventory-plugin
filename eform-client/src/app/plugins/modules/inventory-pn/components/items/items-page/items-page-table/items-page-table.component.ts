@@ -27,6 +27,8 @@ export class ItemsPageTableComponent implements OnInit {
   @Output() sortTable: EventEmitter<string> = new EventEmitter<string>();
   @Output()
   showDeleteItemModal: EventEmitter<InventoryItemModel> = new EventEmitter<InventoryItemModel>();
+  @Output()
+  showEditItemModal: EventEmitter<InventoryItemModel> = new EventEmitter<InventoryItemModel>();
 
   constructor() {}
 
@@ -37,6 +39,10 @@ export class ItemsPageTableComponent implements OnInit {
   }
 
   onShowDeleteItemModal(model: InventoryItemModel) {
+    this.showDeleteItemModal.emit(model);
+  }
+
+  onShowEditItemModal(model: InventoryItemModel) {
     this.showDeleteItemModal.emit(model);
   }
 }

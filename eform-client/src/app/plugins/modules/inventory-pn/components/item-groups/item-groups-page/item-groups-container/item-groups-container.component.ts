@@ -1,26 +1,25 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import {
+  PluginClaimsHelper,
+  updateTablePage,
+  updateTableSorting,
+} from 'src/app/common/helpers';
 import {
   CommonDictionaryModel,
   Paged,
   PageSettingsModel,
 } from 'src/app/common/models';
+import { SharedPnService } from '../../../../../shared/services';
 import {
-  InventoryItemModel,
-  InventoryItemGroupsRequestModel,
-  InventoryItemGroupModel,
   InventoryItemGroupCreateModel,
+  InventoryItemGroupModel,
+  InventoryItemGroupsRequestModel,
   InventoryItemGroupUpdateModel,
 } from '../../../../models';
-import { SharedPnService } from '../../../../../shared/services';
 import { InventoryPnItemGroupsService } from '../../../../services';
-import { debounceTime } from 'rxjs/operators';
-import {
-  PluginClaimsHelper,
-  updateTableSorting,
-  updateTablePage,
-} from 'src/app/common/helpers';
-import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
 @AutoUnsubscribe()
 @Component({

@@ -169,4 +169,12 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {}
+
+  showCreateItemModal() {
+    this.createItemModal.show();
+  }
+
+  showEditItemModal(model: InventoryItemModel) {
+    this.editItemModal.show(model);
+  }
 }
