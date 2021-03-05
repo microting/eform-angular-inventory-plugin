@@ -86,7 +86,6 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
   }
 
   getItems() {
-    debugger;
     this.itemsRequestModel = {
       ...this.itemsRequestModel,
       ...this.localPageSettings,
