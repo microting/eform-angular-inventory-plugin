@@ -22,7 +22,6 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 {
     using System;
     using System.Collections.Generic;
-    using ItemGroup;
     using Microting.eFormInventoryBase.Infrastructure.Const;
 
     public class ItemTypeCreateModel

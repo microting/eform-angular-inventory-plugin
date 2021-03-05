@@ -56,7 +56,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
         }
 
 
-        public async Task<OperationDataResult<ItemGroupPnModel>> GetItemGroups(ItemGroupRequestModel itemGroupRequestModel)
+        public async Task<OperationDataResult<Paged<ItemGroupModel>>> GetItemGroups(ItemGroupRequestModel itemGroupRequestModel)
         {
             try
             {
@@ -103,18 +103,18 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
 
                 // add select and take objects from db
                 var inventoryItemGroupsFromDb = await AddSelectToItemGroupQuery(inventoryItemGroupQuery).ToListAsync();
-                var returnValue = new ItemGroupPnModel
+                var returnValue = new Paged<ItemGroupModel>
                 {
-                    ItemGroups = inventoryItemGroupsFromDb,
+                    Entities = inventoryItemGroupsFromDb,
                     Total = total,
                 };
 
-                return new OperationDataResult<ItemGroupPnModel>(true, returnValue);
+                return new OperationDataResult<Paged<ItemGroupModel>>(true, returnValue);
             }
             catch (Exception e)
             {
                 Trace.TraceError(e.Message);
-                return new OperationDataResult<ItemGroupPnModel>(false,
+                return new OperationDataResult<Paged<ItemGroupModel>>(false,
                     _inventoryLocalizationService.GetString("ErrorObtainingItemGroups"));
             }
         }

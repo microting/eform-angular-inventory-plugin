@@ -25,13 +25,13 @@ namespace Inventory.Pn.Services.InventoryItemService
     using System.Linq;
     using System.Threading.Tasks;
     using Infrastructure.Models.Item;
-    using Infrastructure.Models.ItemType;
     using InventoryLocalizationService;
     using Microsoft.EntityFrameworkCore;
     using Microting.eForm.Infrastructure.Constants;
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Extensions;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Microting.eFormInventoryBase.Infrastructure.Data;
     using Microting.eFormInventoryBase.Infrastructure.Data.Entities;
 
@@ -54,7 +54,7 @@ namespace Inventory.Pn.Services.InventoryItemService
             _dbContext = dbContext;
         }
 
-        public async Task<OperationDataResult<ItemPnModel>> GetItems(ItemRequestModel itemRequest)
+        public async Task<OperationDataResult<Paged<ItemModel>>> GetItems(ItemRequestModel itemRequest)
         {
             try
             {
@@ -101,18 +101,18 @@ namespace Inventory.Pn.Services.InventoryItemService
 
                 // add select and take objects from db
                 var inventoryItemsFromDb = await AddSelectToItemQuery(inventoryItemQuery).ToListAsync();
-                var returnValue = new ItemPnModel
+                var returnValue = new Paged<ItemModel>
                 {
-                    Items = inventoryItemsFromDb,
+                    Entities = inventoryItemsFromDb,
                     Total = total,
                 };
 
-                return new OperationDataResult<ItemPnModel>(true, returnValue);
+                return new OperationDataResult<Paged<ItemModel>>(true, returnValue);
             }
             catch (Exception e)
             {
                 Trace.TraceError(e.Message);
-                return new OperationDataResult<ItemPnModel>(false,
+                return new OperationDataResult<Paged<ItemModel>>(false,
                     _inventoryLocalizationService.GetString("ErrorObtainingItems"));
             }
         }

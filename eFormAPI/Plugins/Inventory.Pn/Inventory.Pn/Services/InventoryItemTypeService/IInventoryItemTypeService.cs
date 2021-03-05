@@ -20,13 +20,15 @@ SOFTWARE.
 
 namespace Inventory.Pn.Services.InventoryItemTypeService
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Infrastructure.Models.ItemType;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
 
     public interface IInventoryItemTypeService
     {
-        Task<OperationDataResult<ItemTypesPnModel>> GetItemTypes(ItemTypeRequest itemTypeRequest);
+        Task<OperationDataResult<Paged<ItemTypeModel>>> GetItemTypes(ItemTypeRequest itemTypeRequest);
 
         Task<OperationDataResult<ItemTypeSimpleModel>> GetItemTypeById(int itemTypeId);
 
@@ -35,5 +37,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
         Task<OperationResult> CreateItemType(ItemTypeCreateModel itemTypeCreateModel);
 
         Task<OperationResult> DeleteItemTypeById(int itemTypeId);
+
+        Task<OperationDataResult<List<CommonDictionaryModel>>> GetItemTypesDictionary();
     }
 }

@@ -41,7 +41,7 @@ namespace Inventory.Pn.Controllers
 
         [HttpPost]
         [Route("api/inventory-pn/item-groups/index")]
-        public async Task<OperationDataResult<ItemGroupPnModel>> Index(
+        public async Task<OperationDataResult<Paged<ItemGroupModel>>> Index(
             [FromBody] ItemGroupRequestModel inventoryItemTypeRequestModel)
         {
             return await _inventoryItemGroupService.GetItemGroups(inventoryItemTypeRequestModel);

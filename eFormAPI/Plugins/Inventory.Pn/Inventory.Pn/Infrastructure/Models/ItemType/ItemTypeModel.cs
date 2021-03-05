@@ -22,8 +22,8 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 {
     using System;
     using System.Collections.Generic;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Microting.eFormInventoryBase.Infrastructure.Const;
-    using Tag;
 
     public class ItemTypeModel
     {
@@ -74,7 +74,7 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
         public List<ItemTypeModel> ItemTypeDependency { get; set; }
             = new List<ItemTypeModel>();
 
-        public List<InventoryTagModel> Tags { get; set; }
-            = new List<InventoryTagModel>();
+        public List<CommonTagModel> Tags { get; set; }
+            = new List<CommonTagModel>();
     }
 }

@@ -20,11 +20,13 @@ SOFTWARE.
 
 namespace Inventory.Pn.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Infrastructure.Models.ItemType;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Services.InventoryItemTypeService;
 
     [Authorize]
@@ -44,7 +46,7 @@ namespace Inventory.Pn.Controllers
         /// <returns>Task&lt;OperationDataResult&lt;ItemTypesPnModel&gt;&gt;.</returns>
         [HttpPost]
         [Route("api/inventory-pn/item-types/index")]
-        public async Task<OperationDataResult<ItemTypesPnModel>> Index(
+        public async Task<OperationDataResult<Paged<ItemTypeModel>>> Index(
             [FromBody] ItemTypeRequest itemTypeRequest)
         {
             return await _inventoryItemTypeService.GetItemTypes(itemTypeRequest);
@@ -93,9 +95,16 @@ namespace Inventory.Pn.Controllers
         /// <returns>Task&lt;OperationResult&gt;.</returns>
         [HttpPost]
         [Route("api/inventory-pn/item-types")]
-        public async Task<OperationResult> CreateInventoryType([FromBody]ItemTypeCreateModel itemTypeCreateModel)
+        public async Task<OperationResult> CreateInventoryType([FromBody] ItemTypeCreateModel itemTypeCreateModel)
         {
             return await _inventoryItemTypeService.CreateItemType(itemTypeCreateModel);
+        }
+
+        [HttpGet]
+        [Route("api/inventory-pn/item-types/dictionary")]
+        public async Task<OperationDataResult<List<CommonDictionaryModel>>> Dictionary()
+        {
+            return await _inventoryItemTypeService.GetItemTypesDictionary();
         }
     }
 }

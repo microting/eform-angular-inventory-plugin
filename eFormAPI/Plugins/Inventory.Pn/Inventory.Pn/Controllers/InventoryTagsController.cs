@@ -22,10 +22,10 @@ namespace Inventory.Pn.Controllers
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Infrastructure.Models.Tag;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Services.InventoryTagsService;
 
     [Authorize]
@@ -45,7 +45,7 @@ namespace Inventory.Pn.Controllers
         /// <returns>Inventory tags.</returns>
         [HttpGet]
         [Route("api/inventory-pn/item-type-tags")]
-        public async Task<OperationDataResult<List<InventoryTagModel>>> GetInventoryTags()
+        public async Task<OperationDataResult<List<CommonTagModel>>> GetInventoryTags()
         {
             return await _inventoryTagsService.GetInventoryTags();
         }
@@ -57,7 +57,7 @@ namespace Inventory.Pn.Controllers
         /// <returns>Task&lt;OperationDataResult&lt;InventoryTagModel&gt;&gt;.</returns>
         [HttpGet]
         [Route("api/inventory-pn/item-type-tags/{id}")]
-        public async Task<OperationDataResult<InventoryTagModel>> GetInventoryTagById(int id)
+        public async Task<OperationDataResult<CommonTagModel>> GetInventoryTagById(int id)
         {
             return await _inventoryTagsService.GetInventoryTagById(id);
         }
@@ -69,7 +69,7 @@ namespace Inventory.Pn.Controllers
         /// <returns>Task&lt;OperationResult&gt;.</returns>
         [HttpPost]
         [Route("api/inventory-pn/item-type-tags")]
-        public async Task<OperationResult> CreateInventoryTag([FromBody] InventoryTagModel inventoryTagModel)
+        public async Task<OperationResult> CreateInventoryTag([FromBody] CommonTagModel inventoryTagModel)
         {
             return await _inventoryTagsService.CreateInventoryTag(inventoryTagModel);
         }
@@ -81,7 +81,7 @@ namespace Inventory.Pn.Controllers
         /// <returns>Task&lt;OperationResult&gt;.</returns>
         [HttpPut]
         [Route("api/inventory-pn/item-type-tags")]
-        public async Task<OperationResult> UpdateInventoryTag([FromBody] InventoryTagModel inventoryTagModel)
+        public async Task<OperationResult> UpdateInventoryTag([FromBody] CommonTagModel inventoryTagModel)
         {
             return await _inventoryTagsService.UpdateInventoryTag(inventoryTagModel);
         }

@@ -22,9 +22,8 @@ namespace Inventory.Pn.Services.InventoryTagsService
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Infrastructure.Models;
-    using Infrastructure.Models.Tag;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
 
     /// <summary>
     /// Interface IInventoryTagsService
@@ -35,21 +34,21 @@ namespace Inventory.Pn.Services.InventoryTagsService
         /// Gets the inventory tags.
         /// </summary>
         /// <returns>Task&lt;OperationDataResult&lt;List&lt;CommonDictionaryModel&gt;&gt;&gt;.</returns>
-        Task<OperationDataResult<List<InventoryTagModel>>> GetInventoryTags();
+        Task<OperationDataResult<List<CommonTagModel>>> GetInventoryTags();
 
         /// <summary>
         /// Gets the inventory tag by identifier.
         /// </summary>
         /// <param name="tagId">The tag identifier.</param>
         /// <returns>Task&lt;OperationDataResult&lt;CommonDictionaryModel&gt;&gt;.</returns>
-        Task<OperationDataResult<InventoryTagModel>> GetInventoryTagById(int tagId);
+        Task<OperationDataResult<CommonTagModel>> GetInventoryTagById(int tagId);
 
         /// <summary>
         /// Updates the inventory tag.
         /// </summary>
         /// <param name="requestModel">The request model.</param>
         /// <returns>Task&lt;OperationResult&gt;.</returns>
-        Task<OperationResult> UpdateInventoryTag(InventoryTagModel requestModel);
+        Task<OperationResult> UpdateInventoryTag(CommonTagModel requestModel);
 
         /// <summary>
         /// Deletes the inventory tag.
@@ -63,6 +62,6 @@ namespace Inventory.Pn.Services.InventoryTagsService
         /// </summary>
         /// <param name="requestModel">The request model.</param>
         /// <returns>Task&lt;OperationResult&gt;.</returns>
-        Task<OperationResult> CreateInventoryTag(InventoryTagModel requestModel);
+        Task<OperationResult> CreateInventoryTag(CommonTagModel requestModel);
     }
 }

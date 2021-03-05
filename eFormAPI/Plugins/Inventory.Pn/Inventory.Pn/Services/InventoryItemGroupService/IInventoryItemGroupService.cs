@@ -28,7 +28,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
 
     public interface IInventoryItemGroupService
     {
-        Task<OperationDataResult<ItemGroupPnModel>> GetItemGroups(ItemGroupRequestModel inventoryItemGroupRequestModel);
+        Task<OperationDataResult<Paged<ItemGroupModel>>> GetItemGroups(ItemGroupRequestModel inventoryItemGroupRequestModel);
 
         Task<OperationDataResult<ItemGroupModel>> GetItemGroupById(int itemGroupId);
 

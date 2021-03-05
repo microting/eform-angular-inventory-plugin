@@ -24,6 +24,7 @@ namespace Inventory.Pn.Controllers
     using Infrastructure.Models.Item;
     using Microsoft.AspNetCore.Mvc;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Services.InventoryItemService;
 
     public class InventoryItemController : Controller
@@ -38,7 +39,7 @@ namespace Inventory.Pn.Controllers
 
         [HttpPost]
         [Route("api/inventory-pn/item/index")]
-        public async Task<OperationDataResult<ItemPnModel>> Index(
+        public async Task<OperationDataResult<Paged<ItemModel>>> Index(
             [FromBody] ItemRequestModel itemRequestModel)
         {
             return await _inventoryItemService.GetItems(itemRequestModel);

@@ -21,7 +21,6 @@ SOFTWARE.
 namespace Inventory.Pn.Services.InventoryTagsService
 {
     using System;
-    using Infrastructure.Models;
     using Microsoft.Extensions.Logging;
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
@@ -29,10 +28,10 @@ namespace Inventory.Pn.Services.InventoryTagsService
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Infrastructure.Models.Tag;
     using InventoryLocalizationService;
     using Microsoft.EntityFrameworkCore;
     using Microting.eForm.Infrastructure.Constants;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Microting.eFormInventoryBase.Infrastructure.Data.Entities;
 
     /// <summary>
@@ -63,20 +62,20 @@ namespace Inventory.Pn.Services.InventoryTagsService
         }
 
         /// <summary>Gets the inventory tags.</summary>
-        public async Task<OperationDataResult<List<InventoryTagModel>>> GetInventoryTags()
+        public async Task<OperationDataResult<List<CommonTagModel>>> GetInventoryTags()
         {
             try
             {
                 var inventoryTags = await _dbContext.InventoryTags
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .AsNoTracking()
-                    .Select(x => new InventoryTagModel
+                    .Select(x => new CommonTagModel
                     {
                         Id = x.Id,
                         Name = x.Name
                     }).OrderBy(x => x.Name).ToListAsync();
 
-                return new OperationDataResult<List<InventoryTagModel>>(
+                return new OperationDataResult<List<CommonTagModel>>(
                     true,
                     inventoryTags);
             }
@@ -84,7 +83,7 @@ namespace Inventory.Pn.Services.InventoryTagsService
             {
                 Console.WriteLine(e);
                 _logger.LogError(e.Message);
-                return new OperationDataResult<List<InventoryTagModel>>(
+                return new OperationDataResult<List<CommonTagModel>>(
                     false,
                     _inventoryLocalizationService.GetString("ErrorWhileObtainingInventoryTags"));
             }
@@ -95,7 +94,7 @@ namespace Inventory.Pn.Services.InventoryTagsService
         /// </summary>
         /// <param name="tagId">The tag identifier.</param>
         /// <returns>Task&lt;OperationDataResult&lt;CommonDictionaryModel&gt;&gt;.</returns>
-        public async Task<OperationDataResult<InventoryTagModel>> GetInventoryTagById(int tagId)
+        public async Task<OperationDataResult<CommonTagModel>> GetInventoryTagById(int tagId)
         {
             try
             {
@@ -103,14 +102,14 @@ namespace Inventory.Pn.Services.InventoryTagsService
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .Where(x=> x.Id == tagId)
                     .AsNoTracking()
-                    .Select(x => new InventoryTagModel
+                    .Select(x => new CommonTagModel
                     {
                         Id = x.Id,
                         Name = x.Name
                     }).OrderBy(x => x.Name)
                     .FirstAsync();
 
-                return new OperationDataResult<InventoryTagModel>(
+                return new OperationDataResult<CommonTagModel>(
                     true,
                     inventoryTags);
             }
@@ -118,7 +117,7 @@ namespace Inventory.Pn.Services.InventoryTagsService
             {
                 Console.WriteLine(e);
                 _logger.LogError(e.Message);
-                return new OperationDataResult<InventoryTagModel>(
+                return new OperationDataResult<CommonTagModel>(
                     false,
                     _inventoryLocalizationService.GetString("ErrorWhileObtainingInventoryTag"));
             }
@@ -129,7 +128,7 @@ namespace Inventory.Pn.Services.InventoryTagsService
         /// </summary>
         /// <param name="requestModel">The request model.</param>
         /// <returns>Task&lt;OperationResult&gt;.</returns>
-        public async Task<OperationResult> CreateInventoryTag(InventoryTagModel requestModel)
+        public async Task<OperationResult> CreateInventoryTag(CommonTagModel requestModel)
         {
             try
             {
@@ -209,7 +208,7 @@ namespace Inventory.Pn.Services.InventoryTagsService
         /// </summary>
         /// <param name="requestModel">The request model.</param>
         /// <returns>Task&lt;OperationResult&gt;.</returns>
-        public async Task<OperationResult> UpdateInventoryTag(InventoryTagModel requestModel)
+        public async Task<OperationResult> UpdateInventoryTag(CommonTagModel requestModel)
         {
             try
             {

@@ -22,7 +22,7 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 {
     using System;
     using System.Collections.Generic;
-    using Tag;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
 
     public class ItemTypeSimpleModel
     {
@@ -48,7 +48,7 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 
         public int EformId { get; set; }
         
-        public List<InventoryTagModel> Tags { get; set; }
-            = new List<InventoryTagModel>();
+        public List<CommonTagModel> Tags { get; set; }
+            = new List<CommonTagModel>();
     }
 }

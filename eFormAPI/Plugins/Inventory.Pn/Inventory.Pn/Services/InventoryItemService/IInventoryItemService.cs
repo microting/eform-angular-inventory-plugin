@@ -23,10 +23,11 @@ namespace Inventory.Pn.Services.InventoryItemService
     using System.Threading.Tasks;
     using Infrastructure.Models.Item;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
 
     public interface IInventoryItemService
     {
-        Task<OperationDataResult<ItemPnModel>> GetItems(ItemRequestModel itemRequest);
+        Task<OperationDataResult<Paged<ItemModel>>> GetItems(ItemRequestModel itemRequest);
 
         //Task<OperationDataResult<ItemModel>> GetItemById(int itemId);
 
