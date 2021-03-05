@@ -133,8 +133,8 @@ namespace Inventory.Pn
                     new MenuItemModel
                     {
                         Name = localizationService.GetString("Inventory"),
-                        E2EId = "inventory-pn-inventory",
-                        Link = "/plugins/inventory-pn/inventory",
+                        E2EId = "inventory-pn-items",
+                        Link = "/plugins/inventory-pn/items",
                         Guards = new List<string> { InventoryClaims.GetInventory },
                         Position = 0,
                     },
@@ -179,16 +179,16 @@ namespace Inventory.Pn
                         {
                             new PluginMenuItemModel
                             {
-                                Name = "Inventory",
-                                E2EId = "inventory-pn-inventory",
-                                Link = "/plugins/inventory-pn/inventory",
+                                Name = "Items",
+                                E2EId = "inventory-pn-items",
+                                Link = "/plugins/inventory-pn/items",
                                 Type = MenuItemTypeEnum.Link,
                                 Position = 0,
                                 MenuTemplate = new PluginMenuTemplateModel()
                                 {
-                                    Name = "Inventory",
-                                    E2EId = "inventory-pn-inventory",
-                                    DefaultLink = "/plugins/inventory-pn/inventory",
+                                    Name = "Items",
+                                    E2EId = "inventory-pn-items",
+                                    DefaultLink = "/plugins/inventory-pn/items",
                                     Permissions = new List<PluginMenuTemplatePermissionModel>()
                                     {
                                         new PluginMenuTemplatePermissionModel
@@ -225,19 +225,19 @@ namespace Inventory.Pn
                                     new PluginMenuTranslationModel
                                     {
                                         LocaleName = LocaleNames.English,
-                                        Name = "Inventory",
+                                        Name = "Items",
                                         Language = LanguageNames.English,
                                     },
                                     new PluginMenuTranslationModel
                                     {
                                         LocaleName = LocaleNames.German,
-                                        Name = "Inventar",
+                                        Name = "Gegenst",
                                         Language = LanguageNames.German,
                                     },
                                     new PluginMenuTranslationModel
                                     {
                                         LocaleName = LocaleNames.Danish,
-                                        Name = "Opgørelse",
+                                        Name = "Element",
                                         Language = LanguageNames.Danish,
                                     },
                                 }

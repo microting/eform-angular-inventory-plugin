@@ -8,6 +8,14 @@
     }
   },
   {
+    "Key": "Items",
+    "LocalizedValue": {
+      "da": "Element",
+      "en-US": "Items",
+      "de-DE": "Gegenst"
+    }
+  },
+  {
     "Key": "ErrorWhileObtainingInventorySettings",
     "LocalizedValue": {
       "da": "Fejl under opnåelse af lagerindstillinger",

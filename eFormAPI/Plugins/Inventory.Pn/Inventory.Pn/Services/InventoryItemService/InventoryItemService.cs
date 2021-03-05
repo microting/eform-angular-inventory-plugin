@@ -240,12 +240,13 @@ namespace Inventory.Pn.Services.InventoryItemService
             return inventoryItemQuery.Select(x => new ItemModel
             {
                 Available = x.Available,
-                CustomerId = (int) x.CustomerId,
+                CustomerId = x.CustomerId,
                 ExpirationDate = x.ExpirationDate,
                 Id = x.Id,
                 SN = x.SN,
                 Location = x.Location,
-                ItemType = _dbContext.ItemTypes
+                ItemType = x.ItemTypeId != null ? 
+                    _dbContext.ItemTypes
                     .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                     .Where(y => y.Id == x.ItemTypeId)
                     .Select(y => new ItemDependencyItemType
@@ -253,7 +254,8 @@ namespace Inventory.Pn.Services.InventoryItemService
                         Name = y.Name,
                         Id = x.Id,
                     })
-                    .FirstOrDefault(),
+                    .FirstOrDefault()
+                : null,
             });
         }
     }

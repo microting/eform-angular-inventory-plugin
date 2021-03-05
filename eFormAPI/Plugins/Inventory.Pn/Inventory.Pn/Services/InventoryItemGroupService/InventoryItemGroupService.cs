@@ -290,14 +290,16 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                     Name = x.Name,
                     Code = x.Code,
                     Id = x.Id,
-                    Parent = _dbContext.ItemGroups
+                    Parent = x.ParentId != null 
+                        ? _dbContext.ItemGroups
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                        .Select(y => new ItemGroupDependencyItemGroup()
+                        .Select(y => new ItemGroupDependencyItemGroup
                         {
                             Name = y.Name,
                             Id = y.Id,
                         })
-                        .FirstOrDefault(y => y.Id == x.ParentId),
+                        .FirstOrDefault(y => y.Id == x.ParentId)
+                        : null,
                 });
         }
     }
