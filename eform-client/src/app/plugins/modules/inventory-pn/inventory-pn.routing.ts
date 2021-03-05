@@ -22,7 +22,7 @@ export const routes: Routes = [
     },
     children: [
       {
-        path: 'inventory',
+        path: 'items',
         component: ItemsContainerComponent,
       },
       {
