@@ -13,8 +13,7 @@ import { InventoryItemCreateModel } from '../../../../models';
 @Component({
   selector: 'app-item-create-modal',
   templateUrl: './item-create-modal.component.html',
-  styleUrls: ['./item-create-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./item-create-modal.component.scss']
 })
 export class ItemCreateModalComponent implements OnInit {
   @ViewChild('frame', { static: false }) frame;

@@ -13,8 +13,7 @@ import { InventoryItemGroupCreateModel } from '../../../../models';
 @Component({
   selector: 'app-item-group-create-modal',
   templateUrl: './item-group-create-modal.component.html',
-  styleUrls: ['./item-group-create-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./item-group-create-modal.component.scss']
 })
 export class ItemGroupCreateModalComponent implements OnInit {
   @ViewChild('frame', { static: false }) frame;

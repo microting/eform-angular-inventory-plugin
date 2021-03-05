@@ -11,8 +11,7 @@ import { InventoryItemModel } from '../../../../models';
 @Component({
   selector: 'app-item-delete-modal',
   templateUrl: './item-delete-modal.component.html',
-  styleUrls: ['./item-delete-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./item-delete-modal.component.scss']
 })
 export class ItemDeleteModalComponent implements OnInit {
   @ViewChild('frame', { static: false }) frame;
