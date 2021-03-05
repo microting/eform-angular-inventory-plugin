@@ -153,6 +153,7 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
         if (data && data.success) {
           this.createItemGroupModal.hide();
           this.getItemGroups();
+          this.getItemGroupsDictionary();
         }
       });
   }
@@ -164,6 +165,7 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
         if (data && data.success) {
           this.editItemGroupModal.hide();
           this.getItemGroups();
+          this.getItemGroupsDictionary();
         }
       });
   }
@@ -175,6 +177,7 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
         if (data && data.success) {
           this.deleteItemGroupModal.hide();
           this.getItemGroups();
+          this.getItemGroupsDictionary();
         }
       });
   }
