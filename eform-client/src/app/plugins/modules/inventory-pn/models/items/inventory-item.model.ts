@@ -5,6 +5,6 @@ export class InventoryItemModel {
   location: string;
   customerId: number;
   expirationDate: Date | string;
-  SN: string;
+  sn: string;
   available: boolean;
 }

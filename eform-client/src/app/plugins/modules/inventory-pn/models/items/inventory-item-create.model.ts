@@ -3,6 +3,6 @@ export class InventoryItemCreateModel {
   location: string;
   customerId: number;
   expirationDate: string;
-  SN: string;
+  sn: string;
   available: boolean;
 }

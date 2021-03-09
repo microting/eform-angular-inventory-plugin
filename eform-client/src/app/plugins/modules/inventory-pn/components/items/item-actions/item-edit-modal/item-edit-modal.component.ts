@@ -36,7 +36,7 @@ export class ItemEditModalComponent implements OnInit {
       expirationDate: model.expirationDate,
       itemTypeId: model.itemType ? model.itemType.id : null,
       location: model.location,
-      SN: model.SN,
+      sn: model.sn,
     };
     this.frame.show();
   }

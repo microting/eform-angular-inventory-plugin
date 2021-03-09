@@ -190,12 +190,43 @@
             >
           </div>
         </th>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="StatusTableHeader"
+          (click)="onSortTable('Available')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            {{ 'Status' | translate }}
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'Available'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Available' &&
+                !itemsRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Available' &&
+                itemsRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
         <th scope="col">
           {{ 'Actions' | translate }}
         </th>
       </tr>
     </thead>
-    <tbody id="tableBody">
+    <tbody id="tableBodyInventoryItems">
       <tr *ngFor="let itemModel of itemsModel.entities; let i = index">
         <td id="itemId">
           {{ itemModel.id }}
@@ -212,8 +243,14 @@
             [Format]="'datetime'"
           ></date-formatter>
         </td>
+        <td id="itemSN">
+          {{ itemModel.sn }}
+        </td>
         <td id="itemGroup">
           {{ itemModel.itemGroup ? itemModel.itemGroup.name : '' }}
+        </td>
+        <td id="itemStatus">
+          {{ itemModel.available ? ('On' | translate) : ('Off' | translate) }}
         </td>
         <td>
           <div class="d-flex flex-row justify-content-center">

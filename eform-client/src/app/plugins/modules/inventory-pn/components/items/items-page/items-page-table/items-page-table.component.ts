@@ -43,6 +43,6 @@ export class ItemsPageTableComponent implements OnInit {
   }
 
   onShowEditItemModal(model: InventoryItemModel) {
-    this.showDeleteItemModal.emit(model);
+    this.showEditItemModal.emit(model);
   }
 }
