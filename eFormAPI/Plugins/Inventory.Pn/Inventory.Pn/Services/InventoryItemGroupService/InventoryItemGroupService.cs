@@ -1,4 +1,4 @@
-﻿/*
+/*
 The MIT License (MIT)
 Copyright (c) 2007 - 2021 Microting A/S
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -61,7 +61,6 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
             try
             {
                 var inventoryItemGroupQuery = _dbContext.ItemGroups
-                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .AsQueryable();
 
                 // sort
@@ -91,6 +90,8 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                         .Where(x => x.Name.Contains(itemGroupRequestModel.NameFilter));
                 }
 
+                inventoryItemGroupQuery = inventoryItemGroupQuery
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed);
 
                 // calculate total before pagination
                 var total = inventoryItemGroupQuery.Count();

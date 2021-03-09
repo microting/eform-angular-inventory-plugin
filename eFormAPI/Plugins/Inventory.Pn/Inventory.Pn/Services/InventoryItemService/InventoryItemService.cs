@@ -1,4 +1,4 @@
-﻿/*
+/*
 The MIT License (MIT)
 Copyright (c) 2007 - 2021 Microting A/S
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -59,7 +59,6 @@ namespace Inventory.Pn.Services.InventoryItemService
             try
             {
                 var inventoryItemQuery = _dbContext.Items
-                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .AsQueryable();
 
                 // sort
@@ -81,6 +80,9 @@ namespace Inventory.Pn.Services.InventoryItemService
                     inventoryItemQuery = _dbContext.Items
                         .OrderBy(x => x.Id);
                 }
+
+                inventoryItemQuery = inventoryItemQuery
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed);
 
                 // filter by name
                 if (!string.IsNullOrEmpty(itemRequest.SnFilter))

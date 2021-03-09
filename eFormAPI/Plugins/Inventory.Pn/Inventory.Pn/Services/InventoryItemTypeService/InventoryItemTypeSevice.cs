@@ -239,7 +239,6 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
             try
             {
                 var inventoryItemTypeQuery = _dbContext.ItemTypes
-                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .AsQueryable();
 
                 // sort
@@ -280,6 +279,9 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                                 .Any(y => y.Id == tagId));
                     }
                 }
+
+                inventoryItemTypeQuery = inventoryItemTypeQuery
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed);
 
                 // calculate total before pagination
                 var total = inventoryItemTypeQuery.Count();
