@@ -29,5 +29,7 @@ namespace Inventory.Pn.Infrastructure.Models.Item
         public string Sort { get; set; }
 
         public bool IsSortDsc { get; set; }
+
+        public int? ItemGroupId { get; set; }
     }
 }

@@ -91,6 +91,12 @@ namespace Inventory.Pn.Services.InventoryItemService
                         .Where(x => x.SN.Contains(itemRequest.SnFilter));
                 }
 
+                // filter by item group
+                if (itemRequest.ItemGroupId.HasValue)
+                {
+                    inventoryItemQuery = inventoryItemQuery
+                        .Where(x => x.ItemType.ItemGroupId == itemRequest.ItemGroupId);
+                }
 
                 // calculate total before pagination
                 var total = inventoryItemQuery.Count();
@@ -247,18 +253,34 @@ namespace Inventory.Pn.Services.InventoryItemService
                 Id = x.Id,
                 SN = x.SN,
                 Location = x.Location,
-                ItemType = x.ItemTypeId != null ? 
-                    _dbContext.ItemTypes
-                    .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                    .Where(y => y.Id == x.ItemTypeId)
-                    .Select(y => new ItemDependencyItemType
+                ItemType = _dbContext.ItemTypes
+                .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                .Where(y => y.Id == x.ItemTypeId)
+                .Select(y => new CommonDictionaryModel
                     {
                         Name = y.Name,
                         Id = x.Id,
                     })
-                    .FirstOrDefault()
-                : null,
+                    .FirstOrDefault(),
+                ItemGroup = _dbContext.ItemGroups
+                    .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Where(y => y.Id == _dbContext.ItemTypes
+                        .Where(z => z.WorkflowState != Constants.WorkflowStates.Removed)
+                        .Where(z => z.Id == x.ItemTypeId).Select(z => z.ItemGroupId).FirstOrDefault())
+                    .Select(y => new CommonDictionaryModel
+                    {
+                        Name = y.Name,
+                        Description = y.Description,
+                        Id = y.Id,
+                    }).FirstOrDefault(),
             });
+        }
+
+        private IQueryable<ItemType> GetQueryItemType(int? itemTypeId)
+        {
+            return _dbContext.ItemTypes
+                 .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                 .Where(y => y.Id == itemTypeId);
         }
     }
 }

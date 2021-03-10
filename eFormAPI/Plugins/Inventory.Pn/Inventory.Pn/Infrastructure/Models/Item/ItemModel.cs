@@ -21,12 +21,13 @@ SOFTWARE.
 namespace Inventory.Pn.Infrastructure.Models.Item
 {
     using System;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
 
     public class ItemModel
     {
         public int Id { get; set; }
 
-        public ItemDependencyItemType ItemType { get; set; }
+        public CommonDictionaryModel ItemType { get; set; }
 
         public string Location { get; set; }
 
@@ -37,5 +38,7 @@ namespace Inventory.Pn.Infrastructure.Models.Item
         public string SN { get; set; }
 
         public bool Available { get; set; }
+
+        public CommonDictionaryModel ItemGroup { get; set; }
     }
 }

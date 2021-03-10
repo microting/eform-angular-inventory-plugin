@@ -77,30 +77,20 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 {
                     Name = itemTypeCreateModel.Name,
                     Description = itemTypeCreateModel.Description,
-                    NetWeight = itemTypeCreateModel.NetWeight,
-                    GrossWeight = itemTypeCreateModel.GrossWeight,
-                    UnitVolume = itemTypeCreateModel.UnitVolume,
-                    CostingMethod = itemTypeCreateModel.CostingMethod,
-                    ProfitPercent = itemTypeCreateModel.ProfitPercent,
-                    Region = itemTypeCreateModel.Region,
                     CreatedByUserId = _userService.UserId,
-                    GtinEanUpc = itemTypeCreateModel.GtinEanUpc,
-                    LastPhysicalInventoryDate = itemTypeCreateModel.LastPhysicalInventoryDate,
                     UpdatedByUserId = _userService.UserId,
-                    UnitPrice = itemTypeCreateModel.UnitPrice,
-                    No = itemTypeCreateModel.No,
                     Usage = itemTypeCreateModel.Usage,
                     RiskDescription = itemTypeCreateModel.RiskDescription,
-                    SalesUnitOfMeasure = itemTypeCreateModel.SalesUnitOfMeasure,
-                    EformId = itemTypeCreateModel.EformId,
-                    Comment = itemTypeCreateModel.Comment,
-                    BaseUnitOfMeasure = itemTypeCreateModel.BaseUnitOfMeasure,
                     ItemGroupId = itemTypeCreateModel.ItemGroupId,
-                    StandardCost = itemTypeCreateModel.StandardCost,
-                    UnitCost = itemTypeCreateModel.UnitCost,
                 };
                 await itemType.Create(_dbContext);
 
+                //foreach (var dependency in itemTypeCreateModel.Dependencies)
+                //{
+
+                //}
+
+                // creating a dependency between tag and item type
                 foreach (var itemTypeTag in tags.Select(inventoryTag => new ItemTypeTag
                 {
                     CreatedByUserId = _userService.UserId,
@@ -325,28 +315,12 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     return new OperationResult(false, _inventoryLocalizationService.GetString("InventoryItemTypeNotFount"));
                 }
 
-                itemTypesFromDb.LastPhysicalInventoryDate = model.LastPhysicalInventoryDate;
-                itemTypesFromDb.SalesUnitOfMeasure = model.SalesUnitOfMeasure;
-                itemTypesFromDb.BaseUnitOfMeasure = model.BaseUnitOfMeasure;
                 itemTypesFromDb.RiskDescription = model.RiskDescription;
                 itemTypesFromDb.UpdatedByUserId = _userService.UserId;
-                itemTypesFromDb.ProfitPercent = model.ProfitPercent;
-                itemTypesFromDb.CostingMethod = model.CostingMethod;
-                itemTypesFromDb.StandardCost = model.StandardCost;
-                itemTypesFromDb.ItemGroupId = model.ItemGroup?.Id;
+                itemTypesFromDb.ItemGroupId = model.ItemGroupId;
                 itemTypesFromDb.Description = model.Description;
-                itemTypesFromDb.GrossWeight = model.GrossWeight;
-                itemTypesFromDb.GtinEanUpc = model.GtinEanUpc;
-                itemTypesFromDb.UnitVolume = model.UnitVolume;
-                itemTypesFromDb.UnitPrice = model.UnitPrice;
-                itemTypesFromDb.NetWeight = model.NetWeight;
-                itemTypesFromDb.UnitCost = model.UnitCost;
-                itemTypesFromDb.EformId = model.EformId;
-                itemTypesFromDb.Comment = model.Comment;
-                itemTypesFromDb.Region = model.Region;
                 itemTypesFromDb.Usage = model.Usage;
                 itemTypesFromDb.Name = model.Name;
-                itemTypesFromDb.No = model.No;
 
                 await itemTypesFromDb.Update(_dbContext);
 
@@ -404,47 +378,31 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
             return itemTypeQuery
                  .Select(x => new ItemTypeModel
                  {
-                     LastPhysicalInventoryDate = x.LastPhysicalInventoryDate,
-                     SalesUnitOfMeasure = x.SalesUnitOfMeasure,
-                     BaseUnitOfMeasure = x.BaseUnitOfMeasure,
                      RiskDescription = x.RiskDescription,
-                     ProfitPercent = x.ProfitPercent,
-                     CostingMethod = x.CostingMethod,
-                     StandardCost = x.StandardCost,
                      Description = x.Description,
-                     GrossWeight = x.GrossWeight,
-                     GtinEanUpc = x.GtinEanUpc,
-                     UnitVolume = x.UnitVolume,
-                     NetWeight = x.NetWeight,
-                     UnitPrice = x.UnitPrice,
-                     UnitCost = x.UnitCost,
-                     Comment = x.Comment,
-                     EformId = x.EformId,
-                     Region = x.Region,
                      Usage = x.Usage,
                      Name = x.Name,
                      Id = x.Id,
-                     No = x.No,
-                     Tags = dbContext.ItemTypeTags
+                     TagIds = dbContext.ItemTypeTags
                          .Where(y => y.ItemTypeId == x.Id)
                          .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                         .Select(y => new CommonTagModel
-                         {
-                             Name = y.InventoryTag.Name,
-                             Id = y.InventoryTag.Id
-                         })
+                         .Select(y => y.InventoryTag.Id)
                          .ToList(),
-                     ItemGroupDependency = GetGroupDependencyByItemTypeId(x.Id, dbContext),
-                     ItemTypeDependency = dbContext.ItemTypeDependencys
-                         .Where(y => y.ItemTypeId == x.Id)
-                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                         .Select(y => new CommonDictionaryModel
-                         {
-                             Description = y.DependItemType.Description,
-                             Name = y.DependItemType.Name,
-                             Id = y.DependItemType.Id,
-                         })
-                         .ToList(),
+                     //Dependencies = new List<ItemTypeDependencies>
+                     //{
+                     //    new ItemTypeDependencies()
+                     //}
+                     //ItemGroupDependency = GetGroupDependencyByItemTypeId(x.Id, dbContext),
+                     //ItemTypeDependency = dbContext.ItemTypeDependencys
+                     //    .Where(y => y.ItemTypeId == x.Id)
+                     //    .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                     //    .Select(y => new CommonDictionaryModel
+                     //    {
+                     //        Description = y.DependItemType.Description,
+                     //        Name = y.DependItemType.Name,
+                     //        Id = y.DependItemType.Id,
+                     //    })
+                     //    .ToList(),
                  });
         }
 

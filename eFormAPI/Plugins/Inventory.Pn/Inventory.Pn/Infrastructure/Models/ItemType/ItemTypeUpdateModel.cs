@@ -20,45 +20,15 @@ SOFTWARE.
 
 namespace Inventory.Pn.Infrastructure.Models.ItemType
 {
-    using System;
-    using ItemGroup;
-    using Microting.eFormInventoryBase.Infrastructure.Const;
+    using System.Collections.Generic;
 
     public class ItemTypeUpdateModel
     {
         public int Id { get; set; }
 
-        public string No { get; set; }
-
-        public string GtinEanUpc { get; set; }
-
         public string Description { get; set; }
 
-        public string BaseUnitOfMeasure { get; set; }
-
-        public int NetWeight { get; set; }
-
-        public int GrossWeight { get; set; }
-
-        public int UnitVolume { get; set; }
-
-        public int StandardCost { get; set; }
-
-        public int UnitCost { get; set; }
-
-        public CostingMethod CostingMethod { get; set; }
-
-        public int UnitPrice { get; set; }
-
-        public int ProfitPercent { get; set; }
-
-        public UnitOfMeasure SalesUnitOfMeasure { get; set; }
-
-        public DateTime LastPhysicalInventoryDate { get; set; }
-
-        public int Region { get; set; }
-
-        public ItemGroupModel ItemGroup { get; set; }
+        public int ItemGroupId { get; set; }
 
         public string Usage { get; set; }
 
@@ -66,9 +36,11 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 
         public string Name { get; set; }
 
-        public int EformId { get; set; }
+        public List<int> TagIds { get; set; }
+            = new List<int>();
 
-        public string Comment { get; set; }
+        public List<ItemTypeDependencies> Dependencies { get; set; }
+            = new List<ItemTypeDependencies>();
 
     }
 }

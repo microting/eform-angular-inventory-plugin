@@ -18,12 +18,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace Inventory.Pn.Infrastructure.Models.Item
+namespace Inventory.Pn.Infrastructure.Models.ItemType
 {
-    public class ItemDependencyItemType
-    {
-        public int Id { get; set; }
+    using System.Collections.Generic;
 
-        public string Name { get; set; }
+    public class ItemTypeDependencies
+    {
+        public int ItemGroupId { get; set; }
+
+        public List<int> ItemTypesIds { get; set; }
     }
 }
