@@ -1,21 +1,28 @@
 export class InventoryItemTypeCreateModel {
-  no: string;
+  // no: string;
+  // name: string;
+  // gtinEanUpc: string;
+  // description: string;
+  // netWeight: number;
+  // grossWeight: number;
+  // unitVolume: number;
+  // costingMethod: number; // CostingMethod
+  // unitPrice: number;
+  // profitPercent: number;
+  // salesUnitOfMeasure: number; // UnitOfMeasure
+  // lastPhysicalInventoryDate: string;
+  // region: number;
+  // usage: string;
+  // riscDescription: string;
+  // available: boolean;
+  // eformId: number;
+  // comment: string;
+  // tagIds: number[];
+  itemGroupId: number;
   name: string;
-  gtinEanUpc: string;
-  description: string;
-  netWeight: number;
-  grossWeight: number;
-  unitVolume: number;
-  costingMethod: number; // CostingMethod
-  unitPrice: number;
-  profitPercent: number;
-  salesUnitOfMeasure: number; // UnitOfMeasure
-  lastPhysicalInventoryDate: string;
-  region: number;
+  riskDescription: string;
   usage: string;
-  riscDescription: string;
-  available: boolean;
-  eformId: number;
-  comment: string;
+  description: string;
   tagIds: number[];
+  dependencies: [{itemGroupId: number, itemTypesIds: number[]}];
 }

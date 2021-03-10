@@ -1,4 +1,16 @@
 <div class="row pl-1">
+  <div class="col-md-2">
+    <div class="md-form">
+      <input
+        mdbInput
+        type="text"
+        (input)="onNameFilterChanged($event.target.value)"
+        class="form-control input-sm"
+        id="nameFilterInput"
+      />
+      <label for="nameFilterInput">{{ 'Name' | translate }}</label>
+    </div>
+  </div>
   <div class="col-md-4 col-sm-8 ng-select-wrapper">
     <ng-select
       class="custom"
@@ -14,17 +26,5 @@
       id="tagSelector"
       [multiple]="true"
     ></ng-select>
-  </div>
-  <div class="col-md-2">
-    <div class="md-form">
-      <input
-        mdbInput
-        type="text"
-        (input)="onNameFilterChanged($event.target.value)"
-        class="form-control input-sm"
-        id="nameFilterInput"
-      />
-      <label for="nameFilterInput">{{ 'Name' | translate }}</label>
-    </div>
   </div>
 </div>

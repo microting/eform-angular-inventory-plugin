@@ -11,7 +11,7 @@ import {
 } from 'src/app/common/models/operation.models';
 import { BaseService } from 'src/app/common/services/base.service';
 import {
-  InventoryItemCreateModel,
+  InventoryItemTypeCreateModel,
   InventoryItemTypeModel,
   InventoryItemTypeSimpleModel,
   InventoryItemTypesRequestModel,
@@ -60,7 +60,9 @@ export class InventoryPnItemTypesService extends BaseService {
     return this.put(InventoryPnItemTypesMethods.ItemTypes, model);
   }
 
-  createItemType(model: InventoryItemCreateModel): Observable<OperationResult> {
+  createItemType(
+    model: InventoryItemTypeCreateModel
+  ): Observable<OperationResult> {
     return this.post(InventoryPnItemTypesMethods.ItemTypes, model);
   }
 

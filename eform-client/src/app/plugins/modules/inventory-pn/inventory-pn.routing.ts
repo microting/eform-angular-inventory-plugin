@@ -34,11 +34,11 @@ export const routes: Routes = [
         component: ItemTypesContainerComponent,
       },
       {
-        path: 'item-type/edit/:id',
+        path: 'item-types/edit/:id',
         component: ItemTypeEditContainerComponent,
       },
       {
-        path: 'item-type/create',
+        path: 'item-types/create',
         component: ItemTypeCreateContainerComponent,
       },
       {

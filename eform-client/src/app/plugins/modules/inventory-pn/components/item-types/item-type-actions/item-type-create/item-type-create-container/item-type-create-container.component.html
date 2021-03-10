@@ -1,1 +1,34 @@
-<p>item-type-create-container works!</p>
+<subheader-pn [title]="'New planning' | translate">
+  <div class="p-3">
+    <button
+      mdbBtn
+      id="itemTypeCreateSaveBtn"
+      class="btn-success btn-small-height"
+      (click)="createItemType()"
+    >
+      {{ 'Create' | translate }}
+    </button>
+    <button
+      mdbBtn
+      id="itemTypeCreateCancelBtn"
+      class="btn-accent text-black-50 btn-small-height"
+      (click)="goBack()"
+    >
+      {{ 'Cancel' | translate }}
+    </button>
+  </div>
+</subheader-pn>
+
+<div class="container-fluid">
+  <div class="row mt-2">
+    <div class="col-md-12 col-xs-12" role="main">
+      <app-item-type-create-form
+        [newItemTypeForm]="newItemTypeForm"
+        [availableItemGroups]="availableItemGroups"
+        [availableItemTypes]="availableItemTypes"
+        [dependencies]="itemTypeDependencies"
+        (createNewDependency)="addNewDependency()"
+      ></app-item-type-create-form>
+    </div>
+  </div>
+</div>

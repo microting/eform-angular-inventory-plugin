@@ -1,17 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import {
-  ButtonsModule,
-  InputsModule,
-  ModalModule,
-  TableModule,
-  TooltipModule,
-  WavesModule,
+    ButtonsModule, CardsModule,
+    InputsModule,
+    ModalModule,
+    TableModule,
+    TooltipModule,
+    WavesModule,
 } from 'angular-bootstrap-md';
 import {OwlDateTimeModule} from 'ng-pick-datetime-ex';
 import { EformSharedTagsModule } from 'src/app/common/modules/eform-shared-tags/eform-shared-tags.module';
@@ -53,6 +53,7 @@ import {
   InventoryPnItemTypeTagsService,
   InventoryPnSettingsService,
 } from './services';
+import { ItemTypeImagesComponent } from './components/item-types/item-type-actions/item-type-images/item-type-images.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,8 @@ import {
     ItemGroupDeleteModalComponent,
 
     ItemTypeTagsComponent,
+
+    ItemTypeImagesComponent,
   ],
   imports: [
     CommonModule,
@@ -102,6 +105,8 @@ import {
     WavesModule,
     EformSharedTagsModule,
     OwlDateTimeModule,
+    ReactiveFormsModule,
+    CardsModule,
   ],
   providers: [
     InventoryPnItemsService,

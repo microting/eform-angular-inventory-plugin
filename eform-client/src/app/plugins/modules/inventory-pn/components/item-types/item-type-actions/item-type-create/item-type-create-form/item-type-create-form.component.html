@@ -1,1 +1,130 @@
-<p>item-type-create-form works!</p>
+<mdb-card>
+  <mdb-card-body>
+    <form [formGroup]="newItemTypeForm">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-6 ng-select-wrapper">
+          <ng-select
+            class="custom"
+            dropdownPosition="'bottom'"
+            [placeholder]="'Item group' | translate"
+            [items]="availableItemGroups"
+            formControlName="itemGroupId"
+            [clearable]="false"
+            [bindLabel]="'name'"
+            [bindValue]="'id'"
+            id="createItemGroupIdSelector"
+          ></ng-select>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="md-form">
+            <input
+              mdbInput
+              formControlName="name"
+              type="text"
+              id="createNameSelector"
+              name="createNameSelector"
+              class="form-control"
+            />
+            <label for="createNameSelector">{{ 'Name' | translate }}</label>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="md-form">
+            <input
+              mdbInput
+              formControlName="description"
+              type="text"
+              id="createDescriptionSelector"
+              name="createDescriptionSelector"
+              class="form-control"
+            />
+            <label for="createDescriptionSelector">{{
+              'Description' | translate
+            }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-lg-12">
+          <mdb-card>
+            <mdb-card-header>
+              {{ 'Dependent on the following products' | translate }}
+            </mdb-card-header>
+            <mdb-card-body>
+              <ng-container
+                *ngFor="
+                  let dependencyControl of dependencies.controls;
+                  let dependencyIndex = index
+                "
+              >
+                <mdb-card class="mb-2">
+                  <mdb-card-body>
+                    <ng-container [formGroup]="dependencyControl">
+                      <div class="col-md-4 col-sm-6 col-xs-6 ng-select-wrapper">
+                        <ng-select
+                          class="custom"
+                          dropdownPosition="'bottom'"
+                          [placeholder]="'Dependent item group' | translate"
+                          [items]="availableItemGroups"
+                          formControlName="itemGroupId"
+                          [clearable]="false"
+                          [bindLabel]="'name'"
+                          [bindValue]="'id'"
+                          id="itemGroupId_{{ dependencyIndex }}"
+                        ></ng-select>
+                      </div>
+                    </ng-container>
+                  </mdb-card-body>
+                </mdb-card>
+              </ng-container>
+              <button
+                mdbBtn
+                class="btn-success btn-icon btn-sm m-0 ml-auto"
+                id="newTagBtn"
+                (click)="onCreateNewDependency()"
+                type="button"
+              >
+                <fa-icon icon="plus" [fixedWidth]="true" size="lg"></fa-icon>
+                {{ 'Add new' | translate }}
+              </button>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="md-form">
+            <input
+              mdbInput
+              formControlName="usage"
+              type="text"
+              id="createUsage"
+              name="createUsage"
+              class="form-control"
+            />
+            <label for="createUsage">{{ 'Usage' | translate }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">pict</div>
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="md-form">
+            <input
+              mdbInput
+              formControlName="riskDescription"
+              type="text"
+              id="createRiskDescription"
+              name="createRiskDescription"
+              class="form-control"
+            />
+            <label for="createRiskDescription">{{
+              'Risk description' | translate
+            }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">pict</div>
+    </form>
+  </mdb-card-body>
+</mdb-card>
