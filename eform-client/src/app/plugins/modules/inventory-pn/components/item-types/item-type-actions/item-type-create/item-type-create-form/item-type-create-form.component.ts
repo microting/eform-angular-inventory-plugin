@@ -8,7 +8,7 @@ import {CommonDictionaryModel} from 'src/app/common/models';
   styleUrls: ['./item-type-create-form.component.scss'],
 })
 export class ItemTypeCreateFormComponent implements OnInit {
-  @Input() newItemTypeForm: FormGroup;
+  @Input() createItemTypeForm: FormGroup;
   @Input() availableItemGroups: CommonDictionaryModel[] = [];
   @Input() availableItemTypes: CommonDictionaryModel[] = [];
   @Input() dependencies: FormArray;

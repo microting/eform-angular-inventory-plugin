@@ -1,1 +1,34 @@
-<p>item-type-edit-container works!</p>
+<subheader-pn [title]="'Edit item type' | translate">
+  <div class="p-3">
+    <button
+      mdbBtn
+      id="itemTypeEditSaveBtn"
+      class="btn-success btn-small-height"
+      (click)="updateItemType()"
+    >
+      {{ 'Save' | translate }}
+    </button>
+    <button
+      mdbBtn
+      id="itemTypeEditCancelBtn"
+      class="btn-accent text-black-50 btn-small-height"
+      (click)="goBack()"
+    >
+      {{ 'Cancel' | translate }}
+    </button>
+  </div>
+</subheader-pn>
+
+<div class="container-fluid">
+  <div class="row mt-2">
+    <div class="col-md-12 col-xs-12" role="main">
+      <app-item-type-edit-form
+        [editItemTypeForm]="editItemTypeForm"
+        [availableItemGroups]="availableItemGroups"
+        [availableItemTypes]="availableItemTypes"
+        [dependencies]="itemTypeDependencies"
+        (createNewDependency)="addNewDependency()"
+      ></app-item-type-edit-form>
+    </div>
+  </div>
+</div>

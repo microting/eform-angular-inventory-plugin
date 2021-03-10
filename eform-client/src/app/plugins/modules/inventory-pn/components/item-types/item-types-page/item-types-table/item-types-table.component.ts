@@ -18,7 +18,7 @@ export class ItemTypesTableComponent implements OnInit {
   itemTypesModel: Paged<InventoryItemTypeSimpleModel> = new Paged<InventoryItemTypeSimpleModel>();
   @Output() sortTable: EventEmitter<string> = new EventEmitter<string>();
   @Output()
-  showDeleteItemTypeModal: EventEmitter<InventoryItemTypeSimpleModel> = new EventEmitter<InventoryItemTypeSimpleModel>();
+  deleteItemType: EventEmitter<InventoryItemTypeSimpleModel> = new EventEmitter<InventoryItemTypeSimpleModel>();
   @Output() tagSelected: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {}
@@ -30,7 +30,7 @@ export class ItemTypesTableComponent implements OnInit {
   }
 
   onShowDeleteItemTypeModal(model: InventoryItemTypeSimpleModel) {
-    this.showDeleteItemTypeModal.emit(model);
+    this.deleteItemType.emit(model);
   }
 
   onTagSelected(id: number) {

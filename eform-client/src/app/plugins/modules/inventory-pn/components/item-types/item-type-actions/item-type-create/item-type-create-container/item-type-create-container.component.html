@@ -1,4 +1,4 @@
-<subheader-pn [title]="'New planning' | translate">
+<subheader-pn [title]="'New item type' | translate">
   <div class="p-3">
     <button
       mdbBtn
@@ -23,7 +23,7 @@
   <div class="row mt-2">
     <div class="col-md-12 col-xs-12" role="main">
       <app-item-type-create-form
-        [newItemTypeForm]="newItemTypeForm"
+        [createItemTypeForm]="newItemTypeForm"
         [availableItemGroups]="availableItemGroups"
         [availableItemTypes]="availableItemTypes"
         [dependencies]="itemTypeDependencies"
