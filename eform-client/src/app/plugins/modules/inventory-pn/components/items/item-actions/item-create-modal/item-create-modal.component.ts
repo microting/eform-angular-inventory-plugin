@@ -21,6 +21,7 @@ export class ItemCreateModalComponent implements OnInit {
   createItem: EventEmitter<InventoryItemCreateModel> = new EventEmitter<InventoryItemCreateModel>();
   newItemModel: InventoryItemCreateModel = new InventoryItemCreateModel();
   @Input() itemTypesList: CommonDictionaryModel[];
+  @Input() itemGroupsList: CommonDictionaryModel[];
   @Input() selectedItemGroupId: number | null = null;
 
   constructor() {}

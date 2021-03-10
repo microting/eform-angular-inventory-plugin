@@ -23,6 +23,7 @@ export class ItemEditModalComponent implements OnInit {
   updateItem: EventEmitter<InventoryItemUpdateModel> = new EventEmitter<InventoryItemUpdateModel>();
   selectedItemModel: InventoryItemUpdateModel = new InventoryItemUpdateModel();
   @Input() itemTypesList: CommonDictionaryModel[];
+  @Input() itemGroupsList: CommonDictionaryModel[];
   @Input() selectedItemGroupId: number | null = null;
 
   constructor() {}

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -23,6 +23,7 @@ import {
   InventoryItemUpdateModel,
 } from '../../../../models';
 import {
+  InventoryPnItemGroupsService,
   InventoryPnItemsService,
   InventoryPnItemTypesService,
 } from '../../../../services';
@@ -42,10 +43,12 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
   itemsModel: Paged<InventoryItemModel> = new Paged<InventoryItemModel>();
   itemsRequestModel: InventoryItemsRequestModel = new InventoryItemsRequestModel();
   itemTypesList: CommonDictionaryModel[] = [];
+  itemGroupsList: CommonDictionaryModel[] = [];
   selectedItemGroupId: number | null = null;
 
   getItemsSub$: Subscription;
   getItemGroupsDictionarySub$: Subscription;
+  getItemTypesDictionarySub$: Subscription;
   activatedRouteSub$: Subscription;
   updateItemSub$: Subscription;
   createItemSub$: Subscription;
@@ -55,6 +58,7 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
     private sharedPnService: SharedPnService,
     private itemsService: InventoryPnItemsService,
     private itemTypesService: InventoryPnItemTypesService,
+    private itemGroupsService: InventoryPnItemGroupsService,
     private activatedRoute: ActivatedRoute
   ) {
     this.SNSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
@@ -63,6 +67,9 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
     });
     this.activatedRouteSub$ = this.activatedRoute.params.subscribe((params) => {
       this.selectedItemGroupId = +params['itemGroupId'];
+      if (!this.selectedItemGroupId) {
+        this.getItemGroupsDictionary();
+      }
     });
   }
 
@@ -100,7 +107,7 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
     this.itemsRequestModel = {
       ...this.itemsRequestModel,
       ...this.localPageSettings,
-      itemGroupId: this.selectedItemGroupId
+      itemGroupId: this.selectedItemGroupId,
     };
     this.getItemsSub$ = this.itemsService
       .getAllItems(this.itemsRequestModel)
@@ -112,11 +119,21 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
   }
 
   getItemTypesDictionary() {
-    this.getItemGroupsDictionarySub$ = this.itemTypesService
+    this.getItemTypesDictionarySub$ = this.itemTypesService
       .getAllItemTypesDictionary()
       .subscribe((data) => {
         if (data && data.success) {
           this.itemTypesList = data.model;
+        }
+      });
+  }
+
+  getItemGroupsDictionary() {
+    this.getItemGroupsDictionarySub$ = this.itemGroupsService
+      .getAllItemGroupsDictionary()
+      .subscribe((data) => {
+        if (data && data.success) {
+          this.itemGroupsList = data.model;
         }
       });
   }

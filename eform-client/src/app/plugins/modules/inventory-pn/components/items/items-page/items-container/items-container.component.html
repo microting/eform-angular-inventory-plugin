@@ -52,12 +52,14 @@
 <app-item-create-modal
   #createItemModal
   [itemTypesList]="itemTypesList"
+  [itemGroupsList]="itemGroupsList"
   [selectedItemGroupId]="selectedItemGroupId"
   (createItem)="onCreateItem($event)"
 ></app-item-create-modal>
 <app-item-edit-modal
   #editItemModal
   [itemTypesList]="itemTypesList"
+  [itemGroupsList]="itemGroupsList"
   [selectedItemGroupId]="selectedItemGroupId"
   (updateItem)="onUpdateItem($event)"
 ></app-item-edit-modal>
