@@ -13,7 +13,7 @@ import { InventoryItemCreateModel } from '../../../../models';
 @Component({
   selector: 'app-item-create-modal',
   templateUrl: './item-create-modal.component.html',
-  styleUrls: ['./item-create-modal.component.scss']
+  styleUrls: ['./item-create-modal.component.scss'],
 })
 export class ItemCreateModalComponent implements OnInit {
   @ViewChild('frame', { static: false }) frame;
@@ -21,6 +21,7 @@ export class ItemCreateModalComponent implements OnInit {
   createItem: EventEmitter<InventoryItemCreateModel> = new EventEmitter<InventoryItemCreateModel>();
   newItemModel: InventoryItemCreateModel = new InventoryItemCreateModel();
   @Input() itemTypesList: CommonDictionaryModel[];
+  @Input() selectedItemGroupId: number | null = null;
 
   constructor() {}
 
@@ -36,6 +37,10 @@ export class ItemCreateModalComponent implements OnInit {
   }
 
   create() {
-    this.createItem.emit(this.newItemModel);
+    this.createItem.emit(
+      this.selectedItemGroupId
+        ? { ...this.newItemModel, itemGroupId: this.selectedItemGroupId }
+        : this.newItemModel
+    );
   }
 }

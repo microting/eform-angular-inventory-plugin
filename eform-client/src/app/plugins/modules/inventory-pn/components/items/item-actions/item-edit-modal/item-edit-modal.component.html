@@ -28,6 +28,20 @@
               ></ng-select>
             </div>
           </div>
+          <div class="row" *ngIf="selectedItemGroupId">
+            <div class="col-md-12">
+              <ng-select
+                class="custom"
+                dropdownPosition="'bottom'"
+                [placeholder]="'Item group' | translate"
+                [(ngModel)]="selectedItemModel.itemGroupId"
+                [bindValue]="'id'"
+                [bindLabel]="'name'"
+                [items]="itemTypesList"
+                id="itemEditGroupSelector"
+              ></ng-select>
+            </div>
+          </div>
           <div class="row">
             <div class="col-md-12">
               <div class="md-form" [owlDateTimeTrigger]="dt1">
@@ -103,7 +117,7 @@
           mdbBtn
           id="itemEditConfirmBtn"
           class="btn-success btn-small-height"
-          (click)="create()"
+          (click)="update()"
         >
           {{ 'Update' | translate }}
         </button>

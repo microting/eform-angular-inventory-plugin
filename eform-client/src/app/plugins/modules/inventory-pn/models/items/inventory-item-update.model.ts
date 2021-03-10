@@ -1,6 +1,7 @@
 export class InventoryItemUpdateModel {
   id: number;
   itemTypeId: number;
+  itemGroupId: number;
   location: string;
   customerId: number;
   expirationDate: string | Date;

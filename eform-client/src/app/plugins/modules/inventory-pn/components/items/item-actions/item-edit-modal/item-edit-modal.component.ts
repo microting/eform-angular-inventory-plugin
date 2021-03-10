@@ -23,6 +23,7 @@ export class ItemEditModalComponent implements OnInit {
   updateItem: EventEmitter<InventoryItemUpdateModel> = new EventEmitter<InventoryItemUpdateModel>();
   selectedItemModel: InventoryItemUpdateModel = new InventoryItemUpdateModel();
   @Input() itemTypesList: CommonDictionaryModel[];
+  @Input() selectedItemGroupId: number | null = null;
 
   constructor() {}
 
@@ -35,6 +36,7 @@ export class ItemEditModalComponent implements OnInit {
       customerId: model.customerId,
       expirationDate: model.expirationDate,
       itemTypeId: model.itemType ? model.itemType.id : null,
+      itemGroupId: model.itemGroup ? model.itemGroup.id : null,
       location: model.location,
       sn: model.sn,
     };
@@ -45,7 +47,11 @@ export class ItemEditModalComponent implements OnInit {
     this.frame.hide();
   }
 
-  create() {
-    this.updateItem.emit(this.selectedItemModel);
+  update() {
+    this.updateItem.emit(
+      this.selectedItemGroupId
+        ? { ...this.selectedItemModel, itemGroupId: this.selectedItemGroupId }
+        : this.selectedItemModel
+    );
   }
 }

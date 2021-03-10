@@ -24,6 +24,7 @@ export class ItemsPageTableComponent implements OnInit {
   itemsRequestModel: InventoryItemsRequestModel = new InventoryItemsRequestModel();
   @Input()
   itemsModel: Paged<InventoryItemModel> = new Paged<InventoryItemModel>();
+  @Input() selectedItemGroupId: number;
   @Output() sortTable: EventEmitter<string> = new EventEmitter<string>();
   @Output()
   showDeleteItemModal: EventEmitter<InventoryItemModel> = new EventEmitter<InventoryItemModel>();

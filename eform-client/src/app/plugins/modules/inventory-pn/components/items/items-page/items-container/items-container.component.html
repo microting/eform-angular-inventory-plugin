@@ -18,6 +18,7 @@
     (SNFilterChanged)="onSNFilterChanged($event)"
   ></app-items-page-header>
   <app-items-page-table
+    [selectedItemGroupId]="selectedItemGroupId"
     [itemsRequestModel]="itemsRequestModel"
     [localPageSettings]="localPageSettings"
     [itemsModel]="itemsModel"
@@ -51,11 +52,13 @@
 <app-item-create-modal
   #createItemModal
   [itemTypesList]="itemTypesList"
+  [selectedItemGroupId]="selectedItemGroupId"
   (createItem)="onCreateItem($event)"
 ></app-item-create-modal>
 <app-item-edit-modal
   #editItemModal
   [itemTypesList]="itemTypesList"
+  [selectedItemGroupId]="selectedItemGroupId"
   (updateItem)="onUpdateItem($event)"
 ></app-item-edit-modal>
 <app-item-delete-modal

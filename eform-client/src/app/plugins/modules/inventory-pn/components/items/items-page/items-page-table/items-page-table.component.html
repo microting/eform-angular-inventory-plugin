@@ -159,7 +159,7 @@
             >
           </div>
         </th>
-        <th
+        <th *ngIf="!selectedItemGroupId"
           scope="col"
           class="table-header-sortable"
           id="itemGroupTableHeader"
@@ -246,7 +246,7 @@
         <td id="itemSN">
           {{ itemModel.sn }}
         </td>
-        <td id="itemGroup">
+        <td id="itemGroup" *ngIf="!selectedItemGroupId">
           {{ itemModel.itemGroup ? itemModel.itemGroup.name : '' }}
         </td>
         <td id="itemStatus">

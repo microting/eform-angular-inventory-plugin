@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -41,9 +42,11 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
   itemsModel: Paged<InventoryItemModel> = new Paged<InventoryItemModel>();
   itemsRequestModel: InventoryItemsRequestModel = new InventoryItemsRequestModel();
   itemTypesList: CommonDictionaryModel[] = [];
+  selectedItemGroupId: number | null = null;
 
   getItemsSub$: Subscription;
   getItemGroupsDictionarySub$: Subscription;
+  activatedRouteSub$: Subscription;
   updateItemSub$: Subscription;
   createItemSub$: Subscription;
   deleteItemSub$: Subscription;
@@ -51,11 +54,15 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
   constructor(
     private sharedPnService: SharedPnService,
     private itemsService: InventoryPnItemsService,
-    private itemTypesService: InventoryPnItemTypesService
+    private itemTypesService: InventoryPnItemTypesService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.SNSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
       this.itemsRequestModel.SNFilter = val.toString();
       this.getItems();
+    });
+    this.activatedRouteSub$ = this.activatedRoute.params.subscribe((params) => {
+      this.selectedItemGroupId = +params['itemGroupId'];
     });
   }
 
@@ -64,6 +71,10 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.initData();
+  }
+
+  initData() {
     this.getLocalPageSettings();
     this.getItems();
     this.getItemTypesDictionary();
@@ -89,6 +100,7 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
     this.itemsRequestModel = {
       ...this.itemsRequestModel,
       ...this.localPageSettings,
+      itemGroupId: this.selectedItemGroupId
     };
     this.getItemsSub$ = this.itemsService
       .getAllItems(this.itemsRequestModel)

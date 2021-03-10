@@ -26,6 +26,10 @@ export const routes: Routes = [
         component: ItemsContainerComponent,
       },
       {
+        path: 'items/:itemGroupId',
+        component: ItemsContainerComponent,
+      },
+      {
         path: 'item-groups',
         component: ItemGroupsContainerComponent,
       },
