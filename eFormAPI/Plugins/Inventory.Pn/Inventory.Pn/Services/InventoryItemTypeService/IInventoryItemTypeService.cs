@@ -28,9 +28,9 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
 
     public interface IInventoryItemTypeService
     {
-        Task<OperationDataResult<Paged<ItemTypeModel>>> GetItemTypes(ItemTypeRequest itemTypeRequest);
+        Task<OperationDataResult<Paged<ItemTypeSimpleModel>>> GetItemTypes(ItemTypeRequest itemTypeRequest);
 
-        Task<OperationDataResult<ItemTypeSimpleModel>> GetItemTypeById(int itemTypeId);
+        Task<OperationDataResult<ItemTypeModel>> GetItemTypeById(int itemTypeId);
 
         Task<OperationResult> UpdateItemType(ItemTypeUpdateModel itemTypeUpdateModel);
 

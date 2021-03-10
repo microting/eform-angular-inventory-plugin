@@ -46,7 +46,7 @@ namespace Inventory.Pn.Controllers
         /// <returns>Task&lt;OperationDataResult&lt;ItemTypesPnModel&gt;&gt;.</returns>
         [HttpPost]
         [Route("api/inventory-pn/item-types/index")]
-        public async Task<OperationDataResult<Paged<ItemTypeModel>>> Index(
+        public async Task<OperationDataResult<Paged<ItemTypeSimpleModel>>> Index(
             [FromBody] ItemTypeRequest itemTypeRequest)
         {
             return await _inventoryItemTypeService.GetItemTypes(itemTypeRequest);
@@ -59,7 +59,7 @@ namespace Inventory.Pn.Controllers
         /// <returns>Task&lt;OperationDataResult&lt;ItemTypeModel&gt;&gt;.</returns>
         [HttpGet]
         [Route("api/inventory-pn/item-types/{id}")]
-        public async Task<OperationDataResult<ItemTypeSimpleModel>> GetInventoryTypeById(int id)
+        public async Task<OperationDataResult<ItemTypeModel>> GetInventoryTypeById(int id)
         {
             return await _inventoryItemTypeService.GetItemTypeById(id);
         }

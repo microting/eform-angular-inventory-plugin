@@ -206,34 +206,35 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
             }
         }
 
-        public async Task<OperationDataResult<ItemTypeSimpleModel>> GetItemTypeById(int itemTypeId)
+        public async Task<OperationDataResult<ItemTypeModel>> GetItemTypeById(int itemTypeId)
         {
             try
             {
                 var inventoryItemTypeQuery = _dbContext.ItemTypes
                 .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                .Where(x => x.Id == itemTypeId)
                 .AsQueryable();
 
-                var inventoryItemTypeFromDb = await AddSelectToItemTypeQuery(inventoryItemTypeQuery).FirstAsync();
+                var inventoryItemTypeFromDb = await AddSelectToItemTypeQueryForFullObject(inventoryItemTypeQuery, _dbContext).FirstAsync();
 
                 if (inventoryItemTypeFromDb == null)
                 {
-                    return new OperationDataResult<ItemTypeSimpleModel>(false,
+                    return new OperationDataResult<ItemTypeModel>(false,
                         _inventoryLocalizationService.GetString("InventoryItemTypeNotFount"));
                 }
 
-                return new OperationDataResult<ItemTypeSimpleModel>(true, inventoryItemTypeFromDb);
+                return new OperationDataResult<ItemTypeModel>(true, inventoryItemTypeFromDb);
 
             }
             catch (Exception e)
             {
                 Trace.TraceError(e.Message);
-                return new OperationDataResult<ItemTypeSimpleModel>(false,
+                return new OperationDataResult<ItemTypeModel>(false,
                     _inventoryLocalizationService.GetString("ErrorWhileGetInventoryItemType"));
             }
         }
 
-        public async Task<OperationDataResult<Paged<ItemTypeModel>>> GetItemTypes(
+        public async Task<OperationDataResult<Paged<ItemTypeSimpleModel>>> GetItemTypes(
             ItemTypeRequest itemTypeRequest)
         {
             try
@@ -265,7 +266,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 if (!string.IsNullOrEmpty(itemTypeRequest.NameFilter))
                 {
                     inventoryItemTypeQuery = inventoryItemTypeQuery
-                        .Where(x => x.Name == itemTypeRequest.NameFilter);
+                        .Where(x => x.Name.Contains(itemTypeRequest.NameFilter));
                 }
 
                 // filter by tags
@@ -293,19 +294,19 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                         .Take(itemTypeRequest.PageSize);
 
                 // add select and take objects from db
-                var inventoryItemTypeFromDb = await AddSelectToItemTypeQueryForFullObject(inventoryItemTypeQuery).ToListAsync();
-                var returnValue = new Paged<ItemTypeModel>
+                var inventoryItemTypeFromDb = await AddSelectToItemTypeQuery(inventoryItemTypeQuery, _dbContext, _userService).ToListAsync();
+                var returnValue = new Paged<ItemTypeSimpleModel>
                 {
                     Entities = inventoryItemTypeFromDb,
                     Total = total,
                 };
 
-                return new OperationDataResult<Paged<ItemTypeModel>>(true, returnValue);
+                return new OperationDataResult<Paged<ItemTypeSimpleModel>>(true, returnValue);
             }
             catch (Exception e)
             {
                 Trace.TraceError(e.Message);
-                return new OperationDataResult<Paged<ItemTypeModel>>(false,
+                return new OperationDataResult<Paged<ItemTypeSimpleModel>>(false,
                     _inventoryLocalizationService.GetString("ErrorObtainingLists"));
             }
         }
@@ -359,7 +360,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
             }
         }
 
-        private IQueryable<ItemTypeSimpleModel> AddSelectToItemTypeQuery(IQueryable<ItemType> itemTypeQuery)
+        private static IQueryable<ItemTypeSimpleModel> AddSelectToItemTypeQuery(IQueryable<ItemType> itemTypeQuery, InventoryPnDbContext dbContext, IUserService userService)
         {
             return itemTypeQuery
                 .Select(x => new ItemTypeSimpleModel
@@ -372,21 +373,21 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     Name = x.Name,
                     Id = x.Id,
                     CreatedDate = x.CreatedAt,
-                    CreatedBy = GetUserNameByUserId(x.CreatedByUserId),
-                    DangerLabelImageName = _dbContext.ItemTypeUploadedDatas
+                    CreatedBy = GetUserNameByUserId(x.CreatedByUserId, userService),
+                    DangerLabelImageName = dbContext.ItemTypeUploadedDatas
                         .Where(y => y.ItemTypeId == x.Id)
                         .Where(y => y.Type == TypeUploadedData.Danger)
                         .FirstOrDefault(y => y.WorkflowState != Constants.WorkflowStates.Removed).FileName,
-                    PictogramImageName = _dbContext.ItemTypeUploadedDatas
+                    PictogramImageName = dbContext.ItemTypeUploadedDatas
                         .Where(y => y.ItemTypeId == x.Id)
                         .Where(y => y.Type == TypeUploadedData.Pictogram)
                         .FirstOrDefault(y => y.WorkflowState != Constants.WorkflowStates.Removed).FileName,
-                    ParentTypeName = _dbContext.ItemTypeDependencys
+                    ParentTypeName = dbContext.ItemTypeDependencys
                         .Where(y => y.ItemTypeId == x.Id)
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Select(y => y.DependItemType.Name)
                         .FirstOrDefault(),
-                    Tags = _dbContext.ItemTypeTags
+                    Tags = dbContext.ItemTypeTags
                         .Where(y => y.ItemTypeId == x.Id)
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Select(y => new CommonTagModel
@@ -398,7 +399,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 });
         }
 
-        private IQueryable<ItemTypeModel> AddSelectToItemTypeQueryForFullObject(IQueryable<ItemType> itemTypeQuery)
+        private static IQueryable<ItemTypeModel> AddSelectToItemTypeQueryForFullObject(IQueryable<ItemType> itemTypeQuery, InventoryPnDbContext dbContext)
         {
             return itemTypeQuery
                  .Select(x => new ItemTypeModel
@@ -424,7 +425,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                      Name = x.Name,
                      Id = x.Id,
                      No = x.No,
-                     Tags = _dbContext.ItemTypeTags
+                     Tags = dbContext.ItemTypeTags
                          .Where(y => y.ItemTypeId == x.Id)
                          .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                          .Select(y => new CommonTagModel
@@ -433,51 +434,41 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                              Id = y.InventoryTag.Id
                          })
                          .ToList(),
-                     ItemGroupDependency = _dbContext.ItemGroupDependencys
+                     ItemGroupDependency = GetGroupDependencyByItemTypeId(x.Id, dbContext),
+                     ItemTypeDependency = dbContext.ItemTypeDependencys
                          .Where(y => y.ItemTypeId == x.Id)
                          .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                         .Select(y => new ItemTypeDependencyItemGroup
+                         .Select(y => new CommonDictionaryModel
                          {
-                             Id = x.ItemGroup.Id,
-                             Name = x.ItemGroup.Name,
-                         })
-                         .FirstOrDefault(),
-                     ItemTypeDependency = _dbContext.ItemTypeDependencys
-                         .Where(y => y.ItemTypeId == x.Id)
-                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                         .Select(y => new ItemTypeModel
-                         {
-                             LastPhysicalInventoryDate = y.DependItemType.LastPhysicalInventoryDate,
-                             SalesUnitOfMeasure = y.DependItemType.SalesUnitOfMeasure,
-                             BaseUnitOfMeasure = y.DependItemType.BaseUnitOfMeasure,
-                             RiskDescription = y.DependItemType.RiskDescription,
-                             ProfitPercent = y.DependItemType.ProfitPercent,
-                             CostingMethod = y.DependItemType.CostingMethod,
-                             StandardCost = y.DependItemType.StandardCost,
                              Description = y.DependItemType.Description,
-                             GrossWeight = y.DependItemType.GrossWeight,
-                             GtinEanUpc = y.DependItemType.GtinEanUpc,
-                             UnitVolume = y.DependItemType.UnitVolume,
-                             NetWeight = y.DependItemType.NetWeight,
-                             UnitPrice = y.DependItemType.UnitPrice,
-                             UnitCost = y.DependItemType.UnitCost,
-                             Comment = y.DependItemType.Comment,
-                             Region = y.DependItemType.Region,
-                             Usage = y.DependItemType.Usage,
-                             EformId = y.DependItemType.Id,
                              Name = y.DependItemType.Name,
                              Id = y.DependItemType.Id,
-                             No = y.DependItemType.No,
                          })
-                         .ToList(), // todo group, if need
+                         .ToList(),
                  });
         }
 
-        private string GetUserNameByUserId(int userId)
+        private static string GetUserNameByUserId(int userId, IUserService _userService)
         {
             var user = _userService.GetByIdAsync(userId).Result;
 
             return $"{user.FirstName} {user.LastName}";
+        }
+
+        private static ItemTypeDependencyItemGroup GetGroupDependencyByItemTypeId(int itemTypeId, InventoryPnDbContext dbContext)
+        {
+            var itemGroupId = dbContext.ItemGroupDependencys
+                .Where(y => y.ItemTypeId == itemTypeId)
+                .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                .Select(y => y.ItemGroupId).FirstOrDefault();
+
+            return dbContext.ItemGroups
+                .Where(z => z.Id == itemGroupId)
+                .Select(z => new ItemTypeDependencyItemGroup
+                {
+                    Name = z.Name,
+                    Id = z.Id,
+                }).FirstOrDefault();
         }
     }
 }
