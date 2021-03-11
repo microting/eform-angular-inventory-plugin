@@ -205,7 +205,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 .Where(x => x.Id == itemTypeId)
                 .AsQueryable();
 
-                var inventoryItemTypeFromDb = await AddSelectToItemTypeQueryForFullObject(inventoryItemTypeQuery, _dbContext).FirstAsync();
+                var inventoryItemTypeFromDb = await AddSelectToItemTypeQueryForFullObject(inventoryItemTypeQuery).FirstAsync();
 
                 if (inventoryItemTypeFromDb == null)
                 {
@@ -265,9 +265,9 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     foreach (var tagId in itemTypeRequest.TagIds)
                     {
                         inventoryItemTypeQuery = inventoryItemTypeQuery
-                            .Where(x => x.InventoryTags
+                            .Where(x => x.ItemTypeTags
                                 .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                                .Any(y => y.Id == tagId));
+                                .Any(y => y.InventoryTagId == tagId));
                     }
                 }
 
@@ -275,7 +275,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed);
 
                 // calculate total before pagination
-                var total = inventoryItemTypeQuery.Count();
+                var total = await inventoryItemTypeQuery.Select(x => x.Id).CountAsync();
 
                 // pagination
                 inventoryItemTypeQuery
@@ -284,7 +284,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                         .Take(itemTypeRequest.PageSize);
 
                 // add select and take objects from db
-                var inventoryItemTypeFromDb = await AddSelectToItemTypeQuery(inventoryItemTypeQuery, _dbContext, _userService).ToListAsync();
+                var inventoryItemTypeFromDb = await AddSelectToItemTypeQuery(inventoryItemTypeQuery, _userService).ToListAsync();
                 var returnValue = new Paged<ItemTypeSimpleModel>
                 {
                     Entities = inventoryItemTypeFromDb,
@@ -334,7 +334,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
             }
         }
 
-        private static IQueryable<ItemTypeSimpleModel> AddSelectToItemTypeQuery(IQueryable<ItemType> itemTypeQuery, InventoryPnDbContext dbContext, IUserService userService)
+        private static IQueryable<ItemTypeSimpleModel> AddSelectToItemTypeQuery(IQueryable<ItemType> itemTypeQuery, IUserService userService)
         {
             return itemTypeQuery
                 .Select(x => new ItemTypeSimpleModel
@@ -347,33 +347,34 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     Name = x.Name,
                     Id = x.Id,
                     CreatedDate = x.CreatedAt,
-                    CreatedBy = GetUserNameByUserId(x.CreatedByUserId, userService),
-                    DangerLabelImageName = dbContext.ItemTypeUploadedDatas
-                        .Where(y => y.ItemTypeId == x.Id)
+                    CreatedBy = userService.GetFullNameUserByUserIdAsync(x.CreatedByUserId).Result,
+                    DangerLabelImageName = x.ItemTypeUploadedDatas
+                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Where(y => y.Type == TypeUploadedData.Danger)
-                        .FirstOrDefault(y => y.WorkflowState != Constants.WorkflowStates.Removed).FileName,
-                    PictogramImageName = dbContext.ItemTypeUploadedDatas
-                        .Where(y => y.ItemTypeId == x.Id)
+                        .Select(y => y.FileName)
+                        .FirstOrDefault(),
+                    PictogramImageName = x.ItemTypeUploadedDatas
+                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Where(y => y.Type == TypeUploadedData.Pictogram)
-                        .FirstOrDefault(y => y.WorkflowState != Constants.WorkflowStates.Removed).FileName,
-                    ParentTypeName = dbContext.ItemTypeDependencys
-                        .Where(y => y.ItemTypeId == x.Id)
+                        .Select(y => y.FileName)
+                        .FirstOrDefault(),
+                    ParentTypeName = x.ParentItemTypes
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Select(y => y.DependItemType.Name)
                         .FirstOrDefault(),
-                    Tags = dbContext.ItemTypeTags
-                        .Where(y => y.ItemTypeId == x.Id)
+                    Tags = x.ItemTypeTags
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                        .Where(y => y.ItemTypeId == x.Id)
                         .Select(y => new CommonTagModel
                         {
+                            Id = y.InventoryTag.Id,
                             Name = y.InventoryTag.Name,
-                            Id = y.InventoryTag.Id
                         })
                         .ToList(),
                 });
         }
 
-        private static IQueryable<ItemTypeModel> AddSelectToItemTypeQueryForFullObject(IQueryable<ItemType> itemTypeQuery, InventoryPnDbContext dbContext)
+        private static IQueryable<ItemTypeModel> AddSelectToItemTypeQueryForFullObject(IQueryable<ItemType> itemTypeQuery)
         {
             return itemTypeQuery
                  .Select(x => new ItemTypeModel
@@ -383,9 +384,9 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                      Usage = x.Usage,
                      Name = x.Name,
                      Id = x.Id,
-                     TagIds = dbContext.ItemTypeTags
-                         .Where(y => y.ItemTypeId == x.Id)
+                     TagIds = x.ItemTypeTags
                          .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                         .Where(y => y.ItemTypeId == x.Id)
                          .Select(y => y.InventoryTag.Id)
                          .ToList(),
                      //Dependencies = new List<ItemTypeDependencies>
@@ -404,13 +405,6 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                      //    })
                      //    .ToList(),
                  });
-        }
-
-        private static string GetUserNameByUserId(int userId, IUserService _userService)
-        {
-            var user = _userService.GetByIdAsync(userId).Result;
-
-            return $"{user.FirstName} {user.LastName}";
         }
 
         private static ItemTypeDependencyItemGroup GetGroupDependencyByItemTypeId(int itemTypeId, InventoryPnDbContext dbContext)

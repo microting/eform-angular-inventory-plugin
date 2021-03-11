@@ -99,7 +99,7 @@ namespace Inventory.Pn.Services.InventoryItemService
                 }
 
                 // calculate total before pagination
-                var total = inventoryItemQuery.Count();
+                var total = await inventoryItemQuery.Select(x => x.Id).CountAsync();
 
                 // pagination
                 inventoryItemQuery
@@ -243,7 +243,7 @@ namespace Inventory.Pn.Services.InventoryItemService
             }
         }
 
-        private IQueryable<ItemModel> AddSelectToItemQuery(IQueryable<Item> inventoryItemQuery)
+        private static IQueryable<ItemModel> AddSelectToItemQuery(IQueryable<Item> inventoryItemQuery)
         {
             return inventoryItemQuery.Select(x => new ItemModel
             {
@@ -253,34 +253,19 @@ namespace Inventory.Pn.Services.InventoryItemService
                 Id = x.Id,
                 SN = x.SN,
                 Location = x.Location,
-                ItemType = _dbContext.ItemTypes
-                .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                .Where(y => y.Id == x.ItemTypeId)
-                .Select(y => new CommonDictionaryModel
-                    {
-                        Name = y.Name,
-                        Id = x.Id,
-                    })
-                    .FirstOrDefault(),
-                ItemGroup = _dbContext.ItemGroups
-                    .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                    .Where(y => y.Id == _dbContext.ItemTypes
-                        .Where(z => z.WorkflowState != Constants.WorkflowStates.Removed)
-                        .Where(z => z.Id == x.ItemTypeId).Select(z => z.ItemGroupId).FirstOrDefault())
-                    .Select(y => new CommonDictionaryModel
-                    {
-                        Name = y.Name,
-                        Description = y.Description,
-                        Id = y.Id,
-                    }).FirstOrDefault(),
+                ItemType = new CommonDictionaryModel
+                {
+                    Name = x.ItemType.Name,
+                    Id = x.ItemType.Id
+                },
+                ItemGroup = new CommonDictionaryModel()
+                {
+                   Id = x.ItemType.ItemGroup.Id,
+                   Name = x.ItemType.ItemGroup.Name,
+                   Description = x.ItemType.ItemGroup.Description,
+                },
             });
         }
 
-        private IQueryable<ItemType> GetQueryItemType(int? itemTypeId)
-        {
-            return _dbContext.ItemTypes
-                 .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                 .Where(y => y.Id == itemTypeId);
-        }
     }
 }

@@ -94,7 +94,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed);
 
                 // calculate total before pagination
-                var total = inventoryItemGroupQuery.Count();
+                var total = await inventoryItemGroupQuery.Select(x => x.Id).CountAsync();
 
                 // pagination
                 inventoryItemGroupQuery
@@ -282,7 +282,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
             }
         }
 
-        private IQueryable<ItemGroupModel> AddSelectToItemGroupQuery(IQueryable<ItemGroup> inventoryItemGroupQuery)
+        private static IQueryable<ItemGroupModel> AddSelectToItemGroupQuery(IQueryable<ItemGroup> inventoryItemGroupQuery)
         {
             return inventoryItemGroupQuery
                 .Select(x => new ItemGroupModel
@@ -291,16 +291,11 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                     Name = x.Name,
                     Code = x.Code,
                     Id = x.Id,
-                    Parent = x.ParentId != null 
-                        ? _dbContext.ItemGroups
-                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                        .Select(y => new ItemGroupDependencyItemGroup
-                        {
-                            Name = y.Name,
-                            Id = y.Id,
-                        })
-                        .FirstOrDefault(y => y.Id == x.ParentId)
-                        : null,
+                    Parent = new ItemGroupDependencyItemGroup()
+                    {
+                        Name = x.Parent.Name,
+                        Id = x.Parent.Id
+                    },
                 });
         }
     }
