@@ -42,10 +42,13 @@ export class InventoryPnItemTypesService extends BaseService {
     return this.post(InventoryPnItemTypesMethods.ItemTypesIndex, model);
   }
 
-  getAllItemTypesDictionary(): Observable<
-    OperationDataResult<CommonDictionaryModel[]>
-  > {
-    return this.get(InventoryPnItemTypesMethods.ItemTypesDictionary);
+  getAllItemTypesDictionary(
+    itemGroupId?: number
+  ): Observable<OperationDataResult<CommonDictionaryModel[]>> {
+    return this.get(
+      InventoryPnItemTypesMethods.ItemTypesDictionary,
+      itemGroupId ? { itemGroupId } : null
+    );
   }
 
   getSingleItemType(

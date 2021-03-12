@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
@@ -8,12 +8,13 @@ import { CommonDictionaryModel } from 'src/app/common/models';
 import {
   InventoryItemTypeCreateModel,
   InventoryItemTypeModel,
-} from 'src/app/plugins/modules/inventory-pn/models';
+} from '../../../../../models';
 import {
   InventoryPnItemGroupsService,
   InventoryPnItemTypesService,
   InventoryPnItemTypeTagsService,
-} from 'src/app/plugins/modules/inventory-pn/services';
+} from '../../../../../services';
+import R from 'ramda';
 
 @AutoUnsubscribe()
 @Component({
@@ -25,7 +26,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   selectedItemTypeId: number;
   availableTags: CommonDictionaryModel[] = [];
   availableItemGroups: CommonDictionaryModel[] = [];
-  availableItemTypes: CommonDictionaryModel[] = [];
+  filteredItemTypes: CommonDictionaryModel[][] = [];
   editItemTypeForm: FormGroup;
   itemTypeDependencies: FormArray = new FormArray([]);
 
@@ -68,13 +69,14 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       tagIds: model.tagIds,
     });
 
-    model.dependencies.map((x) => {
+    model.dependencies.map((x, index) => {
       this.itemTypeDependencies.push(
         this.formBuilder.group({
           itemGroupId: [x.itemGroupId, Validators.required],
           itemTypesIds: x.itemTypesIds,
         })
       );
+      this.getItemTypesDictionary(x.itemGroupId, index);
     });
   }
 
@@ -115,12 +117,22 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       });
   }
 
-  getItemTypesDictionary() {
+  getItemTypesDictionary(itemGroupId: number, dependencyIndex: number) {
     this.getItemTypesDictionarySub$ = this.itemTypesService
-      .getAllItemTypesDictionary()
+      .getAllItemTypesDictionary(itemGroupId)
       .subscribe((data) => {
         if (data && data.success) {
-          this.availableItemTypes = data.model;
+          if (this.filteredItemTypes[dependencyIndex]) {
+            // If dependency found - update only types on change
+            this.filteredItemTypes = R.update(
+              dependencyIndex,
+              data.model,
+              this.filteredItemTypes
+            );
+          } else {
+            // If dependency not found - push new item types to array
+            this.filteredItemTypes = [...this.filteredItemTypes, data.model];
+          }
         }
       });
   }
@@ -140,8 +152,17 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   getInitialData() {
     this.getTags();
     this.getItemGroupsDictionary();
-    this.getItemTypesDictionary();
     this.getItemType();
+  }
+
+  onDependentItemGroupChanged(dependency: {
+    itemGroupId: number;
+    dependencyIndex: number;
+  }) {
+    this.getItemTypesDictionary(
+      dependency.itemGroupId,
+      dependency.dependencyIndex
+    );
   }
 
   ngOnDestroy(): void {}

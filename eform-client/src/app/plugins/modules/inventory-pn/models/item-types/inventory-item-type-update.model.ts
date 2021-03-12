@@ -1,21 +1,14 @@
 export class InventoryItemTypeUpdateModel {
   id: number;
-  no: string;
+  itemGroupId: number;
   name: string;
-  gtinEanUpc: string;
-  description: string;
-  netWeight: number;
-  grossWeight: number;
-  unitVolume: number;
-  costingMethod: number; // CostingMethod
-  unitPrice: number;
-  profitPercent: number;
-  salesUnitOfMeasure: number; // UnitOfMeasure
-  lastPhysicalInventoryDate: string;
-  region: number;
+  riskDescription: string;
   usage: string;
-  riscDescription: string;
-  available: boolean;
-  eformId: number;
-  comment: string;
+  description: string;
+  tagIds: number[];
+  pictogramImages: File[];
+  dangerLabelImages: File[];
+  pictogramImagesForDelete: string[];
+  dangerLabelImagesForDelete: string[];
+  dependencies: [{itemGroupId: number, itemTypesIds: number[]}];
 }

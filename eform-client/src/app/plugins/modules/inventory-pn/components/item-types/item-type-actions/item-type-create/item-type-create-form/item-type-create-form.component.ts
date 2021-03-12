@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormArray, FormGroup} from '@angular/forms';
-import {CommonDictionaryModel} from 'src/app/common/models';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormArray, FormGroup } from '@angular/forms';
+import { CommonDictionaryModel } from 'src/app/common/models';
 
 @Component({
   selector: 'app-item-type-create-form',
@@ -10,9 +10,14 @@ import {CommonDictionaryModel} from 'src/app/common/models';
 export class ItemTypeCreateFormComponent implements OnInit {
   @Input() createItemTypeForm: FormGroup;
   @Input() availableItemGroups: CommonDictionaryModel[] = [];
-  @Input() availableItemTypes: CommonDictionaryModel[] = [];
+  @Input() availableTags: CommonDictionaryModel[] = [];
+  @Input() filteredItemTypes: CommonDictionaryModel[][] = [];
   @Input() dependencies: FormArray;
   @Output() createNewDependency: EventEmitter<void> = new EventEmitter<void>();
+  @Output() dependentItemGroupChanged: EventEmitter<{
+    itemGroupId: number;
+    dependencyIndex: number;
+  }> = new EventEmitter<{ itemGroupId: number; dependencyIndex: number }>();
 
   constructor() {}
 
@@ -20,5 +25,16 @@ export class ItemTypeCreateFormComponent implements OnInit {
 
   onCreateNewDependency() {
     this.createNewDependency.emit();
+  }
+
+  onDependentItemGroupChanged(
+    newItemGroup: { id: number },
+    dependencyIndex: number
+  ) {
+    debugger;
+    this.dependentItemGroupChanged.emit({
+      itemGroupId: newItemGroup.id,
+      dependencyIndex,
+    });
   }
 }

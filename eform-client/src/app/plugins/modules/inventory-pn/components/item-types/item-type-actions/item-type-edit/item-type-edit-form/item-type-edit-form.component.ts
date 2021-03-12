@@ -10,9 +10,14 @@ import {CommonDictionaryModel} from 'src/app/common/models';
 export class ItemTypeEditFormComponent implements OnInit {
   @Input() editItemTypeForm: FormGroup;
   @Input() availableItemGroups: CommonDictionaryModel[] = [];
-  @Input() availableItemTypes: CommonDictionaryModel[] = [];
+  @Input() availableTags: CommonDictionaryModel[] = [];
+  @Input() filteredItemTypes: CommonDictionaryModel[][] = [];
   @Input() dependencies: FormArray;
   @Output() createNewDependency: EventEmitter<void> = new EventEmitter<void>();
+  @Output() dependentItemGroupChanged: EventEmitter<{
+    itemGroupId: number;
+    dependencyIndex: number;
+  }> = new EventEmitter<{ itemGroupId: number; dependencyIndex: number }>();
 
   constructor() {}
 
@@ -20,5 +25,16 @@ export class ItemTypeEditFormComponent implements OnInit {
 
   onCreateNewDependency() {
     this.createNewDependency.emit();
+  }
+
+  onDependentItemGroupChanged(
+    newItemGroup: { id: number },
+    dependencyIndex: number
+  ) {
+    debugger;
+    this.dependentItemGroupChanged.emit({
+      itemGroupId: newItemGroup.id,
+      dependencyIndex,
+    });
   }
 }

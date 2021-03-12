@@ -15,6 +15,19 @@
             id="editItemGroupIdSelector"
           ></ng-select>
         </div>
+        <div class="col-md-4 col-sm-6 col-xs-6 ng-select-wrapper">
+          <ng-select
+            class="custom"
+            dropdownPosition="'bottom'"
+            [placeholder]="'Tags' | translate"
+            [items]="availableTags"
+            formControlName="tagIds"
+            [clearable]="false"
+            [bindLabel]="'name'"
+            [bindValue]="'id'"
+            id="editItemTypeTagsSelector"
+          ></ng-select>
+        </div>
         <div class="col-md-4 col-sm-6 col-xs-6">
           <div class="md-form">
             <input
@@ -60,18 +73,48 @@
                 <mdb-card class="mb-2">
                   <mdb-card-body>
                     <ng-container [formGroup]="dependencyControl">
-                      <div class="col-md-4 col-sm-6 col-xs-6 ng-select-wrapper">
-                        <ng-select
-                          class="custom"
-                          dropdownPosition="'bottom'"
-                          [placeholder]="'Dependent item group' | translate"
-                          [items]="availableItemGroups"
-                          formControlName="itemGroupId"
-                          [clearable]="false"
-                          [bindLabel]="'name'"
-                          [bindValue]="'id'"
-                          id="itemGroupId_{{ dependencyIndex }}"
-                        ></ng-select>
+                      <div class="row">
+                        <div
+                          class="col-md-4 col-sm-6 col-xs-6 ng-select-wrapper"
+                        >
+                          <ng-select
+                            class="custom"
+                            dropdownPosition="'bottom'"
+                            [placeholder]="'Dependent item group' | translate"
+                            [items]="availableItemGroups"
+                            formControlName="itemGroupId"
+                            (change)="
+                              onDependentItemGroupChanged(
+                                $event,
+                                dependencyIndex
+                              )
+                            "
+                            [clearable]="false"
+                            [bindLabel]="'name'"
+                            [bindValue]="'id'"
+                            id="dependentItemGroupId_{{ dependencyIndex }}"
+                          ></ng-select>
+                        </div>
+                        <div
+                          class="col-md-4 col-sm-6 col-xs-6 ng-select-wrapper"
+                        >
+                          <ng-select
+                            class="custom"
+                            dropdownPosition="'bottom'"
+                            [placeholder]="'Protective equipment' | translate"
+                            [items]="
+                              filteredItemTypes[dependencyIndex]
+                                ? filteredItemTypes[dependencyIndex]
+                                : []
+                            "
+                            formControlName="itemTypesIds"
+                            [clearable]="false"
+                            [bindLabel]="'name'"
+                            [bindValue]="'id'"
+                            [multiple]="true"
+                            id="dependentItemTypesIds_{{ dependencyIndex }}"
+                          ></ng-select>
+                        </div>
                       </div>
                     </ng-container>
                   </mdb-card-body>

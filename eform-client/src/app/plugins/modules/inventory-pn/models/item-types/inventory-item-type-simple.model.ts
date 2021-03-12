@@ -8,8 +8,8 @@ export class InventoryItemTypeSimpleModel {
   parentTypeName: string;
   usage: string;
   riskDescription: string;
-  pictogramImageName: string;
-  dangerLabelImageName: string;
+  pictogramImages: string[];
+  dangerLabelImages: string[];
   name: string;
   comment: string;
   tags: SharedTagModel[];

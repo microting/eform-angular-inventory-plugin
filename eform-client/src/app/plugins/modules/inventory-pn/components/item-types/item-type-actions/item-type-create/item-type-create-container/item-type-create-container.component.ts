@@ -1,4 +1,4 @@
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormArray,
@@ -10,12 +10,13 @@ import {
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subscription } from 'rxjs';
 import { CommonDictionaryModel } from 'src/app/common/models';
-import {InventoryItemTypeCreateModel} from 'src/app/plugins/modules/inventory-pn/models';
+import { InventoryItemTypeCreateModel } from 'src/app/plugins/modules/inventory-pn/models';
 import {
   InventoryPnItemGroupsService,
   InventoryPnItemTypesService,
   InventoryPnItemTypeTagsService,
 } from '../../../../../services';
+import R from 'ramda';
 
 @AutoUnsubscribe()
 @Component({
@@ -26,9 +27,11 @@ import {
 export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
   availableTags: CommonDictionaryModel[] = [];
   availableItemGroups: CommonDictionaryModel[] = [];
-  availableItemTypes: CommonDictionaryModel[] = [];
+  filteredItemTypes: CommonDictionaryModel[][] = [];
   newItemTypeForm: FormGroup;
   itemTypeDependencies: FormArray = new FormArray([]);
+  pictogramImagesPreview: string[] = [];
+  dangerLabelImagesPreview: string[] = [];
 
   getTagsSub$: Subscription;
   createItemTypeSub$: Subscription;
@@ -59,6 +62,8 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
       riskDescription: [''],
       usage: [''],
       description: [''],
+      pictogramImages: [[]],
+      dangerLabelImages: [[]],
       tagIds: [[]],
     });
   }
@@ -90,19 +95,35 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
       });
   }
 
-  getItemTypesDictionary() {
+  getItemTypesDictionary(itemGroupId: number, dependencyIndex: number) {
     this.getItemTypesDictionarySub$ = this.itemTypesService
-      .getAllItemTypesDictionary()
+      .getAllItemTypesDictionary(itemGroupId)
       .subscribe((data) => {
         if (data && data.success) {
-          this.availableItemTypes = data.model;
+          if (this.filteredItemTypes[dependencyIndex]) {
+            // If dependency found - update only types on change
+            this.filteredItemTypes = R.update(
+              dependencyIndex,
+              data.model,
+              this.filteredItemTypes
+            );
+          } else {
+            // If dependency not found - push new item types to array
+            this.filteredItemTypes = [...this.filteredItemTypes, data.model];
+          }
         }
       });
   }
 
   createItemType() {
+    const dependencies = this.itemTypeDependencies.value as {
+      itemGroupId: number;
+      itemTypesIds: number[];
+    }[];
+    const createModel = this.newItemTypeForm
+      .value as InventoryItemTypeCreateModel;
     this.createItemTypeSub$ = this.itemTypesService
-      .createItemType(this.newItemTypeForm.value as InventoryItemTypeCreateModel)
+      .createItemType({ ...createModel, dependencies: [...dependencies] })
       .subscribe((data) => {
         if (data && data.success) {
           this.location.back();
@@ -113,8 +134,40 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
   getInitialData() {
     this.getTags();
     this.getItemGroupsDictionary();
-    this.getItemTypesDictionary();
+  }
+
+  uploadFile(event, fieldName: string = 'pictogramImages') {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.newItemTypeForm.patchValue({
+      pictogramImages: [...this.newItemTypeForm.get(fieldName).value, file],
+    });
+    this.newItemTypeForm.get(fieldName).updateValueAndValidity();
+
+    // File Preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      fieldName === 'pictogramImages'
+        ? (this.pictogramImagesPreview = [
+            ...this.pictogramImagesPreview,
+            reader.result as string,
+          ])
+        : (this.dangerLabelImagesPreview = [
+            ...this.dangerLabelImagesPreview,
+            reader.result as string,
+          ]);
+    };
+    reader.readAsDataURL(file);
   }
 
   ngOnDestroy(): void {}
+
+  onDependentItemGroupChanged(dependency: {
+    itemGroupId: number;
+    dependencyIndex: number;
+  }) {
+    this.getItemTypesDictionary(
+      dependency.itemGroupId,
+      dependency.dependencyIndex
+    );
+  }
 }
