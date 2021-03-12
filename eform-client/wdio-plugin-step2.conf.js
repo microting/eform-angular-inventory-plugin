@@ -10,10 +10,10 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
   specs: [
-      'e2e/Tests/workorders-settings/application-settings.plugins-page.spec.ts',
-      'e2e/Tests/workorders-general/workorders-settings.site.spec.ts',
-      'e2e/Tests/workorders-general/workorders-settings.folder.spec.ts',
-      'e2e/Tests/workorders-general/workorders.get.spec.ts'
+      'e2e/Tests/inventory-settings/application-settings.plugins-page.spec.ts',
+      'e2e/Tests/inventory-general/inventory-item-groups/inventory-item-groups.create.spec.ts',
+      'e2e/Tests/inventory-general/inventory-item-groups/inventory-item-groups.edit.spec.ts',
+      'e2e/Tests/inventory-general/inventory-item-groups/inventory-item-groups.delete.spec.ts',
   ],
     suites: {
         settings: [
