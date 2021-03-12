@@ -85,10 +85,32 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 };
                 await itemType.Create(_dbContext);
 
-                //foreach (var dependency in itemTypeCreateModel.Dependencies)
-                //{
+                // create dependencies
+                foreach (var dependency in itemTypeCreateModel.Dependencies)
+                {
+                    // create item group dependency
+                    var dependencyItemGroup = new ItemGroupDependency
+                    {
+                        CreatedByUserId = _userService.UserId,
+                        UpdatedByUserId = _userService.UserId,
+                        ItemGroupId = dependency.ItemGroupId,
+                        ItemTypeId = itemType.Id,
+                    };
+                    await dependencyItemGroup.Create(_dbContext);
 
-                //}
+                    // create item type dependency
+                    foreach (var dependencyItemType in dependency.ItemTypesIds
+                        .Select(dependencyItemTypesId => new ItemTypeDependency
+                        {
+                            CreatedByUserId = _userService.UserId,
+                            UpdatedByUserId = _userService.UserId,
+                            ParentItemTypeId = itemType.Id,
+                            DependItemTypeId = dependencyItemTypesId,
+                        }))
+                    {
+                        await dependencyItemType.Create(_dbContext);
+                    }
+                }
 
                 // creating a dependency between tag and item type
                 foreach (var itemTypeTag in tags.Select(inventoryTag => new ItemTypeTag
@@ -285,6 +307,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
 
                 // add select and take objects from db
                 var inventoryItemTypeFromDb = await AddSelectToItemTypeQuery(inventoryItemTypeQuery, _userService).ToListAsync();
+
                 var returnValue = new Paged<ItemTypeSimpleModel>
                 {
                     Entities = inventoryItemTypeFromDb,

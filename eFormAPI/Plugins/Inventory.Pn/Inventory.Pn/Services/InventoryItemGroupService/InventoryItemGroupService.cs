@@ -62,9 +62,8 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
             {
                 var inventoryItemGroupQuery = _dbContext.ItemGroups
                     .AsQueryable();
-
                 // sort
-                if (!string.IsNullOrEmpty(itemGroupRequestModel.Sort))
+                if (!string.IsNullOrEmpty(itemGroupRequestModel.Sort) && itemGroupRequestModel.Sort != "ParentGroup")
                 {
                     if (itemGroupRequestModel.IsSortDsc)
                     {
@@ -96,14 +95,31 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                 // calculate total before pagination
                 var total = await inventoryItemGroupQuery.Select(x => x.Id).CountAsync();
 
+                var inventoryItemGroupQueryMapped = AddSelectToItemGroupQuery(inventoryItemGroupQuery);
+
+                if (itemGroupRequestModel.Sort == "ParentGroup")
+                {
+                    if (itemGroupRequestModel.IsSortDsc)
+                    {
+                        inventoryItemGroupQueryMapped = inventoryItemGroupQueryMapped
+                            .OrderByDescending(x => x.Parent.Name);
+                    }
+                    else
+                    {
+                        inventoryItemGroupQueryMapped = inventoryItemGroupQueryMapped
+                            .OrderBy(x => x.Parent.Name);
+                    }
+
+                }
+
                 // pagination
-                inventoryItemGroupQuery
-                    = inventoryItemGroupQuery
-                        .Skip(itemGroupRequestModel.Offset)
-                        .Take(itemGroupRequestModel.PageSize);
+                inventoryItemGroupQueryMapped
+                    = inventoryItemGroupQueryMapped
+                    .Skip(itemGroupRequestModel.Offset)
+                    .Take(itemGroupRequestModel.PageSize);
 
                 // add select and take objects from db
-                var inventoryItemGroupsFromDb = await AddSelectToItemGroupQuery(inventoryItemGroupQuery).ToListAsync();
+                var inventoryItemGroupsFromDb = await inventoryItemGroupQueryMapped.ToListAsync();
                 var returnValue = new Paged<ItemGroupModel>
                 {
                     Entities = inventoryItemGroupsFromDb,
