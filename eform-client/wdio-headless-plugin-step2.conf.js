@@ -13,6 +13,7 @@ exports.config = {
   specs: [
       'e2e/Tests/inventory-settings/application-settings.plugins-page.spec.ts',
       'e2e/Tests/inventory-general/inventory-item-groups/inventory-item-groups.create.spec.ts',
+      'e2e/Tests/inventory-general/inventory-item-groups/inventory-item-groups.sort.spec.ts',
       'e2e/Tests/inventory-general/inventory-item-groups/inventory-item-groups.edit.spec.ts',
       'e2e/Tests/inventory-general/inventory-item-groups/inventory-item-groups.delete.spec.ts',
   ],
