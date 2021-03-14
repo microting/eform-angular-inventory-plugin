@@ -47,11 +47,11 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getInitialData();
-
     this.activatedRouteSub$ = this.activatedRoute.params.subscribe((params) => {
       this.selectedItemTypeId = +params['id'];
     });
+
+    this.getInitialData();
   }
 
   goBack() {

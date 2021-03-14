@@ -93,7 +93,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     {
                         CreatedByUserId = _userService.UserId,
                         UpdatedByUserId = _userService.UserId,
-                        ItemGroupId = dependency.ItemGroupId,
+                        ItemGroupId = (int) dependency.ItemGroupId,
                         ItemTypeId = itemType.Id,
                     };
                     await dependencyItemGroup.Create(_dbContext);
@@ -227,7 +227,9 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 .Where(x => x.Id == itemTypeId)
                 .AsQueryable();
 
-                var inventoryItemTypeFromDb = await AddSelectToItemTypeQueryForFullObject(inventoryItemTypeQuery).FirstAsync();
+                var inventoryItemTypeFromDb = await AddSelectToItemTypeQueryForFullObject(inventoryItemTypeQuery)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync();
 
                 if (inventoryItemTypeFromDb == null)
                 {
@@ -381,13 +383,12 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                         .Where(y => y.Type == TypeUploadedData.Pictogram)
                         .Select(y => y.FileName)
                         .FirstOrDefault(),
-                    ParentTypeName = x.ParentItemTypes
+                    ParentTypeName = x.DependItemTypes
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Select(y => y.DependItemType.Name)
                         .FirstOrDefault(),
                     Tags = x.ItemTypeTags
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                        .Where(y => y.ItemTypeId == x.Id)
                         .Select(y => new CommonTagModel
                         {
                             Id = y.InventoryTag.Id,
@@ -409,41 +410,17 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                      Id = x.Id,
                      TagIds = x.ItemTypeTags
                          .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                         .Where(y => y.ItemTypeId == x.Id)
                          .Select(y => y.InventoryTag.Id)
                          .ToList(),
-                     //Dependencies = new List<ItemTypeDependencies>
-                     //{
-                     //    new ItemTypeDependencies()
-                     //}
-                     //ItemGroupDependency = GetGroupDependencyByItemTypeId(x.Id, dbContext),
-                     //ItemTypeDependency = dbContext.ItemTypeDependencys
-                     //    .Where(y => y.ItemTypeId == x.Id)
-                     //    .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                     //    .Select(y => new CommonDictionaryModel
-                     //    {
-                     //        Description = y.DependItemType.Description,
-                     //        Name = y.DependItemType.Name,
-                     //        Id = y.DependItemType.Id,
-                     //    })
-                     //    .ToList(),
+                     Dependencies = x.ItemGroupDependencies
+                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                         .Select(y => new ItemTypeDependencies
+                         {
+                             ItemGroupId = y.ItemGroupId,
+                             ItemTypesIds = y.ItemType.DependItemTypes.Select(z => z.DependItemTypeId).ToList(),
+                         })
+                         .ToList(),
                  });
-        }
-
-        private static ItemTypeDependencyItemGroup GetGroupDependencyByItemTypeId(int itemTypeId, InventoryPnDbContext dbContext)
-        {
-            var itemGroupId = dbContext.ItemGroupDependencys
-                .Where(y => y.ItemTypeId == itemTypeId)
-                .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                .Select(y => y.ItemGroupId).FirstOrDefault();
-
-            return dbContext.ItemGroups
-                .Where(z => z.Id == itemGroupId)
-                .Select(z => new ItemTypeDependencyItemGroup
-                {
-                    Name = z.Name,
-                    Id = z.Id,
-                }).FirstOrDefault();
         }
     }
 }

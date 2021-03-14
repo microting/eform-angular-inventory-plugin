@@ -24,7 +24,7 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 
     public class ItemTypeDependencies
     {
-        public int ItemGroupId { get; set; }
+        public int? ItemGroupId { get; set; }
 
         public List<int> ItemTypesIds { get; set; }
             = new List<int>();
