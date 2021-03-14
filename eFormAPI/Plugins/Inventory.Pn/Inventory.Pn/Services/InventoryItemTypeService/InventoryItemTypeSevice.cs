@@ -256,26 +256,6 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 var inventoryItemTypeQuery = _dbContext.ItemTypes
                     .AsQueryable();
 
-                // sort
-                if (!string.IsNullOrEmpty(itemTypeRequest.Sort))
-                {
-                    if (itemTypeRequest.IsSortDsc)
-                    {
-                        inventoryItemTypeQuery = inventoryItemTypeQuery
-                            .CustomOrderByDescending(itemTypeRequest.Sort);
-                    }
-                    else
-                    {
-                        inventoryItemTypeQuery = inventoryItemTypeQuery
-                            .CustomOrderBy(itemTypeRequest.Sort);
-                    }
-                }
-                else
-                {
-                    inventoryItemTypeQuery = _dbContext.ItemTypes
-                        .OrderBy(x => x.Id);
-                }
-
                 // filter by name
                 if (!string.IsNullOrEmpty(itemTypeRequest.NameFilter))
                 {
@@ -307,8 +287,31 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                         .Skip(itemTypeRequest.Offset)
                         .Take(itemTypeRequest.PageSize);
 
-                // add select and take objects from db
-                var inventoryItemTypeFromDb = await AddSelectToItemTypeQuery(inventoryItemTypeQuery, _userService).ToListAsync();
+                // add select
+                var inventoryItemTypeMappedQuery = AddSelectToItemTypeQuery(inventoryItemTypeQuery, _userService);
+
+                // sort
+                if (!string.IsNullOrEmpty(itemTypeRequest.Sort))
+                {
+                    if (itemTypeRequest.IsSortDsc)
+                    {
+                        inventoryItemTypeMappedQuery = inventoryItemTypeMappedQuery
+                            .CustomOrderByDescending(itemTypeRequest.Sort);
+                    }
+                    else
+                    {
+                        inventoryItemTypeMappedQuery = inventoryItemTypeMappedQuery
+                            .CustomOrderBy(itemTypeRequest.Sort);
+                    }
+                }
+                else
+                {
+                    inventoryItemTypeMappedQuery = inventoryItemTypeMappedQuery
+                        .OrderBy(x => x.Id);
+                }
+
+                // take objects from db
+                var inventoryItemTypeFromDb = await inventoryItemTypeMappedQuery.ToListAsync();
 
                 var returnValue = new Paged<ItemTypeSimpleModel>
                 {

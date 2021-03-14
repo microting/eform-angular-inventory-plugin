@@ -43,19 +43,19 @@
           scope="col"
           class="table-header-sortable"
           id="dateTableHeader"
-          (click)="onSortTable('Date')"
+          (click)="onSortTable('CreatedDate')"
         >
           <div class="d-flex align-items-center justify-content-center">
             {{ 'Date' | translate }}
             <i
               class="material-icons text-black-50"
-              *ngIf="localPageSettings.sort != 'Name'"
+              *ngIf="localPageSettings.sort != 'CreatedDate'"
               >unfold_more</i
             >
             <i
               class="material-icons"
               *ngIf="
-                localPageSettings.sort == 'Date' &&
+                localPageSettings.sort == 'CreatedDate' &&
                 !itemTypesRequestModel.isSortDsc
               "
               >expand_less</i
@@ -63,7 +63,7 @@
             <i
               class="material-icons"
               *ngIf="
-                localPageSettings.sort == 'Date' &&
+                localPageSettings.sort == 'CreatedDate' &&
                 itemTypesRequestModel.isSortDsc
               "
               >expand_more</i
@@ -105,19 +105,19 @@
           scope="col"
           class="table-header-sortable"
           id="itemTypeTableHeader"
-          (click)="onSortTable('ItemType')"
+          (click)="onSortTable('ParentTypeName')"
         >
           <div class="d-flex align-items-center justify-content-center">
             {{ 'Parent group' | translate }}
             <i
               class="material-icons text-black-50"
-              *ngIf="localPageSettings.sort != 'ItemType'"
+              *ngIf="localPageSettings.sort != 'ParentTypeName'"
               >unfold_more</i
             >
             <i
               class="material-icons"
               *ngIf="
-                localPageSettings.sort == 'ItemType' &&
+                localPageSettings.sort == 'ParentTypeName' &&
                 !itemTypesRequestModel.isSortDsc
               "
               >expand_less</i
@@ -125,7 +125,7 @@
             <i
               class="material-icons"
               *ngIf="
-                localPageSettings.sort == 'ItemType' &&
+                localPageSettings.sort == 'ParentTypeName' &&
                 itemTypesRequestModel.isSortDsc
               "
               >expand_more</i
@@ -273,7 +273,7 @@
         </th>
       </tr>
     </thead>
-    <tbody id="tableBody">
+    <tbody id="tableBodyInventoryItemType">
       <tr *ngFor="let itemTypeModel of itemTypesModel.entities; let i = index">
         <td id="itemTypeId">
           {{ itemTypeModel.id }}
@@ -328,7 +328,7 @@
         <td>
           <div class="d-flex flex-row justify-content-center">
             <button
-              id="editItemGroupBtn"
+              id="editItemTypeBtn"
               class="btn btn-accent text-black-50 btn-icon mb-2"
               mdbTooltip="{{ 'Edit item type' | translate }}"
               [routerLink]="['./edit', itemTypeModel.id]"
@@ -336,7 +336,7 @@
               <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
             </button>
             <button
-              id="deleteItemBtn"
+              id="deleteItemTypeBtn"
               class="btn btn-danger btn-icon mb-2"
               mdbTooltip="{{ 'Delete item type' | translate }}"
               (click)="onShowDeleteItemTypeModal(itemTypeModel)"
