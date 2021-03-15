@@ -77,7 +77,7 @@ namespace Inventory.Pn.Services.InventoryItemService
                 }
                 else
                 {
-                    inventoryItemQuery = _dbContext.Items
+                    inventoryItemQuery = inventoryItemQuery
                         .OrderBy(x => x.Id);
                 }
 
@@ -179,7 +179,8 @@ namespace Inventory.Pn.Services.InventoryItemService
 
                 await item.Update(_dbContext);
 
-                return new OperationResult(true);
+                return new OperationResult(true,
+                    _inventoryLocalizationService.GetString("ItemUpdatedSuccessfully"));
             }
             catch (Exception e)
             {
@@ -205,7 +206,8 @@ namespace Inventory.Pn.Services.InventoryItemService
                     SN = createItemModel.SN,
                 };
                 await item.Create(_dbContext);
-                return new OperationResult(true);
+                return new OperationResult(true,
+                    _inventoryLocalizationService.GetString("ItemCreatedSuccessfully"));
             }
             catch (Exception e)
             {
@@ -233,7 +235,8 @@ namespace Inventory.Pn.Services.InventoryItemService
                 item.UpdatedByUserId = _userService.UserId;
                 await item.Delete(_dbContext);
 
-                return new OperationResult(true);
+                return new OperationResult(true,
+                    _inventoryLocalizationService.GetString("ItemDeletedSuccessfully"));
             }
             catch (Exception e)
             {

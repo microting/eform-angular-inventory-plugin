@@ -188,7 +188,8 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
 
                 await itemGroup.Update(_dbContext);
 
-                return new OperationResult(true);
+                return new OperationResult(true,
+                    _inventoryLocalizationService.GetString("ItemGroupUpdatedSuccessfully")); 
             }
             catch (Exception e)
             {
@@ -212,7 +213,8 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                     Code = itemGroupCreateModel.Code,
                 };
                 await itemGroup.Create(_dbContext);
-                return new OperationResult(true);
+                return new OperationResult(true,
+                    _inventoryLocalizationService.GetString("ItemGroupCreatedSuccessfully")); 
             }
             catch (Exception e)
             {
@@ -265,7 +267,8 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                 itemGroup.UpdatedByUserId = _userService.UserId;
                 await itemGroup.Delete(_dbContext);
 
-                return new OperationResult(true);
+                return new OperationResult(true,
+                    _inventoryLocalizationService.GetString("ItemGroupDeletedSuccessfully"));
             }
             catch (Exception e)
             {

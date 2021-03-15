@@ -278,5 +278,53 @@
       "en-US": "Item type created successfully",
       "de-DE": "Artikeltyp erfolgreich erstellt"
     }
+  },
+  {
+    "Key": "ItemCreatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Element oprettet med succes",
+      "en-US": "Item created successfully",
+      "de-DE": "Artikel erfolgreich erstellt"
+    }
+  },
+  {
+    "Key": "ItemUpdatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Vare opdateret med succes",
+      "en-US": "Item updated successfully",
+      "de-DE": "Artikel erfolgreich aktualisiert"
+    }
+  },
+  {
+    "Key": "ItemDeletedSuccessfully",
+    "LocalizedValue": {
+      "da": "Element slettet med succes",
+      "en-US": "Item deleted successfully",
+      "de-DE": "Artikel erfolgreich gelöscht"
+    }
+  },
+  {
+    "Key": "ItemGroupUpdatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Item gruppe opdateret med succes",
+      "en-US": "Item group updated successfully",
+      "de-DE": "Artikelgruppe erfolgreich aktualisiert"
+    }
+  },
+  {
+    "Key": "ItemGroupCreatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Item gruppe oprettet med succes",
+      "en-US": "Item group created successfully",
+      "de-DE": "Artikelgruppe erfolgreich erstellt"
+    }
+  },
+  {
+    "Key": "ItemGroupDeletedSuccessfully",
+    "LocalizedValue": {
+      "da": "Item gruppe slettet med succes",
+      "en-US": "Item group deleted successfully",
+      "de-DE": "Artikelgruppe erfolgreich gelöscht"
+    }
   }
 ]

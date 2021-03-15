@@ -352,6 +352,113 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     return new OperationResult(false, _inventoryLocalizationService.GetString("InventoryItemTypeNotFount"));
                 }
 
+                var tagsForDelete = itemTypesFromDb.ItemTypeTags
+                    .Where(x => !model.TagIds.Contains(x.InventoryTagId))
+                    .ToList();
+
+                var tagIdsForAdd = model.TagIds
+                    .Where(x => !itemTypesFromDb.ItemTypeTags.Select(y => y.InventoryTagId).Contains(x))
+                    .ToList();
+
+                // delete tags from item type
+                foreach (var itemTypeTag in tagsForDelete)
+                {
+                    await itemTypeTag.Delete(_dbContext);
+                }
+
+                // add tags to item type
+                foreach (var tagId in tagIdsForAdd)
+                {
+                    var tag = await _dbContext.InventoryTags
+                        .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                        .Where(x => x.Id == tagId)
+                        .FirstOrDefaultAsync();
+
+                    if (tag != null)
+                    {
+                        var itemTypeTag = new ItemTypeTag
+                        {
+                            InventoryTagId = tag.Id,
+                            ItemTypeId = itemTypesFromDb.Id,
+                            CreatedByUserId = _userService.UserId,
+                            UpdatedByUserId = _userService.UserId,
+                        };
+                        await itemTypeTag.Create(_dbContext);
+                    }
+                }
+
+                var itemGroupDependenciesForDelete = itemTypesFromDb.ItemGroupDependencies
+                    .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Where(x => !model.Dependencies.Select(y => y.ItemGroupId).Contains(x.ItemGroupId))
+                    .ToList();
+
+                var itemGroupIdsDependenciesForAdd = model.Dependencies
+                    .Where(x => !itemTypesFromDb.ItemGroupDependencies.Where(y => y.WorkflowState != Constants.WorkflowStates.Removed).Select(y => y.ItemGroupId).ToList()
+                        .Contains((int)x.ItemGroupId))
+                    .Select(x => x.ItemGroupId)
+                    .ToList();
+
+                // remove item group Dependency from item type 
+                foreach (var itemGroupDependency in itemGroupDependenciesForDelete)
+                {
+                    await itemGroupDependency.Delete(_dbContext);
+                }
+
+                // add item group Dependency to item type 
+                foreach (var itemGroupDependencyId in itemGroupIdsDependenciesForAdd)
+                {
+                    if (await _dbContext.ItemGroups
+                        .Where(x => x.Id == itemGroupDependencyId)
+                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                        .AnyAsync())
+                    {
+                        var itemGroupDependency = new ItemGroupDependency
+                        {
+                           ItemGroupId = (int) itemGroupDependencyId,
+                           ItemTypeId = itemTypesFromDb.Id,
+                           CreatedByUserId = _userService.UserId,
+                           UpdatedByUserId = _userService.UserId,
+                        };
+                        await itemGroupDependency.Create(_dbContext);
+                    }
+                }
+
+                var itemTypeDependenciesAllInOneList = model.Dependencies.SelectMany(typeDependenciese => typeDependenciese.ItemTypesIds).ToList();
+
+                var itemTypeDependenciesForDelete = itemTypesFromDb.DependItemTypes
+                    .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Where(x => !itemTypeDependenciesAllInOneList.Contains(x.DependItemTypeId))
+                    .ToList();
+
+                var itemTypeIdsDependenciesForAdd = itemTypeDependenciesAllInOneList
+                    .Where(x => !itemTypesFromDb.DependItemTypes.Where(y => y.WorkflowState != Constants.WorkflowStates.Removed).Select(y => y.DependItemTypeId).ToList().Contains(x))
+                    .ToList();
+
+                // remove item Type Dependency from item type 
+                foreach (var dependItemType in itemTypeDependenciesForDelete)
+                {
+                    await dependItemType.Delete(_dbContext);
+                }
+
+                // add item Type Dependency to item type 
+                foreach (var itemTypeId in itemTypeIdsDependenciesForAdd)
+                {
+                    if (await _dbContext.ItemTypes
+                        .Where(x => x.Id == itemTypeId)
+                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                        .AnyAsync())
+                    {
+                        var itemTypeDependency = new ItemTypeDependency
+                        {
+                            ParentItemTypeId = itemTypesFromDb.Id,
+                            DependItemTypeId = itemTypeId,
+                            CreatedByUserId = _userService.UserId,
+                            UpdatedByUserId = _userService.UserId,
+                        };
+                        await itemTypeDependency.Create(_dbContext);
+                    }
+                }
+
                 itemTypesFromDb.RiskDescription = model.RiskDescription;
                 itemTypesFromDb.UpdatedByUserId = _userService.UserId;
                 itemTypesFromDb.ItemGroupId = model.ItemGroupId;
