@@ -225,9 +225,6 @@
             >
           </div>
         </th>
-        <th scope="col">
-          {{ 'Pictogram' | translate }}
-        </th>
         <th
           scope="col"
           class="table-header-sortable"
@@ -258,9 +255,6 @@
               >expand_more</i
             >
           </div>
-        </th>
-        <th scope="col">
-          {{ 'Danger label' | translate }}
         </th>
         <th scope="col">
           {{ 'Comment' | translate }}
@@ -299,14 +293,8 @@
         <td id="itemTypeDescription">
           {{ itemTypeModel.description }}
         </td>
-        <td id="itemTypePictogram">
-          {{ itemTypeModel.pictogramImages }}
-        </td>
         <td id="itemTypeRiscDescription">
           {{ itemTypeModel.riskDescription }}
-        </td>
-        <td id="itemTypeDangerLabel">
-          {{ itemTypeModel.dangerLabelImages }}
         </td>
         <td id="itemTypeComment">
           {{ itemTypeModel.comment }}
@@ -318,6 +306,8 @@
                 class="badge badge-primary mb-1"
                 id="assignedTag"
                 *ngFor="let tag of itemTypeModel.tags"
+                style="cursor: pointer"
+                (click)="onTagSelected(tag.id)"
               >
                 <fa-icon icon="tag"></fa-icon>
                 {{ tag.name }}
@@ -327,6 +317,30 @@
         </td>
         <td>
           <div class="d-flex flex-row justify-content-center">
+            <button
+              id="workOrderShowPicturesOfTask" *ngIf="itemTypeModel.pictogramImages"
+              (click)="openPicturesModal(itemTypeModel.dangerLabelImages, true)"
+              class="btn btn-accent text-black-50 btn-icon mb-2"
+              mdbTooltip="{{ 'View pictogram images' | translate }}"
+            >
+              <fa-icon
+                icon="clipboard-list"
+                size="lg"
+                [fixedWidth]="true"
+              ></fa-icon>
+            </button>
+            <button *ngIf="itemTypeModel.dangerLabelImages"
+                    id="workOrderShowPicturesOfTaskDone"
+                    (click)="openPicturesModal(itemTypeModel.dangerLabelImages, false)"
+                    class="btn btn-accent text-black-50 btn-icon mb-2"
+                    mdbTooltip="{{ 'View danger label images' | translate }}"
+            >
+              <fa-icon
+                icon="clipboard-check"
+                size="lg"
+                [fixedWidth]="true"
+              ></fa-icon>
+            </button>
             <button
               id="editItemTypeBtn"
               class="btn btn-accent text-black-50 btn-icon mb-2"

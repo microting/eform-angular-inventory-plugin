@@ -16,7 +16,7 @@ import {
   InventoryPnItemTypesService,
   InventoryPnItemTypeTagsService,
 } from '../../../../../services';
-import R from 'ramda';
+import * as R from 'ramda';
 
 @AutoUnsubscribe()
 @Component({

@@ -25,6 +25,7 @@ import {
   styleUrls: ['./item-types-container.component.scss'],
 })
 export class ItemTypesContainerComponent implements OnInit, OnDestroy {
+  @ViewChild('imagesModalComponent', { static: false }) imagesModalComponent;
   @ViewChild('deleteItemTypeModal', { static: false }) deleteItemTypeModal;
   @ViewChild('itemTypeTagsModal') itemTypeTagsModal: any;
 
@@ -173,8 +174,6 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
-
   onDeleteItemType(model: InventoryItemTypeSimpleModel) {
     this.deleteItemTypeSub$ = this.itemTypesService
       .deleteItemType(model.id)
@@ -185,4 +184,10 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+  openPicturesModal(model: { images: string[]; isPictogram: boolean }) {
+    this.imagesModalComponent.show(model);
+  }
+
+  ngOnDestroy(): void {}
 }

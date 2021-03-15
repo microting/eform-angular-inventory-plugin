@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgSelectModule } from '@ng-select/ng-select';
+import {GalleryModule} from '@ngx-gallery/core';
 import { TranslateModule } from '@ngx-translate/core';
 import {
     ButtonsModule, CardsModule,
@@ -54,6 +55,7 @@ import {
   InventoryPnSettingsService,
 } from './services';
 import { ItemTypeImagesComponent } from './components/item-types/item-type-actions/item-type-images/item-type-images.component';
+import { ItemTypeImagesModalComponent } from './components/item-types/item-type-images-modal/item-type-images-modal.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +88,8 @@ import { ItemTypeImagesComponent } from './components/item-types/item-type-actio
     ItemTypeTagsComponent,
 
     ItemTypeImagesComponent,
+
+    ItemTypeImagesModalComponent,
   ],
   imports: [
     CommonModule,
@@ -107,6 +111,7 @@ import { ItemTypeImagesComponent } from './components/item-types/item-type-actio
     OwlDateTimeModule,
     ReactiveFormsModule,
     CardsModule,
+    GalleryModule,
   ],
   providers: [
     InventoryPnItemsService,

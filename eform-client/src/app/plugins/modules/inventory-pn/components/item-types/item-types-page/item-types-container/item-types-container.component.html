@@ -37,6 +37,7 @@
     (deleteItemType)="showDeleteItemTypeModal($event)"
     (sortTable)="sortTable($event)"
     (tagSelected)="tagSelected($event)"
+    (showPictures)="openPicturesModal($event)"
   ></app-item-types-table>
   <div class="row justify-content-between mr-2 ml-2">
     <div class="col-md-1">
@@ -71,3 +72,5 @@
   [availableTags]="availableTags"
   (tagsChanged)="getTags()"
 ></app-item-type-tags>
+
+<app-item-type-images-modal #imagesModalComponent></app-item-type-images-modal>

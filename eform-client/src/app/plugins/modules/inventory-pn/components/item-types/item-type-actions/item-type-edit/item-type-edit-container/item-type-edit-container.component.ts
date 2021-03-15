@@ -14,7 +14,7 @@ import {
   InventoryPnItemTypesService,
   InventoryPnItemTypeTagsService,
 } from '../../../../../services';
-import R from 'ramda';
+import * as R from 'ramda';
 
 @AutoUnsubscribe()
 @Component({
@@ -61,6 +61,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
 
   initEditForm() {
     this.editItemTypeForm = this.formBuilder.group({
+      id: [null, Validators.required],
       itemGroupId: [null, Validators.required],
       name: [''],
       riskDescription: [''],
@@ -69,7 +70,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       pictogramImages: [],
       dangerLabelImages: [],
       tagIds: [],
-      itemTypeDependencies: []
+      dependencies: []
     });
   }
 
@@ -137,6 +138,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       .getAllItemTypesDictionary(itemGroupId)
       .subscribe((data) => {
         if (data && data.success) {
+          debugger;
           if (this.filteredItemTypes[dependencyIndex]) {
             // If dependency found - update only types on change
             this.filteredItemTypes = R.update(

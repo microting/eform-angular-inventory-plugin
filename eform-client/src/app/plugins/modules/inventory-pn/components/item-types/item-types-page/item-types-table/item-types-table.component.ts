@@ -20,6 +20,11 @@ export class ItemTypesTableComponent implements OnInit {
   @Output()
   deleteItemType: EventEmitter<InventoryItemTypeSimpleModel> = new EventEmitter<InventoryItemTypeSimpleModel>();
   @Output() tagSelected: EventEmitter<number> = new EventEmitter<number>();
+  @Output()
+  showPictures: EventEmitter<{
+    images: string[];
+    isPictogram: boolean;
+  }> = new EventEmitter<{ images: string[]; isPictogram: boolean }>();
 
   constructor() {}
 
@@ -35,5 +40,9 @@ export class ItemTypesTableComponent implements OnInit {
 
   onTagSelected(id: number) {
     this.tagSelected.emit(id);
+  }
+
+  openPicturesModal(images: string[], isPictogram: boolean) {
+    this.showPictures.emit({ images, isPictogram });
   }
 }
