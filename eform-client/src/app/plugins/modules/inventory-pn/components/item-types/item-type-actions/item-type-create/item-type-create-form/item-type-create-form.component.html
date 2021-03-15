@@ -25,6 +25,7 @@
             [clearable]="false"
             [bindLabel]="'name'"
             [bindValue]="'id'"
+            [multiple]="true"
             id="createItemTypeTagsSelector"
           ></ng-select>
         </div>
@@ -123,7 +124,7 @@
               <button
                 mdbBtn
                 class="btn-success btn-icon btn-sm m-0 ml-auto"
-                id="newTagBtn"
+                id="newDependencyBtn"
                 (click)="onCreateNewDependency()"
                 type="button"
               >

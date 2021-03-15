@@ -31,6 +31,7 @@ export class ItemGroupEditModalComponent implements OnInit {
 
   show(model: InventoryItemGroupModel) {
     this.selectedItemGroupModel = new InventoryItemGroupUpdateModel();
+    debugger;
     this.selectedItemGroupModel = {
       id: model.id,
       description: model.description,

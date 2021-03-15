@@ -31,7 +31,6 @@ export class ItemTypeCreateFormComponent implements OnInit {
     newItemGroup: { id: number },
     dependencyIndex: number
   ) {
-    debugger;
     this.dependentItemGroupChanged.emit({
       itemGroupId: newItemGroup.id,
       dependencyIndex,

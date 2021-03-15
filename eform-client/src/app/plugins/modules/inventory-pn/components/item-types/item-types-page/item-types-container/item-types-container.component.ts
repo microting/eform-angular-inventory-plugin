@@ -32,6 +32,7 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
   localPageSettings: PageSettingsModel = new PageSettingsModel();
   itemTypesModel: Paged<InventoryItemTypeSimpleModel> = new Paged<InventoryItemTypeSimpleModel>();
   itemTypesRequestModel: InventoryItemTypesRequestModel = new InventoryItemTypesRequestModel();
+  selectedItemTypeModel: InventoryItemTypeSimpleModel = new InventoryItemTypeSimpleModel();
   availableTags: CommonDictionaryModel[] = [];
 
   getInventoryTypesSub$: Subscription;
@@ -115,7 +116,8 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
   }
 
   showDeleteItemTypeModal(model: InventoryItemTypeSimpleModel) {
-    this.deleteItemTypeModal.show(model);
+    this.selectedItemTypeModel = model;
+    this.deleteItemTypeModal.show();
   }
 
   sortTable(sort: string) {

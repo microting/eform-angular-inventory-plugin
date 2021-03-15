@@ -63,6 +63,7 @@
 </div>
 <app-item-type-delete-modal
   #deleteItemTypeModal
+  [itemTypeModel]="selectedItemTypeModel"
   (deleteItemType)="onDeleteItemType($event)"
 ></app-item-type-delete-modal>
 <app-item-type-tags

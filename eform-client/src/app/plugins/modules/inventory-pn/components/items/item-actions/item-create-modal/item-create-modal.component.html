@@ -28,20 +28,6 @@
               ></ng-select>
             </div>
           </div>
-          <div class="row" *ngIf="!selectedItemGroupId">
-            <div class="col-md-12">
-              <ng-select
-                class="custom"
-                dropdownPosition="'bottom'"
-                [placeholder]="'Item group' | translate"
-                [(ngModel)]="newItemModel.itemGroupId"
-                [bindValue]="'id'"
-                [bindLabel]="'name'"
-                [items]="itemGroupsList"
-                id="itemCreateGroupSelector"
-              ></ng-select>
-            </div>
-          </div>
           <div class="row">
             <div class="col-md-12">
               <div class="md-form" [owlDateTimeTrigger]="dt1">

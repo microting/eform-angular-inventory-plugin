@@ -10,5 +10,5 @@ export class InventoryItemTypeUpdateModel {
   dangerLabelImages: File[];
   pictogramImagesForDelete: string[];
   dangerLabelImagesForDelete: string[];
-  dependencies: [{itemGroupId: number, itemTypesIds: number[]}];
+  dependencies: {itemGroupId: number, itemTypesIds: number[]}[];
 }

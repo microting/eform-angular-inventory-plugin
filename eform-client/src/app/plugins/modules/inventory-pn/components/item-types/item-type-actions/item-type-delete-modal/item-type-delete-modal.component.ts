@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
+  EventEmitter, Input,
   OnInit,
   Output,
   ViewChild,
@@ -18,14 +18,13 @@ export class ItemTypeDeleteModalComponent implements OnInit {
   @ViewChild('frame', { static: false }) frame;
   @Output()
   deleteItemType: EventEmitter<InventoryItemTypeSimpleModel> = new EventEmitter<InventoryItemTypeSimpleModel>();
-  itemTypeModel: InventoryItemTypeSimpleModel = new InventoryItemTypeSimpleModel();
+  @Input() itemTypeModel: InventoryItemTypeSimpleModel = new InventoryItemTypeSimpleModel();
 
   constructor() {}
 
   ngOnInit() {}
 
-  show(model: InventoryItemTypeSimpleModel) {
-    this.itemTypeModel = model;
+  show() {
     this.frame.show();
   }
 

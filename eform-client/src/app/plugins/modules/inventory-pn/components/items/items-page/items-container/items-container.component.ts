@@ -43,7 +43,6 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
   itemsModel: Paged<InventoryItemModel> = new Paged<InventoryItemModel>();
   itemsRequestModel: InventoryItemsRequestModel = new InventoryItemsRequestModel();
   itemTypesList: CommonDictionaryModel[] = [];
-  itemGroupsList: CommonDictionaryModel[] = [];
   selectedItemGroupId: number | null = null;
 
   getItemsSub$: Subscription;
@@ -67,9 +66,6 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
     });
     this.activatedRouteSub$ = this.activatedRoute.params.subscribe((params) => {
       this.selectedItemGroupId = +params['itemGroupId'];
-      if (!this.selectedItemGroupId) {
-        this.getItemGroupsDictionary();
-      }
     });
   }
 
@@ -124,16 +120,6 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         if (data && data.success) {
           this.itemTypesList = data.model;
-        }
-      });
-  }
-
-  getItemGroupsDictionary() {
-    this.getItemGroupsDictionarySub$ = this.itemGroupsService
-      .getAllItemGroupsDictionary()
-      .subscribe((data) => {
-        if (data && data.success) {
-          this.itemGroupsList = data.model;
         }
       });
   }

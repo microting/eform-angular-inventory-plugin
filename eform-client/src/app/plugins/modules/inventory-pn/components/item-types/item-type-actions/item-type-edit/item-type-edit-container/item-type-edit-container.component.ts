@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import { CommonDictionaryModel } from 'src/app/common/models';
 import {
   InventoryItemTypeCreateModel,
-  InventoryItemTypeModel,
+  InventoryItemTypeModel, InventoryItemTypeUpdateModel,
 } from '../../../../../models';
 import {
   InventoryPnItemGroupsService,
@@ -51,6 +51,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       this.selectedItemTypeId = +params['id'];
     });
 
+    this.initEditForm();
     this.getInitialData();
   }
 
@@ -58,10 +59,24 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  initEditForm(model: InventoryItemTypeModel) {
+  initEditForm() {
     this.editItemTypeForm = this.formBuilder.group({
-      id: [model.id, Validators.required],
-      itemGroupId: [model.itemGroupId, Validators.required],
+      itemGroupId: [null, Validators.required],
+      name: [''],
+      riskDescription: [''],
+      usage: [''],
+      description: [''],
+      pictogramImages: [],
+      dangerLabelImages: [],
+      tagIds: [],
+      itemTypeDependencies: []
+    });
+  }
+
+  updateEditForm(model: InventoryItemTypeModel) {
+    this.editItemTypeForm.patchValue({
+      id: model.id,
+      itemGroupId: model.itemGroupId,
       name: model.name,
       riskDescription: model.riskDescription,
       usage: model.usage,
@@ -102,7 +117,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       .getSingleItemType(this.selectedItemTypeId)
       .subscribe((data) => {
         if (data && data.success) {
-          this.initEditForm(data.model);
+          this.updateEditForm(data.model);
         }
       });
   }
@@ -138,10 +153,14 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   }
 
   updateItemType() {
+    const dependencies = this.itemTypeDependencies.value as {
+      itemGroupId: number;
+      itemTypesIds: number[];
+    }[];
+    const updateModel = this.editItemTypeForm
+      .value as InventoryItemTypeUpdateModel;
     this.updateItemTypeSub$ = this.itemTypesService
-      .createItemType(
-        this.editItemTypeForm.value as InventoryItemTypeCreateModel
-      )
+      .updateItemType({ ...updateModel, dependencies: [...dependencies] })
       .subscribe((data) => {
         if (data && data.success) {
           this.location.back();
