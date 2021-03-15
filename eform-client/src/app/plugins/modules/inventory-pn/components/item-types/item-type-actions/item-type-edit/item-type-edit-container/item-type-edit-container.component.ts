@@ -85,11 +85,14 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       tagIds: model.tagIds,
     });
 
+    debugger;
+
     model.dependencies.map((x, index) => {
+      debugger;
       this.itemTypeDependencies.push(
         this.formBuilder.group({
           itemGroupId: [x.itemGroupId, Validators.required],
-          itemTypesIds: x.itemTypesIds,
+          itemTypesIds: [x.itemTypesIds],
         })
       );
       this.getItemTypesDictionary(x.itemGroupId, index);
@@ -100,7 +103,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
     this.itemTypeDependencies.push(
       this.formBuilder.group({
         itemGroupId: [null, Validators.required],
-        itemTypesIds: [[]],
+        itemTypesIds: [],
       })
     );
   }
