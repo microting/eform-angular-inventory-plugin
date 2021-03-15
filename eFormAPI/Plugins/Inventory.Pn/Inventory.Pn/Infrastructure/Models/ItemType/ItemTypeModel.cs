@@ -28,6 +28,8 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 
         public string Description { get; set; }
 
+        public int? ItemGroupId { get; set; }
+
         public string Usage { get; set; }
 
         public string RiskDescription { get; set; }

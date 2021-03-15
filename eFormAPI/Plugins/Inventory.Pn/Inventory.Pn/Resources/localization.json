@@ -254,5 +254,29 @@
       "en-US": "Error while delete item group",
       "de-DE": "Fehler beim Löschen der Artikelgruppe"
     }
+  },
+  {
+    "Key": "InventoryItemTypeUpdatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Element type opdateret med succes",
+      "en-US": "Item type updated successfully",
+      "de-DE": "Artikeltyp erfolgreich aktualisiert"
+    }
+  },
+  {
+    "Key": "InventoryItemTypeDeletedSuccessfully",
+    "LocalizedValue": {
+      "da": "Element type slettet med succes",
+      "en-US": "Item type deleted successfully",
+      "de-DE": "Artikeltyp erfolgreich gelöscht"
+    }
+  },
+  {
+    "Key": "InventoryItemTypeCreatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Elementtype oprettet med succes",
+      "en-US": "Item type created successfully",
+      "de-DE": "Artikeltyp erfolgreich erstellt"
+    }
   }
 ]

@@ -102,9 +102,9 @@ namespace Inventory.Pn.Controllers
 
         [HttpGet]
         [Route("api/inventory-pn/item-types/dictionary")]
-        public async Task<OperationDataResult<List<CommonDictionaryModel>>> Dictionary()
+        public async Task<OperationDataResult<List<CommonDictionaryModel>>> Dictionary([FromQuery] int? itemGroupId)
         {
-            return await _inventoryItemTypeService.GetItemTypesDictionary();
+            return await _inventoryItemTypeService.GetItemTypesDictionary(itemGroupId);
         }
     }
 }

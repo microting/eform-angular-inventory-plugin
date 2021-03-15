@@ -38,6 +38,6 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
 
         Task<OperationResult> DeleteItemTypeById(int itemTypeId);
 
-        Task<OperationDataResult<List<CommonDictionaryModel>>> GetItemTypesDictionary();
+        Task<OperationDataResult<List<CommonDictionaryModel>>> GetItemTypesDictionary(int? itemGroupId);
     }
 }

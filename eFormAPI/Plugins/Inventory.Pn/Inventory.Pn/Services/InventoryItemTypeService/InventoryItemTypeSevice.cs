@@ -124,7 +124,8 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     await itemTypeTag.Create(_dbContext);
                 }
 
-                return new OperationResult(true);
+                return new OperationResult(true,
+                    _inventoryLocalizationService.GetString("InventoryItemTypeCreatedSuccessfully"));
             }
             catch (Exception e)
             {
@@ -184,7 +185,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 itemTypesFromDb.UpdatedByUserId = _userService.UserId;
                 await itemTypesFromDb.Delete(_dbContext);
 
-                return new OperationResult(true);
+                return new OperationResult(true, _inventoryLocalizationService.GetString("InventoryItemTypeDeletedSuccessfully"));
             }
             catch (Exception e)
             {
@@ -194,19 +195,27 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
             }
         }
 
-        public async Task<OperationDataResult<List<CommonDictionaryModel>>> GetItemTypesDictionary()
+        public async Task<OperationDataResult<List<CommonDictionaryModel>>> GetItemTypesDictionary(int? itemGroupId)
         {
             try
             {
-                var inventoryItemTypes = await _dbContext.ItemTypes
-                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
-                    .Select(x => new CommonDictionaryModel
-                    {
-                        Name = x.Name,
-                        Description = x.Description,
-                        Id = x.Id,
-                    })
-                    .ToListAsync();
+                var inventoryItemTypesDictionaryQuery = _dbContext.ItemTypes
+                .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed);
+
+                if (itemGroupId.HasValue)
+                {
+                    inventoryItemTypesDictionaryQuery = inventoryItemTypesDictionaryQuery
+                        .Where(x => x.ItemGroupId == itemGroupId);
+                }
+
+                var inventoryItemTypes = await inventoryItemTypesDictionaryQuery
+                .Select(x => new CommonDictionaryModel
+                {
+                    Name = x.Name,
+                    Description = x.Description,
+                    Id = x.Id,
+                })
+                .ToListAsync();
 
                 return new OperationDataResult<List<CommonDictionaryModel>>(true, inventoryItemTypes);
             }
@@ -352,7 +361,8 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
 
                 await itemTypesFromDb.Update(_dbContext);
 
-                return new OperationResult(true);
+                return new OperationResult(true, 
+                _inventoryLocalizationService.GetString("InventoryItemTypeUpdatedSuccessfully"));
             }
             catch (Exception e)
             {
@@ -409,6 +419,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                      RiskDescription = x.RiskDescription,
                      Description = x.Description,
                      Usage = x.Usage,
+                     ItemGroupId = x.ItemGroupId,
                      Name = x.Name,
                      Id = x.Id,
                      TagIds = x.ItemTypeTags
