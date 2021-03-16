@@ -30,7 +30,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   filteredItemTypes: CommonDictionaryModel[][] = [];
   editItemTypeForm: FormGroup;
   itemTypeDependencies: FormArray = new FormArray([]);
-  itemTypeDependenciesForDelete: number[] = [];
+  dependenciesIdsForDelete: number[] = [];
 
   getTagsSub$: Subscription;
   activatedRouteSub$: Subscription;
@@ -170,7 +170,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       .updateItemType({
         ...updateModel,
         dependencies: [...dependencies],
-        dependenciesIdsForDelete: [...this.itemTypeDependenciesForDelete],
+        dependenciesIdsForDelete: [...this.dependenciesIdsForDelete],
       })
       .subscribe((data) => {
         if (data && data.success) {
@@ -195,17 +195,19 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
     );
   }
 
-  onDeleteDependency(dependencyIndex: number, itemGroupId?: number) {
+  onDeleteDependency(dependencyIndex: number) {
     this.itemTypeDependencies.removeAt(dependencyIndex);
     this.filteredItemTypes = R.remove(
       dependencyIndex,
       1,
       this.filteredItemTypes
     );
-    if (itemGroupId) {
-      this.itemTypeDependenciesForDelete = [
-        ...this.itemTypeDependenciesForDelete,
-        itemGroupId,
+    debugger;
+    const foundDependency = this.itemTypeDependencies.at(dependencyIndex).value;
+    if (foundDependency.id) {
+      this.dependenciesIdsForDelete = [
+        ...this.dependenciesIdsForDelete,
+        foundDependency.id,
       ];
     }
   }
