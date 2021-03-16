@@ -42,5 +42,7 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
         public List<ItemTypeDependencies> Dependencies { get; set; }
             = new List<ItemTypeDependencies>();
 
+        public List<int> DependenciesIdsForDelete { get; set; }
+            = new List<int>();
     }
 }

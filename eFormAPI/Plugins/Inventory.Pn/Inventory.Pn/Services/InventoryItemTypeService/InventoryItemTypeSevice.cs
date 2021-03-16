@@ -88,27 +88,33 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 // create dependencies
                 foreach (var dependency in itemTypeCreateModel.Dependencies)
                 {
-                    // create item group dependency
-                    var dependencyItemGroup = new ItemGroupDependency
+                    if (await _dbContext.ItemGroups.Where(y => y.WorkflowState != Constants.WorkflowStates.Removed).Where(x => x.Id == dependency.ItemGroupId).AnyAsync())
                     {
-                        CreatedByUserId = _userService.UserId,
-                        UpdatedByUserId = _userService.UserId,
-                        ItemGroupId = (int) dependency.ItemGroupId,
-                        ItemTypeId = itemType.Id,
-                    };
-                    await dependencyItemGroup.Create(_dbContext);
-
-                    // create item type dependency
-                    foreach (var dependencyItemType in dependency.ItemTypesIds
-                        .Select(dependencyItemTypesId => new ItemTypeDependency
+                        // create item group dependency
+                        var dependencyItemGroup = new ItemGroupDependency
                         {
                             CreatedByUserId = _userService.UserId,
                             UpdatedByUserId = _userService.UserId,
-                            ParentItemTypeId = itemType.Id,
-                            DependItemTypeId = dependencyItemTypesId,
-                        }))
-                    {
-                        await dependencyItemType.Create(_dbContext);
+                            ItemGroupId = (int)dependency.ItemGroupId,
+                            ItemTypeId = itemType.Id,
+                        };
+                        await dependencyItemGroup.Create(_dbContext);
+
+                        // create item type dependency
+                        foreach (var dependencyItemTypesId in dependency.ItemTypesIds)
+                        {
+                            if (await _dbContext.ItemTypes.Where(y => y.WorkflowState != Constants.WorkflowStates.Removed).Where(x => x.Id == dependencyItemTypesId).AnyAsync())
+                            {
+                                var dependencyItemType = new ItemTypeDependency
+                                {
+                                    CreatedByUserId = _userService.UserId,
+                                    UpdatedByUserId = _userService.UserId,
+                                    ParentItemTypeId = itemType.Id,
+                                    DependItemTypeId = dependencyItemTypesId,
+                                };
+                                await dependencyItemType.Create(_dbContext);
+                            }
+                        }
                     }
                 }
 
@@ -200,7 +206,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
             try
             {
                 var inventoryItemTypesDictionaryQuery = _dbContext.ItemTypes
-                .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed);
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed);
 
                 if (itemGroupId.HasValue)
                 {
@@ -209,13 +215,13 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 }
 
                 var inventoryItemTypes = await inventoryItemTypesDictionaryQuery
-                .Select(x => new CommonDictionaryModel
-                {
-                    Name = x.Name,
-                    Description = x.Description,
-                    Id = x.Id,
-                })
-                .ToListAsync();
+                    .Select(x => new CommonDictionaryModel
+                    {
+                        Name = x.Name,
+                        Description = x.Description,
+                        Id = x.Id,
+                    })
+                    .ToListAsync();
 
                 return new OperationDataResult<List<CommonDictionaryModel>>(true, inventoryItemTypes);
             }
@@ -387,16 +393,29 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     }
                 }
 
-                var itemGroupDependenciesForDelete = itemTypesFromDb.ItemGroupDependencies
+                var dependItemTypes = _dbContext.ItemTypeDependencies
+                    .Where(x => x.ParentItemTypeId == itemTypesFromDb.Id)
                     .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                    .Where(x => !model.Dependencies.Select(y => y.ItemGroupId).Contains(x.ItemGroupId))
                     .ToList();
 
-                var itemGroupIdsDependenciesForAdd = model.Dependencies
-                    .Where(x => !itemTypesFromDb.ItemGroupDependencies.Where(y => y.WorkflowState != Constants.WorkflowStates.Removed).Select(y => y.ItemGroupId).ToList()
-                        .Contains((int)x.ItemGroupId))
-                    .Select(x => x.ItemGroupId)
+                var itemGroupDependenciesForDelete = itemTypesFromDb.ItemGroupDependencies
+                    .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Where(x => model.DependenciesIdsForDelete.Contains(x.Id))
                     .ToList();
+
+                var itemGroupIdsDependenciesForAdd = model.Dependencies.Where(x =>
+                        !itemTypesFromDb.ItemGroupDependencies.Select(y => y.ItemGroupId).ToList()
+                            .Contains((int)x.ItemGroupId))
+                    .Select(x => x.ItemGroupId);
+
+                var itemTypeDependenciesForDelete = dependItemTypes.Where(x =>
+                    model.Dependencies.Any(y => y.ItemTypesIds.Any(z => z != x.DependItemTypeId))).ToList();
+
+                var itemTypeDependenciesForAdd = model.Dependencies
+                    .SelectMany(x => x.ItemTypesIds)
+                    .Where(x => !dependItemTypes.Select(y => y.DependItemTypeId).Contains(x));
+
+
 
                 // remove item group Dependency from item type 
                 foreach (var itemGroupDependency in itemGroupDependenciesForDelete)
@@ -404,58 +423,41 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     await itemGroupDependency.Delete(_dbContext);
                 }
 
+                foreach (var itemTypeDependency in itemTypeDependenciesForDelete)
+                {   
+                    await itemTypeDependency.Delete(_dbContext);
+                }
+
                 // add item group Dependency to item type 
-                foreach (var itemGroupDependencyId in itemGroupIdsDependenciesForAdd)
+                foreach (var dependency in itemGroupIdsDependenciesForAdd)
                 {
-                    if (await _dbContext.ItemGroups
-                        .Where(x => x.Id == itemGroupDependencyId)
-                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                        .AnyAsync())
+                    if (await _dbContext.ItemGroups.Where(y => y.WorkflowState != Constants.WorkflowStates.Removed).Where(x => x.Id == dependency).AnyAsync())
                     {
-                        var itemGroupDependency = new ItemGroupDependency
+                        // create item group dependency
+                        var dependencyItemGroup = new ItemGroupDependency
                         {
-                           ItemGroupId = (int) itemGroupDependencyId,
-                           ItemTypeId = itemTypesFromDb.Id,
-                           CreatedByUserId = _userService.UserId,
-                           UpdatedByUserId = _userService.UserId,
+                            CreatedByUserId = _userService.UserId,
+                            UpdatedByUserId = _userService.UserId,
+                            ItemGroupId = (int)dependency,
+                            ItemTypeId = itemTypesFromDb.Id,
                         };
-                        await itemGroupDependency.Create(_dbContext);
+                        await dependencyItemGroup.Create(_dbContext);
                     }
                 }
 
-                var itemTypeDependenciesAllInOneList = model.Dependencies.SelectMany(typeDependenciese => typeDependenciese.ItemTypesIds).ToList();
-
-                var itemTypeDependenciesForDelete = itemTypesFromDb.DependItemTypes
-                    .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                    .Where(x => !itemTypeDependenciesAllInOneList.Contains(x.DependItemTypeId))
-                    .ToList();
-
-                var itemTypeIdsDependenciesForAdd = itemTypeDependenciesAllInOneList
-                    .Where(x => !itemTypesFromDb.DependItemTypes.Where(y => y.WorkflowState != Constants.WorkflowStates.Removed).Select(y => y.DependItemTypeId).ToList().Contains(x))
-                    .ToList();
-
-                // remove item Type Dependency from item type 
-                foreach (var dependItemType in itemTypeDependenciesForDelete)
+                // create item type dependency
+                foreach (var dependencyItemTypesId in itemTypeDependenciesForAdd)
                 {
-                    await dependItemType.Delete(_dbContext);
-                }
-
-                // add item Type Dependency to item type 
-                foreach (var itemTypeId in itemTypeIdsDependenciesForAdd)
-                {
-                    if (await _dbContext.ItemTypes
-                        .Where(x => x.Id == itemTypeId)
-                        .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                        .AnyAsync())
+                    if (await _dbContext.ItemTypes.Where(y => y.WorkflowState != Constants.WorkflowStates.Removed).Where(x => x.Id == dependencyItemTypesId).AnyAsync())
                     {
-                        var itemTypeDependency = new ItemTypeDependency
+                        var dependencyItemType = new ItemTypeDependency
                         {
-                            ParentItemTypeId = itemTypesFromDb.Id,
-                            DependItemTypeId = itemTypeId,
                             CreatedByUserId = _userService.UserId,
                             UpdatedByUserId = _userService.UserId,
+                            ParentItemTypeId = itemTypesFromDb.Id,
+                            DependItemTypeId = dependencyItemTypesId,
                         };
-                        await itemTypeDependency.Create(_dbContext);
+                        await dependencyItemType.Create(_dbContext);
                     }
                 }
 
@@ -468,7 +470,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
 
                 await itemTypesFromDb.Update(_dbContext);
 
-                return new OperationResult(true, 
+                return new OperationResult(true,
                 _inventoryLocalizationService.GetString("InventoryItemTypeUpdatedSuccessfully"));
             }
             catch (Exception e)
@@ -537,8 +539,12 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                          .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                          .Select(y => new ItemTypeDependencies
                          {
+                             Id = y.Id,
                              ItemGroupId = y.ItemGroupId,
-                             ItemTypesIds = y.ItemType.DependItemTypes.Select(z => z.DependItemTypeId).ToList(),
+                             ItemTypesIds = y.ItemType.DependItemTypes
+                                 .Where(z => z.DependItemType.ItemGroupId == y.ItemGroupId)
+                                 .Where(z => z.WorkflowState != Constants.WorkflowStates.Removed)
+                                 .Select(z => z.DependItemTypeId).ToList(),
                          })
                          .ToList(),
                  });
