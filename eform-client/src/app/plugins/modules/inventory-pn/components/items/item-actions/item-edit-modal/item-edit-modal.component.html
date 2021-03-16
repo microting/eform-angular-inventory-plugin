@@ -21,6 +21,7 @@
                 dropdownPosition="'bottom'"
                 [placeholder]="'Item type' | translate"
                 [(ngModel)]="selectedItemModel.itemTypeId"
+                [required]="true"
                 [bindValue]="'id'"
                 [bindLabel]="'name'"
                 [items]="itemTypesList"
@@ -43,7 +44,7 @@
                 <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
                 <label for="itemEditExpiresInput">{{
                   'Expires' | translate
-                }}</label>
+                  }}</label>
               </div>
             </div>
           </div>
@@ -54,13 +55,14 @@
                   mdbInput
                   type="text"
                   [(ngModel)]="selectedItemModel.location"
+                  [required]="true"
                   name="itemEditLocationInput"
                   class="form-control"
                   id="itemEditLocationInput"
                 />
                 <label for="itemEditLocationInput">{{
                   'Location' | translate
-                }}</label>
+                  }}</label>
               </div>
             </div>
           </div>
@@ -103,6 +105,7 @@
           mdbBtn
           id="itemEditConfirmBtn"
           class="btn-success btn-small-height"
+          [disabled]="!selectedItemModel.itemGroupId || !selectedItemModel.location"
           (click)="update()"
         >
           {{ 'Update' | translate }}

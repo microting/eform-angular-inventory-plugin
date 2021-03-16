@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormArray, FormGroup} from '@angular/forms';
-import {CommonDictionaryModel} from 'src/app/common/models';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormArray, FormGroup } from '@angular/forms';
+import { CommonDictionaryModel } from 'src/app/common/models';
 
 @Component({
   selector: 'app-item-type-edit-form',
   templateUrl: './item-type-edit-form.component.html',
-  styleUrls: ['./item-type-edit-form.component.scss']
+  styleUrls: ['./item-type-edit-form.component.scss'],
 })
 export class ItemTypeEditFormComponent implements OnInit {
   @Input() editItemTypeForm: FormGroup;
@@ -18,6 +18,7 @@ export class ItemTypeEditFormComponent implements OnInit {
     itemGroupId: number;
     dependencyIndex: number;
   }> = new EventEmitter<{ itemGroupId: number; dependencyIndex: number }>();
+  @Output() deleteDependency: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {}
 
@@ -35,5 +36,9 @@ export class ItemTypeEditFormComponent implements OnInit {
       itemGroupId: newItemGroup.id,
       dependencyIndex,
     });
+  }
+
+  onDeleteDependency(dependencyIndex: number) {
+    this.deleteDependency.emit(dependencyIndex);
   }
 }

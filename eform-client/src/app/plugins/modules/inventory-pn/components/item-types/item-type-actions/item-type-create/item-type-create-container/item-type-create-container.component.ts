@@ -58,10 +58,10 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
   initCreateForm() {
     this.newItemTypeForm = this.formBuilder.group({
       itemGroupId: [null, Validators.required],
-      name: [''],
+      name: ['', Validators.required],
       riskDescription: [''],
       usage: [''],
-      description: [''],
+      description: ['', Validators.required],
       pictogramImages: [[]],
       dangerLabelImages: [[]],
       tagIds: [[]],
@@ -169,5 +169,10 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
       dependency.itemGroupId,
       dependency.dependencyIndex
     );
+  }
+
+  onDeleteDependency(dependencyIndex: number) {
+    this.itemTypeDependencies.removeAt(dependencyIndex);
+    this.filteredItemTypes = R.remove(dependencyIndex, 1, this.filteredItemTypes);
   }
 }

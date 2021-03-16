@@ -18,6 +18,7 @@ export class ItemTypeCreateFormComponent implements OnInit {
     itemGroupId: number;
     dependencyIndex: number;
   }> = new EventEmitter<{ itemGroupId: number; dependencyIndex: number }>();
+  @Output() deleteDependency: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {}
 
@@ -35,5 +36,9 @@ export class ItemTypeCreateFormComponent implements OnInit {
       itemGroupId: newItemGroup.id,
       dependencyIndex,
     });
+  }
+
+  onDeleteDependency(dependencyIndex: number) {
+    this.deleteDependency.emit(dependencyIndex);
   }
 }

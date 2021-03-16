@@ -10,6 +10,7 @@ import {
   OperationResult,
 } from 'src/app/common/models/operation.models';
 import { BaseService } from 'src/app/common/services/base.service';
+import {InventoryPnImageTypesEnum} from 'src/app/plugins/modules/inventory-pn/enums';
 import {
   InventoryItemTypeCreateModel,
   InventoryItemTypeModel,
@@ -22,6 +23,7 @@ const InventoryPnItemTypesMethods = {
   ItemTypes: 'api/inventory-pn/item-types',
   ItemTypesIndex: 'api/inventory-pn/item-types/index',
   ItemTypesDictionary: 'api/inventory-pn/item-types/dictionary',
+  ItemTypesImages: 'api/inventory-pn/item-types/images',
 };
 
 @Injectable({
@@ -72,6 +74,22 @@ export class InventoryPnItemTypesService extends BaseService {
   deleteItemType(itemTypeId: number): Observable<OperationResult> {
     return this.delete(
       InventoryPnItemTypesMethods.ItemTypes + '/' + itemTypeId
+    );
+  }
+
+  uploadItemTypeImages(model: {
+    itemTypeId: number;
+    itemTypeImageType: InventoryPnImageTypesEnum;
+    files: Blob[];
+  }): Observable<any> {
+    return this.uploadFiles(
+      InventoryPnItemTypesMethods.ItemTypesImages,
+      model.files,
+      {
+        itemTypeId: model.itemTypeId,
+        itemTypeImageType: model.itemTypeImageType,
+      },
+      'blob'
     );
   }
 }

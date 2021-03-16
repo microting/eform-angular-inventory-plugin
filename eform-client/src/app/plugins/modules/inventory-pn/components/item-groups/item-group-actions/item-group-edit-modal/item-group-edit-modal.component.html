@@ -52,6 +52,7 @@
                   mdbInput
                   type="text"
                   [(ngModel)]="selectedItemGroupModel.description"
+                  [required]="true"
                   name="itemGroupEditDescriptionInput"
                   class="form-control"
                   id="itemGroupEditDescriptionInput"
@@ -69,6 +70,7 @@
                   mdbInput
                   type="text"
                   [(ngModel)]="selectedItemGroupModel.code"
+                  [required]="true"
                   name="itemGroupEditCodeInput"
                   class="form-control"
                   id="itemGroupEditCodeInput"
@@ -86,6 +88,7 @@
           mdbBtn
           id="itemGroupUpdateConfirmBtn"
           class="btn-success btn-small-height"
+          [disabled]="!selectedItemGroupModel.name || !selectedItemGroupModel.description"
           (click)="onUpdateItemGroup()"
         >
           {{ 'Update' | translate }}

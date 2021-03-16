@@ -7,7 +7,8 @@ import { Subscription } from 'rxjs';
 import { CommonDictionaryModel } from 'src/app/common/models';
 import {
   InventoryItemTypeCreateModel,
-  InventoryItemTypeModel, InventoryItemTypeUpdateModel,
+  InventoryItemTypeModel,
+  InventoryItemTypeUpdateModel,
 } from '../../../../../models';
 import {
   InventoryPnItemGroupsService,
@@ -29,6 +30,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   filteredItemTypes: CommonDictionaryModel[][] = [];
   editItemTypeForm: FormGroup;
   itemTypeDependencies: FormArray = new FormArray([]);
+  itemTypeDependenciesForDelete: number[] = [];
 
   getTagsSub$: Subscription;
   activatedRouteSub$: Subscription;
@@ -63,14 +65,14 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
     this.editItemTypeForm = this.formBuilder.group({
       id: [null, Validators.required],
       itemGroupId: [null, Validators.required],
-      name: [''],
+      name: ['', Validators.required],
       riskDescription: [''],
       usage: [''],
-      description: [''],
+      description: ['', Validators.required],
       pictogramImages: [],
       dangerLabelImages: [],
       tagIds: [],
-      dependencies: []
+      dependencies: [],
     });
   }
 
@@ -84,8 +86,6 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       description: model.description,
       tagIds: model.tagIds,
     });
-
-    debugger;
 
     model.dependencies.map((x, index) => {
       debugger;
@@ -159,6 +159,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
 
   updateItemType() {
     const dependencies = this.itemTypeDependencies.value as {
+      id: number;
       itemGroupId: number;
       itemTypesIds: number[];
     }[];
@@ -187,6 +188,21 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       dependency.itemGroupId,
       dependency.dependencyIndex
     );
+  }
+
+  onDeleteDependency(dependencyIndex: number, itemGroupId?: number) {
+    this.itemTypeDependencies.removeAt(dependencyIndex);
+    this.filteredItemTypes = R.remove(
+      dependencyIndex,
+      1,
+      this.filteredItemTypes
+    );
+    if (itemGroupId) {
+      this.itemTypeDependenciesForDelete = [
+        ...this.itemTypeDependenciesForDelete,
+        itemGroupId,
+      ];
+    }
   }
 
   ngOnDestroy(): void {}

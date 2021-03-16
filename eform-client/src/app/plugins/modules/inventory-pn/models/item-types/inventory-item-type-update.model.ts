@@ -1,3 +1,5 @@
+import {InventoryItemTypeDependencyModel} from './inventory-item-type-dependency.model';
+
 export class InventoryItemTypeUpdateModel {
   id: number;
   itemGroupId: number;
@@ -10,5 +12,6 @@ export class InventoryItemTypeUpdateModel {
   dangerLabelImages: File[];
   pictogramImagesForDelete: string[];
   dangerLabelImagesForDelete: string[];
-  dependencies: {itemGroupId: number, itemTypesIds: number[]}[];
+  dependencies: InventoryItemTypeDependencyModel[];
+  dependenciesIdsForDelete: number[];
 }

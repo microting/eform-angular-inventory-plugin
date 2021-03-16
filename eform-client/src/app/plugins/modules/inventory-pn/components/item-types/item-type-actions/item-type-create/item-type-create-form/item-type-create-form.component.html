@@ -59,7 +59,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12 col-lg-12">
+        <div class="col">
           <mdb-card>
             <mdb-card-header>
               {{ 'Dependent on the following products' | translate }}
@@ -116,6 +116,14 @@
                             id="dependentItemTypesIds_{{ dependencyIndex }}"
                           ></ng-select>
                         </div>
+                        <div class="d-flex align-items-center justify-content-end">
+                          <button mdbBtn class="btn-danger btn-icon mt-3"
+                                  id="removeDependencyBtn_{{dependencyIndex}}"
+                                  (click)="onDeleteDependency(dependencyIndex)"
+                                  mdbTooltip="{{ 'Remove dependency' | translate }}">
+                            <fa-icon icon="trash-alt" [fixedWidth]="true" size="lg"></fa-icon>
+                          </button>
+                        </div>
                       </div>
                     </ng-container>
                   </mdb-card-body>
@@ -150,7 +158,31 @@
           </div>
         </div>
       </div>
-      <div class="row">pict</div>
+      <div class="row">
+        <div class="col">
+          <mdb-card>
+            <mdb-card-header>
+              {{ 'Pictogram' | translate }}
+            </mdb-card-header>
+            <mdb-card-body>
+              <div class="row">
+                <ng-container
+                  *ngFor="
+                    let dependencyControl of dependencies.controls;
+                    let dependencyIndex = index
+                  "
+                >
+                  <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                    <mdb-card class="mb-2">
+                      <mdb-card-body></mdb-card-body>
+                    </mdb-card>
+                  </div>
+                </ng-container>
+              </div>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+      </div>
       <div class="row">
         <div class="col-md-4 col-sm-6 col-xs-6">
           <div class="md-form">
@@ -168,7 +200,31 @@
           </div>
         </div>
       </div>
-      <div class="row">pict</div>
+      <div class="row">
+        <div class="col">
+          <mdb-card>
+            <mdb-card-header>
+              {{ 'Danger labels' | translate }}
+            </mdb-card-header>
+            <mdb-card-body>
+              <div class="row">
+                <ng-container
+                  *ngFor="
+                    let dependencyControl of dependencies.controls;
+                    let dependencyIndex = index
+                  "
+                >
+                  <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                    <mdb-card class="mb-2">
+                      <mdb-card-body></mdb-card-body>
+                    </mdb-card>
+                  </div>
+                </ng-container>
+              </div>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+      </div>
     </form>
   </mdb-card-body>
 </mdb-card>

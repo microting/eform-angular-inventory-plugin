@@ -35,6 +35,7 @@
                   mdbInput
                   type="text"
                   [(ngModel)]="newItemGroupModel.name"
+                  [required]="true"
                   name="itemGroupCreateNameInput"
                   class="form-control"
                   id="itemGroupCreateNameInput"
@@ -52,6 +53,7 @@
                   mdbInput
                   type="text"
                   [(ngModel)]="newItemGroupModel.description"
+                  [required]="true"
                   name="itemGroupCreateDescriptionInput"
                   class="form-control"
                   id="itemGroupCreateDescriptionInput"
@@ -86,6 +88,7 @@
           mdbBtn
           id="itemGroupCreateConfirmBtn"
           class="btn-success btn-small-height"
+          [disabled]="!newItemGroupModel.name || !newItemGroupModel.description"
           (click)="create()"
         >
           {{ 'Create' | translate }}

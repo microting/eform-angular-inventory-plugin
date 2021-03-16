@@ -4,6 +4,7 @@
       mdbBtn
       id="itemTypeEditSaveBtn"
       class="btn-success btn-small-height"
+      [disabled]="!editItemTypeForm.valid"
       (click)="updateItemType()"
     >
       {{ 'Save' | translate }}
@@ -30,6 +31,7 @@
         [dependencies]="itemTypeDependencies"
         (dependentItemGroupChanged)="onDependentItemGroupChanged($event)"
         (createNewDependency)="addNewDependency()"
+        (deleteDependency)="onDeleteDependency($event)"
       ></app-item-type-edit-form>
     </div>
   </div>

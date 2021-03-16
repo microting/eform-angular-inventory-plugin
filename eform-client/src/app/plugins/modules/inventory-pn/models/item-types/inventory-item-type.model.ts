@@ -1,5 +1,4 @@
-import { InventoryItemGroupModel } from '../item-groups/inventory-item-group.model';
-import { CostingMethod, UnitOfMeasure } from '../../enums';
+import { InventoryItemTypeDependencyModel } from './inventory-item-type-dependency.model';
 
 export class InventoryItemTypeModel {
   id: number;
@@ -11,5 +10,5 @@ export class InventoryItemTypeModel {
   tagIds: number[];
   pictogramImages: string[];
   dangerLabelImages: string[];
-  dependencies: [{itemGroupId: number, itemTypesIds: number[]}];
+  dependencies: InventoryItemTypeDependencyModel[];
 }
