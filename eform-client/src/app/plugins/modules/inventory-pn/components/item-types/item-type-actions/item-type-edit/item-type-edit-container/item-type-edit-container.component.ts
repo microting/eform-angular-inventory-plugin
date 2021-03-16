@@ -158,6 +158,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   }
 
   updateItemType() {
+    // Compose model from array of dependencies and ids for delete
     const dependencies = this.itemTypeDependencies.value as {
       id: number;
       itemGroupId: number;
@@ -166,7 +167,11 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
     const updateModel = this.editItemTypeForm
       .value as InventoryItemTypeUpdateModel;
     this.updateItemTypeSub$ = this.itemTypesService
-      .updateItemType({ ...updateModel, dependencies: [...dependencies] })
+      .updateItemType({
+        ...updateModel,
+        dependencies: [...dependencies],
+        dependenciesIdsForDelete: [...this.itemTypeDependenciesForDelete],
+      })
       .subscribe((data) => {
         if (data && data.success) {
           this.location.back();
