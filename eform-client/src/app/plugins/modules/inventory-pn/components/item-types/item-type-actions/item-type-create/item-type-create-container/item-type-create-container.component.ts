@@ -1,22 +1,17 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import * as R from 'ramda';
 import { Subscription } from 'rxjs';
 import { CommonDictionaryModel } from 'src/app/common/models';
-import { InventoryItemTypeCreateModel } from 'src/app/plugins/modules/inventory-pn/models';
+import { InventoryPnImageTypesEnum } from '../../../../../enums';
+import { InventoryItemTypeCreateModel } from '../../../../../models';
 import {
   InventoryPnItemGroupsService,
   InventoryPnItemTypesService,
   InventoryPnItemTypeTagsService,
 } from '../../../../../services';
-import * as R from 'ramda';
 
 @AutoUnsubscribe()
 @Component({
@@ -173,6 +168,28 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
 
   onDeleteDependency(dependencyIndex: number) {
     this.itemTypeDependencies.removeAt(dependencyIndex);
-    this.filteredItemTypes = R.remove(dependencyIndex, 1, this.filteredItemTypes);
+    this.filteredItemTypes = R.remove(
+      dependencyIndex,
+      1,
+      this.filteredItemTypes
+    );
+  }
+
+  onImageProcessed(model: {
+    imageType: InventoryPnImageTypesEnum;
+    dataUrl: string;
+  }) {
+    debugger;
+    if (model.imageType === InventoryPnImageTypesEnum.Pictogram) {
+      this.pictogramImagesPreview = [
+        ...this.dangerLabelImagesPreview,
+        model.dataUrl,
+      ];
+    } else {
+      this.dangerLabelImagesPreview = [
+        ...this.dangerLabelImagesPreview,
+        model.dataUrl,
+      ];
+    }
   }
 }

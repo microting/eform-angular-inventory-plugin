@@ -1,51 +1,55 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
-import {FileUploader} from 'ng2-file-upload';
-import {ToastrService} from 'ngx-toastr';
-import {AuthService} from 'src/app/common/services';
-import {LoaderService} from 'src/app/common/services/loeader.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { InventoryPnImageTypesEnum } from '../../../../enums';
 
 @Component({
   selector: 'app-item-type-images',
   templateUrl: './item-type-images.component.html',
-  styleUrls: ['./item-type-images.component.scss']
+  styleUrls: ['./item-type-images.component.scss'],
 })
 export class ItemTypeImagesComponent implements OnInit {
   @Input() uploadedImageNames: string[];
   @Input() processedImages: any[];
-  @Input() apiURL = '';
-  @ViewChild('imagesFileUploader', { static: false }) xlsxPlannings: ElementRef;
-  @Output() fileUploader: EventEmitter<FileUploader> = new EventEmitter<FileUploader>();
-  imagesFileUploader: FileUploader = new FileUploader({
-    url: this.apiURL,
-    authToken: this.authService.bearerToken,
-  });
+  @Input() imageType: InventoryPnImageTypesEnum;
+  @Output()
+  imageProcessed: EventEmitter<{
+    imageType: InventoryPnImageTypesEnum;
+    dataUrl: string;
+  }> = new EventEmitter<{
+    imageType: InventoryPnImageTypesEnum;
+    dataUrl: string;
+  }>();
+  imagesForm: FormGroup;
 
-  constructor(
-    private toastrService: ToastrService,
-    private translateService: TranslateService,
-    private authService: AuthService,
-    private loaderService: LoaderService
-  ) {}
-
-  ngOnInit() {
-    this.imagesFileUploader.onSuccessItem = (item, response) => {
-      this.loaderService.isLoading.next(false);
-    };
-    this.imagesFileUploader.onErrorItem = () => {
-      this.imagesFileUploader.clearQueue();
-      this.toastrService.error(
-        this.translateService.instant('Error while uploading pictures')
-      );
-    };
+  constructor(public fb: FormBuilder, public router: Router) {
+    this.imagesForm = this.fb.group({
+      name: [''],
+      avatar: [null],
+    });
   }
 
-  // uploadExcelPlanningsFile() {
-  //   this.imagesFileUploader.queue[0].upload();
-  //   this.loaderService.isLoading.next(true);
-  // }
+  ngOnInit() {}
 
-  excelPlanningsModal() {
-    this.imagesFileUploader.clearQueue();
+  // Image Preview
+  uploadFile(event) {
+    // TODO: Change
+    const file = (event.target as HTMLInputElement).files[0];
+    // this.imagesForm.patchValue({
+    //   avatar: file,
+    // });
+    // this.imagesForm.get('avatar').updateValueAndValidity();
+
+    // File Preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imageProcessed.emit({
+        dataUrl: reader.result as string,
+        imageType: this.imageType,
+      });
+    };
+    reader.readAsDataURL(file);
   }
+
+  deletePicture(image: any) {}
 }

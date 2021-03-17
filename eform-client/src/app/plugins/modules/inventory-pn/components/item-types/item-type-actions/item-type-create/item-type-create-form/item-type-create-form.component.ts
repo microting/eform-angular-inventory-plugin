@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { CommonDictionaryModel } from 'src/app/common/models';
+import { InventoryPnImageTypesEnum } from 'src/app/plugins/modules/inventory-pn/enums';
 
 @Component({
   selector: 'app-item-type-create-form',
@@ -13,12 +14,25 @@ export class ItemTypeCreateFormComponent implements OnInit {
   @Input() availableTags: CommonDictionaryModel[] = [];
   @Input() filteredItemTypes: CommonDictionaryModel[][] = [];
   @Input() dependencies: FormArray;
+  @Input() pictogramImagesPreview: string[];
+  @Input() dangerLabelImagesPreview: string[];
   @Output() createNewDependency: EventEmitter<void> = new EventEmitter<void>();
   @Output() dependentItemGroupChanged: EventEmitter<{
     itemGroupId: number;
     dependencyIndex: number;
   }> = new EventEmitter<{ itemGroupId: number; dependencyIndex: number }>();
   @Output() deleteDependency: EventEmitter<number> = new EventEmitter<number>();
+  @Output() imageProcessed: EventEmitter<{
+    imageType: InventoryPnImageTypesEnum;
+    dataUrl: string;
+  }> = new EventEmitter<{
+    imageType: InventoryPnImageTypesEnum;
+    dataUrl: string;
+  }>();
+
+  get imageTypes() {
+    return InventoryPnImageTypesEnum;
+  }
 
   constructor() {}
 
@@ -40,5 +54,12 @@ export class ItemTypeCreateFormComponent implements OnInit {
 
   onDeleteDependency(dependencyIndex: number) {
     this.deleteDependency.emit(dependencyIndex);
+  }
+
+  onImageProcessed(model: {
+    imageType: InventoryPnImageTypesEnum;
+    dataUrl: string;
+  }) {
+    this.imageProcessed.emit(model);
   }
 }

@@ -196,13 +196,13 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   }
 
   onDeleteDependency(dependencyIndex: number) {
+    // Remove item from FormArray, array of dependent types and add to dependency id to delete array
     this.itemTypeDependencies.removeAt(dependencyIndex);
     this.filteredItemTypes = R.remove(
       dependencyIndex,
       1,
       this.filteredItemTypes
     );
-    debugger;
     const foundDependency = this.itemTypeDependencies.at(dependencyIndex).value;
     if (foundDependency.id) {
       this.dependenciesIdsForDelete = [
