@@ -404,7 +404,9 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     .ToList();
 
                 var itemGroupIdsDependenciesForAdd = model.Dependencies.Where(x =>
-                        !itemTypesFromDb.ItemGroupDependencies.Select(y => y.ItemGroupId).ToList()
+                        !itemTypesFromDb.ItemGroupDependencies
+                            .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                            .Select(y => y.ItemGroupId).ToList()
                             .Contains((int)x.ItemGroupId))
                     .Select(x => x.ItemGroupId);
 

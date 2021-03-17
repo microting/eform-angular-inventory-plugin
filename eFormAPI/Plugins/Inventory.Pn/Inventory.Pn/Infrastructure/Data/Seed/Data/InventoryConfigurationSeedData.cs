@@ -21,6 +21,7 @@ SOFTWARE.
 
 namespace Inventory.Pn.Infrastructure.Data.Seed.Data
 {
+    using Const;
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Database.Entities;
 
@@ -30,8 +31,8 @@ namespace Inventory.Pn.Infrastructure.Data.Seed.Data
         {
             new PluginConfigurationValue()
             {
-                Name = "InventoryBaseSettings:ReportHeaderName",
-                Value = "",
+                Name = "InventoryBaseSettings:CheckListId",
+                Value = InventoryEFormConst.EFormId.ToString(),
             }
         };
     }

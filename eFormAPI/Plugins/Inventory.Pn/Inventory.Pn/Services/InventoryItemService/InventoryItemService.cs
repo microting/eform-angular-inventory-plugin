@@ -25,11 +25,13 @@ namespace Inventory.Pn.Services.InventoryItemService
     using System.Linq;
     using System.Threading.Tasks;
     using Infrastructure.Models.Item;
+    using Infrastructure.Models.Settings;
     using InventoryLocalizationService;
     using Microsoft.EntityFrameworkCore;
     using Microting.eForm.Infrastructure.Constants;
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Extensions;
+    using Microting.eFormApi.BasePn.Infrastructure.Helpers.PluginDbOptions;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Microting.eFormInventoryBase.Infrastructure.Data;
@@ -40,18 +42,21 @@ namespace Inventory.Pn.Services.InventoryItemService
         private readonly InventoryPnDbContext _dbContext;
         private readonly IInventoryLocalizationService _inventoryLocalizationService;
         private readonly IUserService _userService;
-        //private readonly IEFormCoreService _coreService;
+        private readonly IEFormCoreService _coreService;
+        private readonly IPluginDbOptions<InventoryBaseSettings> _options;
 
         public InventoryItemService(
             InventoryPnDbContext dbContext,
             IInventoryLocalizationService inventoryLocalizationService,
-            IUserService userService/*,
-            IEFormCoreService coreService*/)
+            IUserService userService,
+            IEFormCoreService coreService,
+            IPluginDbOptions<InventoryBaseSettings> options)
         {
             _userService = userService;
             _inventoryLocalizationService = inventoryLocalizationService;
-            //_coreService = coreService;
+            _coreService = coreService;
             _dbContext = dbContext;
+            _options = options;
         }
 
         public async Task<OperationDataResult<Paged<ItemModel>>> GetItems(ItemRequestModel itemRequest)
@@ -169,6 +174,51 @@ namespace Inventory.Pn.Services.InventoryItemService
                         _inventoryLocalizationService.GetString("ItemNotFound"));
                 }
 
+                var result = await _dbContext.PluginConfigurationValues.SingleAsync(x => x.Name == "InventoryBaseSettings:CheckListId");
+                var theCore = await _coreService.GetCore();
+                await using var sdkDbContext = theCore.DbContextHelper.GetDbContext();
+                var option = _options.Value;
+                var folder = sdkDbContext.Folders.Single(x => x.Id == option.FolderId);
+
+                // deploy cases
+                if (itemUpdateModel.Available && !item.Available)
+                {
+                    foreach (var assignedSite in option.AssignedSites)
+                    {
+                        var site = await sdkDbContext.Sites.SingleAsync(x => x.MicrotingUid == assignedSite.SiteUId);
+
+                        var language = await sdkDbContext.Languages.SingleAsync(x => x.Id == site.LanguageId);
+                        var mainElement = await theCore.ReadeForm(int.Parse(result.Value), language);
+
+                        mainElement.CheckListFolderName = folder.Name;
+                        mainElement.EndDate = DateTime.UtcNow.AddYears(10);
+                        mainElement.Repeated = 0;
+                        mainElement.PushMessageTitle = mainElement.Label;
+
+                        // ReSharper disable once PossibleInvalidOperationException
+                        await theCore.CaseCreate(mainElement, "", assignedSite.SiteUId, (int)folder.MicrotingUid);
+                    }
+                }
+
+                // retract cases
+                if (item.Available && !itemUpdateModel.Available)
+                {
+
+                    foreach (var assignedSite in option.AssignedSites)
+                    {
+                        var site = await sdkDbContext.Sites.SingleAsync(x => x.MicrotingUid == assignedSite.SiteUId);
+
+                        var language = await sdkDbContext.Languages.SingleAsync(x => x.Id == site.LanguageId);
+                        var mainElement = await theCore.ReadeForm(int.Parse(result.Value), language);
+
+                        mainElement.CheckListFolderName = folder.Name;
+                        mainElement.EndDate = DateTime.UtcNow.AddYears(10);
+                        mainElement.Repeated = 0;
+                        mainElement.PushMessageTitle = mainElement.Label;
+
+                        await theCore.CaseDelete(mainElement.MicrotingUId, assignedSite.SiteUId);
+                    }
+                }
                 item.SN = itemUpdateModel.SN;
                 item.Available = itemUpdateModel.Available;
                 item.CustomerId = itemUpdateModel.CustomerId;
@@ -206,6 +256,32 @@ namespace Inventory.Pn.Services.InventoryItemService
                     SN = createItemModel.SN,
                 };
                 await item.Create(_dbContext);
+
+                var result = await _dbContext.PluginConfigurationValues.SingleAsync(x => x.Name == "InventoryBaseSettings:CheckListId");
+                var theCore = await _coreService.GetCore();
+                await using var sdkDbContext = theCore.DbContextHelper.GetDbContext();
+                var option = _options.Value;
+                var folder = sdkDbContext.Folders.Single(x => x.Id == option.FolderId);
+
+                if (item.Available)
+                {
+                    foreach (var assignedSite in option.AssignedSites)
+                    {
+                        var site = await sdkDbContext.Sites.SingleAsync(x => x.MicrotingUid == assignedSite.SiteUId);
+
+                        var language = await sdkDbContext.Languages.SingleAsync(x => x.Id == site.LanguageId);
+                        var mainElement = await theCore.ReadeForm(int.Parse(result.Value), language);
+
+                        mainElement.CheckListFolderName = folder.Name;
+                        mainElement.EndDate = DateTime.UtcNow.AddYears(10);
+                        mainElement.Repeated = 0;
+                        mainElement.PushMessageTitle = mainElement.Label;
+
+                        // ReSharper disable once PossibleInvalidOperationException
+                        await theCore.CaseCreate(mainElement, "", assignedSite.SiteUId, (int)folder.MicrotingUid);
+                    }
+                }
+
                 return new OperationResult(true,
                     _inventoryLocalizationService.GetString("ItemCreatedSuccessfully"));
             }

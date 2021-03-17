@@ -32,7 +32,8 @@ namespace Inventory.Pn.Services.InventoryPnSettingsService
     {
         Task<OperationDataResult<InventorySettingsModel>> GetSettings();
 
-        Task<OperationResult> UpdateSettings(InventoryBaseSettings inventoryBaseSettings);
+        Task<OperationResult> AddSiteToSettingsAsync(int siteId);
 
+        Task<OperationResult> RemoveSiteFromSettingsAsync(int siteId);
     }
 }

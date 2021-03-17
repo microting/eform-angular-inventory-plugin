@@ -48,6 +48,9 @@ namespace Inventory.Pn
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using eFormCore;
+    using Microting.eFormApi.BasePn.Abstractions;
+    using Microting.eFormApi.BasePn.Infrastructure.Helpers.PluginDbOptions;
 
     public class EformInventoryPlugin : IEformPlugin
     {
@@ -86,6 +89,24 @@ namespace Inventory.Pn
             services.AddTransient<IInventoryItemService, InventoryItemService>();
             services.AddSingleton<IRebusService, RebusService>();
             services.AddControllers();
+
+            SeedInventoryItemsForms(services);
+        }
+
+        private async void SeedInventoryItemsForms(IServiceCollection services)
+        {
+            var serviceProvider = services.BuildServiceProvider();
+            var pluginDbOptions =
+                serviceProvider.GetRequiredService<IPluginDbOptions<InventoryBaseSettings>>();
+
+            var core = await serviceProvider.GetRequiredService<IEFormCoreService>().GetCore();
+            var context = serviceProvider.GetRequiredService<InventoryPnDbContext>();
+
+            if (pluginDbOptions.Value.InventoryFormId == 0)
+            {
+                var taskListId = await SeedEForm.CreateEform(core);
+                await pluginDbOptions.UpdateDb(settings => settings.InventoryFormId = taskListId, context, 1);
+            }
         }
 
         public void ConfigureOptionsServices(IServiceCollection services, IConfiguration configuration)

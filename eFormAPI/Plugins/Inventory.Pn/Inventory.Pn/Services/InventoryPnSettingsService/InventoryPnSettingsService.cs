@@ -32,9 +32,17 @@ namespace Inventory.Pn.Services.InventoryPnSettingsService
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using Microting.eFormInventoryBase.Infrastructure.Data;
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
+    using Microting.eForm.Dto;
+    using Microting.eForm.Infrastructure.Constants;
+    using Microting.eForm.Infrastructure.Data.Entities;
+    using Microting.eForm.Infrastructure.Models;
+    using Rebus.Bus;
+    using RebusService;
 
     public class InventoryPnSettingsService : IInventoryPnSettingsService
     {
@@ -44,6 +52,7 @@ namespace Inventory.Pn.Services.InventoryPnSettingsService
         private readonly IPluginDbOptions<InventoryBaseSettings> _options;
         private readonly IUserService _userService;
         private readonly IEFormCoreService _coreService;
+        private readonly IBus _bus;
 
 
         public InventoryPnSettingsService(ILogger<InventoryPnSettingsService> logger,
@@ -51,7 +60,8 @@ namespace Inventory.Pn.Services.InventoryPnSettingsService
             InventoryPnDbContext dbContext,
             IPluginDbOptions<InventoryBaseSettings> options,
             IUserService userService,
-            IEFormCoreService coreService)
+            IEFormCoreService coreService,
+            IRebusService rebusService)
         {
             _logger = logger;
             _dbContext = dbContext;
@@ -59,6 +69,7 @@ namespace Inventory.Pn.Services.InventoryPnSettingsService
             _userService = userService;
             _inventoryLocalizationService = inventoryLocalizationService;
             _coreService = coreService;
+            _bus = rebusService.GetBus();
         }
 
         public async Task<OperationDataResult<InventorySettingsModel>> GetSettings()
@@ -74,7 +85,6 @@ namespace Inventory.Pn.Services.InventoryPnSettingsService
                 {
                     AssignedSites = option.AssignedSites,
                     FolderId = option.FolderId,
-                    FolderName = sdkDbContext.Folders.FirstOrDefault(x => x.Id == option.FolderId)?.Name,
                 };
 
                 return new OperationDataResult<InventorySettingsModel>(true, settings);
@@ -88,14 +98,53 @@ namespace Inventory.Pn.Services.InventoryPnSettingsService
             }
         }
 
-        public async Task<OperationResult> UpdateSettings(InventoryBaseSettings itemsPlanningBaseSettings)
+        public async Task<OperationResult> AddSiteToSettingsAsync(int siteId)
+        {
+            var theCore = await _coreService.GetCore();
+            await using var sdkDbContext = theCore.DbContextHelper.GetDbContext();
+            var option = _options.Value;
+            var site = await sdkDbContext.Sites.SingleAsync(x => x.MicrotingUid == siteId);
+
+            try
+            {
+                var settings = new InventorySettingsModel
+                {
+                    AssignedSites = option.AssignedSites,
+                };
+                settings.AssignedSites.Add(new SiteNameDto((int) 
+                        site.MicrotingUid,
+                        site.Name,
+                        site.CreatedAt,
+                        site.UpdatedAt));
+                await _options.UpdateDb(inventoryBaseSettings =>
+                {
+                    inventoryBaseSettings.AssignedSites = settings.AssignedSites;
+                }, _dbContext, _userService.UserId);
+                return new OperationResult(true, _inventoryLocalizationService.GetString("SettingsHaveBeenUpdatedSuccessfully"));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+                _logger.LogError(e.Message);
+                return new OperationResult(false,
+                    _inventoryLocalizationService.GetString("ErrorWhileUpdatingSettings"));
+            }
+        }
+
+
+        public async Task<OperationResult> RemoveSiteFromSettingsAsync(int siteId)
         {
             try
             {
-                await _options.UpdateDb(settings =>
+                var theCore = await _coreService.GetCore();
+                await using var sdkDbContext = theCore.DbContextHelper.GetDbContext();
+                var option = _options.Value;
+                var assignedSite = option.AssignedSites.First(x => x.SiteUId == siteId);
+                option.AssignedSites.Remove(assignedSite);
+
+                await _options.UpdateDb(inventoryBaseSettings =>
                 {
-                    settings.AssignedSites = itemsPlanningBaseSettings.AssignedSites;
-                    settings.FolderId = itemsPlanningBaseSettings.FolderId;
+                    inventoryBaseSettings.AssignedSites = option.AssignedSites;
                 }, _dbContext, _userService.UserId);
 
                 return new OperationResult(true,

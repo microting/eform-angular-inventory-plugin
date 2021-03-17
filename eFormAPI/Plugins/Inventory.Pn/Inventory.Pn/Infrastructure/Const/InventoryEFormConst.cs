@@ -18,16 +18,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace Inventory.Pn.Infrastructure.Models.Settings
+namespace Inventory.Pn.Infrastructure.Const
 {
-    using System.Collections.Generic;
-    using Microting.eForm.Dto;
-
-    public class InventorySettingsModel
+    public static class InventoryEFormConst
     {
-        public int FolderId { get; set; }
-
-        public List<SiteNameDto> AssignedSites { get; set; }
-            = new List<SiteNameDto>();
+        public const int EFormId = 142344;
     }
 }

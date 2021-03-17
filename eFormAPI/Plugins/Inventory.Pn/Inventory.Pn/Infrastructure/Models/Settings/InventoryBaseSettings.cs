@@ -28,5 +28,8 @@ namespace Inventory.Pn.Infrastructure.Models.Settings
         public int FolderId { get; set; }
         
         public List<SiteNameDto> AssignedSites { get; set; }
+            = new List<SiteNameDto>();
+
+        public int InventoryFormId { get; set; }
     }
 }

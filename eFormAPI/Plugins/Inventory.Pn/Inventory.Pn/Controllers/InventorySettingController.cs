@@ -48,11 +48,18 @@ namespace Inventory.Pn.Controllers
 
         [HttpPost]
         [Authorize(Roles = EformRole.Admin)]
-        [Route("api/inventory-pn/settings")]
-        public async Task<OperationResult> UpdateSettings([FromBody] InventoryBaseSettings inventoryBaseSettings)
+        [Route("api/inventory-pn/settings/sites")]
+        public async Task<OperationResult> AddSites([FromBody] int siteId)
         {
-            return await _inventoryPnSettingsService.UpdateSettings(inventoryBaseSettings);
+            return await _inventoryPnSettingsService.AddSiteToSettingsAsync(siteId);
         }
 
+        [HttpDelete]
+        [Authorize(Roles = EformRole.Admin)]
+        [Route("api/inventory-pn/settings/sites/{siteId}")]
+        public async Task<OperationResult> RemoveSites(int siteId)
+        {
+            return await _inventoryPnSettingsService.RemoveSiteFromSettingsAsync(siteId);
+        }
     }
 }
