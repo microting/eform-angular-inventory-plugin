@@ -61,5 +61,13 @@ namespace Inventory.Pn.Controllers
         {
             return await _inventoryPnSettingsService.RemoveSiteFromSettingsAsync(siteId);
         }
+
+        [HttpPost]
+        [Authorize(Roles = EformRole.Admin)]
+        [Route("api/inventory-pn/settings/folder")]
+        public async Task<OperationResult> UpdateFolderId([FromBody] int folderIfId)
+        {
+            return await _inventoryPnSettingsService.UpdateFolderIdAsync(folderIfId);
+        }
     }
 }

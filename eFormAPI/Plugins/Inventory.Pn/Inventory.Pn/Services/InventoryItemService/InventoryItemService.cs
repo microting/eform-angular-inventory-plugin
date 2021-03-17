@@ -174,49 +174,56 @@ namespace Inventory.Pn.Services.InventoryItemService
                         _inventoryLocalizationService.GetString("ItemNotFound"));
                 }
 
-                var result = await _dbContext.PluginConfigurationValues.SingleAsync(x => x.Name == "InventoryBaseSettings:CheckListId");
-                var theCore = await _coreService.GetCore();
-                await using var sdkDbContext = theCore.DbContextHelper.GetDbContext();
                 var option = _options.Value;
-                var folder = sdkDbContext.Folders.Single(x => x.Id == option.FolderId);
 
-                // deploy cases
-                if (itemUpdateModel.Available && !item.Available)
+                if (option.InventoryFormId > 0 && option.FolderId > 0)
                 {
-                    foreach (var assignedSite in option.AssignedSites)
+                    var theCore = await _coreService.GetCore();
+                    await using var sdkDbContext = theCore.DbContextHelper.GetDbContext();
+                    var folder = sdkDbContext.Folders.Single(x => x.Id == option.FolderId);
+                    // deploy cases
+                    if (itemUpdateModel.Available && !item.Available)
                     {
-                        var site = await sdkDbContext.Sites.SingleAsync(x => x.MicrotingUid == assignedSite.SiteUId);
+                        foreach (var assignedSite in _dbContext.AssignedSites.Where(x =>
+                            x.WorkflowState != Constants.WorkflowStates.Removed))
+                        {
 
-                        var language = await sdkDbContext.Languages.SingleAsync(x => x.Id == site.LanguageId);
-                        var mainElement = await theCore.ReadeForm(int.Parse(result.Value), language);
+                            var siteLanguageId = await sdkDbContext.Sites
+                                .Where(x => x.MicrotingUid == assignedSite.SiteUid)
+                                .Select(x => x.LanguageId)
+                                .SingleAsync();
 
-                        mainElement.CheckListFolderName = folder.Name;
-                        mainElement.EndDate = DateTime.UtcNow.AddYears(10);
-                        mainElement.Repeated = 0;
-                        mainElement.PushMessageTitle = mainElement.Label;
+                            var language = await sdkDbContext.Languages.SingleAsync(x => x.Id == siteLanguageId);
 
-                        // ReSharper disable once PossibleInvalidOperationException
-                        await theCore.CaseCreate(mainElement, "", assignedSite.SiteUId, (int)folder.MicrotingUid);
+                            var mainElement = await theCore.ReadeForm(option.InventoryFormId, language);
+
+                            mainElement.CheckListFolderName = folder.Name;
+                            mainElement.EndDate = DateTime.UtcNow.AddYears(10);
+                            mainElement.Repeated = 0;
+                            mainElement.PushMessageTitle = mainElement.Label;
+
+                            // ReSharper disable once PossibleInvalidOperationException
+                            await theCore.CaseCreate(mainElement, "", assignedSite.SiteUid, (int) folder.MicrotingUid);
+                        }
                     }
-                }
 
-                // retract cases
-                if (item.Available && !itemUpdateModel.Available)
-                {
-
-                    foreach (var assignedSite in option.AssignedSites)
+                    // retract cases
+                    if (item.Available && !itemUpdateModel.Available)
                     {
-                        var site = await sdkDbContext.Sites.SingleAsync(x => x.MicrotingUid == assignedSite.SiteUId);
 
-                        var language = await sdkDbContext.Languages.SingleAsync(x => x.Id == site.LanguageId);
-                        var mainElement = await theCore.ReadeForm(int.Parse(result.Value), language);
+                        foreach (var assignedSite in _dbContext.AssignedSites.Where(x =>
+                            x.WorkflowState != Constants.WorkflowStates.Removed))
+                        {
+                            var siteLanguageId = await sdkDbContext.Sites
+                                .Where(x => x.MicrotingUid == assignedSite.SiteUid)
+                                .Select(x => x.LanguageId)
+                                .SingleAsync();
 
-                        mainElement.CheckListFolderName = folder.Name;
-                        mainElement.EndDate = DateTime.UtcNow.AddYears(10);
-                        mainElement.Repeated = 0;
-                        mainElement.PushMessageTitle = mainElement.Label;
+                            var language = await sdkDbContext.Languages.SingleAsync(x => x.Id == siteLanguageId);
+                            var mainElement = await theCore.ReadeForm(option.InventoryFormId, language);
 
-                        await theCore.CaseDelete(mainElement.MicrotingUId, assignedSite.SiteUId);
+                            await theCore.CaseDelete(mainElement.MicrotingUId, assignedSite.SiteUid);
+                        }
                     }
                 }
                 item.SN = itemUpdateModel.SN;
@@ -257,28 +264,34 @@ namespace Inventory.Pn.Services.InventoryItemService
                 };
                 await item.Create(_dbContext);
 
-                var result = await _dbContext.PluginConfigurationValues.SingleAsync(x => x.Name == "InventoryBaseSettings:CheckListId");
-                var theCore = await _coreService.GetCore();
-                await using var sdkDbContext = theCore.DbContextHelper.GetDbContext();
                 var option = _options.Value;
-                var folder = sdkDbContext.Folders.Single(x => x.Id == option.FolderId);
 
-                if (item.Available)
+                if (option.InventoryFormId > 0 && option.FolderId > 0)
                 {
-                    foreach (var assignedSite in option.AssignedSites)
+                    var theCore = await _coreService.GetCore();
+                    await using var sdkDbContext = theCore.DbContextHelper.GetDbContext();
+                    var folder = sdkDbContext.Folders.Single(x => x.Id == option.FolderId);
+                    if (item.Available)
                     {
-                        var site = await sdkDbContext.Sites.SingleAsync(x => x.MicrotingUid == assignedSite.SiteUId);
+                        foreach (var assignedSite in _dbContext.AssignedSites.Where(x =>
+                            x.WorkflowState != Constants.WorkflowStates.Removed))
+                        {
+                            var siteLanguageId = await sdkDbContext.Sites
+                                .Where(x => x.MicrotingUid == assignedSite.SiteUid)
+                                .Select(x=>x.LanguageId)
+                                .SingleAsync();
 
-                        var language = await sdkDbContext.Languages.SingleAsync(x => x.Id == site.LanguageId);
-                        var mainElement = await theCore.ReadeForm(int.Parse(result.Value), language);
+                            var language = await sdkDbContext.Languages.SingleAsync(x => x.Id == siteLanguageId);
+                            var mainElement = await theCore.ReadeForm(option.InventoryFormId, language);
 
-                        mainElement.CheckListFolderName = folder.Name;
-                        mainElement.EndDate = DateTime.UtcNow.AddYears(10);
-                        mainElement.Repeated = 0;
-                        mainElement.PushMessageTitle = mainElement.Label;
+                            mainElement.CheckListFolderName = folder.Name;
+                            mainElement.EndDate = DateTime.UtcNow.AddYears(10);
+                            mainElement.Repeated = 0;
+                            mainElement.PushMessageTitle = mainElement.Label;
 
-                        // ReSharper disable once PossibleInvalidOperationException
-                        await theCore.CaseCreate(mainElement, "", assignedSite.SiteUId, (int)folder.MicrotingUid);
+                            // ReSharper disable once PossibleInvalidOperationException
+                            await theCore.CaseCreate(mainElement, "", assignedSite.SiteUid, (int) folder.MicrotingUid);
+                        }
                     }
                 }
 

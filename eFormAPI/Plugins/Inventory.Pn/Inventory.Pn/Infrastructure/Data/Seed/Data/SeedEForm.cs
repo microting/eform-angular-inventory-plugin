@@ -22,8 +22,10 @@ namespace Inventory.Pn.Infrastructure.Data.Seed.Data
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
+    using Const;
     using eFormCore;
     using Microsoft.EntityFrameworkCore;
     using Microting.eForm.Infrastructure.Constants;
@@ -63,8 +65,8 @@ namespace Inventory.Pn.Infrastructure.Data.Seed.Data
 
             var mainElement = new MainElement
             {
-                Id = 142344,
-                Label = "Chemical APV",
+                Id = InventoryEFormConst.EFormId,
+                Label = "Chemical APV|Chemical APV|Chemical APV",
                 Repeated = 0,
                 StartDate = new DateTime(2021, 3, 15),
                 EndDate = new DateTime(2031, 3, 15),

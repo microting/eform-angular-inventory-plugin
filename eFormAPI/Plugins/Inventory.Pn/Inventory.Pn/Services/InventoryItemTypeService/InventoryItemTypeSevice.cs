@@ -54,7 +54,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
             //_coreService = coreService;
             _dbContext = dbContext;
         }
-        public async Task<OperationResult> CreateItemType(ItemTypeCreateModel itemTypeCreateModel)
+        public async Task<OperationDataResult<int>> CreateItemType(ItemTypeCreateModel itemTypeCreateModel)
         {
             try
             {
@@ -66,11 +66,11 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                         .Where(x => itemTypeCreateModel.TagIds.Contains(x.Id))
                         .ToList();
 
-                    if (tags.Count != itemTypeCreateModel.TagIds.Count)
-                    {
-                        return new OperationResult(false,
-                            _inventoryLocalizationService.GetString("TagsNotFound"));
-                    }
+                    //if (tags.Count != itemTypeCreateModel.TagIds.Count)
+                    //{
+                    //    return new OperationResult(false,
+                    //        _inventoryLocalizationService.GetString("TagsNotFound"));
+                    //}
                 }
 
                 var itemType = new ItemType
@@ -130,13 +130,12 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     await itemTypeTag.Create(_dbContext);
                 }
 
-                return new OperationResult(true,
-                    _inventoryLocalizationService.GetString("InventoryItemTypeCreatedSuccessfully"));
+                return new OperationDataResult<int>(true, itemType.Id);
             }
             catch (Exception e)
             {
                 Trace.TraceError(e.Message);
-                return new OperationResult(false,
+                return new OperationDataResult<int>(false,
                     _inventoryLocalizationService.GetString("ErrorWhileCreatingItemType"));
             }
         }

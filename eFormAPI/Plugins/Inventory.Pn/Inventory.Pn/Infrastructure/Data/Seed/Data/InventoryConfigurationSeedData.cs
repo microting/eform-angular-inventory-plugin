@@ -1,4 +1,4 @@
-﻿/*
+/*
 The MIT License (MIT)
 Copyright (c) 2007 - 2021 Microting A/S
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,11 +29,16 @@ namespace Inventory.Pn.Infrastructure.Data.Seed.Data
     {
         public PluginConfigurationValue[] Data => new[]
         {
-            new PluginConfigurationValue()
+            new PluginConfigurationValue
             {
-                Name = "InventoryBaseSettings:CheckListId",
+                Name = "InventoryBaseSettings:InventoryFormId",
                 Value = InventoryEFormConst.EFormId.ToString(),
-            }
+            },
+            new PluginConfigurationValue
+            {
+                Name = "InventoryBaseSettings:FolderId",
+                Value = 0.ToString(),
+            },
         };
     }
 }

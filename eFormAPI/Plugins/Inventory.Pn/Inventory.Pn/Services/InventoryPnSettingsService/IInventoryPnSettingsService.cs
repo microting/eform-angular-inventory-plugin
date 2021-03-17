@@ -35,5 +35,7 @@ namespace Inventory.Pn.Services.InventoryPnSettingsService
         Task<OperationResult> AddSiteToSettingsAsync(int siteId);
 
         Task<OperationResult> RemoveSiteFromSettingsAsync(int siteId);
+
+        Task<OperationResult> UpdateFolderIdAsync(int folderId);
     }
 }

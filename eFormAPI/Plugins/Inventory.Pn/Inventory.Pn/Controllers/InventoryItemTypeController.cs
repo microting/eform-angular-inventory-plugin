@@ -95,7 +95,7 @@ namespace Inventory.Pn.Controllers
         /// <returns>Task&lt;OperationResult&gt;.</returns>
         [HttpPost]
         [Route("api/inventory-pn/item-types")]
-        public async Task<OperationResult> CreateInventoryType([FromBody] ItemTypeCreateModel itemTypeCreateModel)
+        public async Task<OperationDataResult<int>> CreateInventoryType([FromBody] ItemTypeCreateModel itemTypeCreateModel)
         {
             return await _inventoryItemTypeService.CreateItemType(itemTypeCreateModel);
         }

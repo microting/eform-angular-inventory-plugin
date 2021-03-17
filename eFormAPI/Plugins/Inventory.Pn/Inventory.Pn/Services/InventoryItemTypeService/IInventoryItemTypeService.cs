@@ -34,7 +34,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
 
         Task<OperationResult> UpdateItemType(ItemTypeUpdateModel itemTypeUpdateModel);
 
-        Task<OperationResult> CreateItemType(ItemTypeCreateModel itemTypeCreateModel);
+        Task<OperationDataResult<int>> CreateItemType(ItemTypeCreateModel itemTypeCreateModel);
 
         Task<OperationResult> DeleteItemTypeById(int itemTypeId);
 
