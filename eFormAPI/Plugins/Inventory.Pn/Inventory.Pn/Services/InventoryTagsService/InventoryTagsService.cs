@@ -176,7 +176,7 @@ namespace Inventory.Pn.Services.InventoryTagsService
                 }
 
                 var itemTypeTags = await _dbContext.ItemTypeTags
-                    .Where(x => x.Id == id).ToListAsync();
+                    .Where(x => x.InventoryTagId == inventoryTag.Id).ToListAsync();
 
                 // removing from ItemTypeTags table
                 foreach (var itemTypeTag in itemTypeTags)
