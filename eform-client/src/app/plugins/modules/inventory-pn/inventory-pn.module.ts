@@ -1,20 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgSelectModule } from '@ng-select/ng-select';
-import {GalleryModule} from '@ngx-gallery/core';
+import { GalleryModule } from '@ngx-gallery/core';
 import { TranslateModule } from '@ngx-translate/core';
 import {
-    ButtonsModule, CardsModule,
-    InputsModule,
-    ModalModule,
-    TableModule,
-    TooltipModule,
-    WavesModule,
+  ButtonsModule,
+  CardsModule,
+  InputsModule,
+  ModalModule,
+  TableModule,
+  TooltipModule,
+  WavesModule,
 } from 'angular-bootstrap-md';
-import {OwlDateTimeModule} from 'ng-pick-datetime-ex';
+import { OwlDateTimeModule } from 'ng-pick-datetime-ex';
 import { EformSharedTagsModule } from 'src/app/common/modules/eform-shared-tags/eform-shared-tags.module';
 import { EformSharedModule } from 'src/app/common/modules/eform-shared/eform-shared.module';
 import { SharedPnModule } from '../shared/shared-pn.module';
@@ -44,6 +45,7 @@ import {
   ItemTypesHeaderComponent,
   ItemTypesTableComponent,
   ItemTypeTagsComponent,
+  ItemTypeImagesComponent,
 } from './components';
 import { InventoryPnRouting } from './inventory-pn.routing';
 import { InventoryPnLayoutComponent } from './layouts';
@@ -54,8 +56,6 @@ import {
   InventoryPnItemTypeTagsService,
   InventoryPnSettingsService,
 } from './services';
-import { ItemTypeImagesComponent } from './components/item-types/item-type-actions/item-type-images/item-type-images.component';
-import { ItemTypeImagesModalComponent } from './components/item-types/item-type-images-modal/item-type-images-modal.component';
 
 @NgModule({
   declarations: [
@@ -84,12 +84,8 @@ import { ItemTypeImagesModalComponent } from './components/item-types/item-type-
     ItemGroupCreateModalComponent,
     ItemGroupEditModalComponent,
     ItemGroupDeleteModalComponent,
-
     ItemTypeTagsComponent,
-
     ItemTypeImagesComponent,
-
-    ItemTypeImagesModalComponent,
   ],
   imports: [
     CommonModule,

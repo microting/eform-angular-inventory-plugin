@@ -6,267 +6,13 @@
     small="true"
     class="z-depth-1 text-center"
   >
-    <thead>
-      <tr>
-        <th
-          scope="col"
-          class="table-header-sortable"
-          id="idTableHeader"
-          (click)="onSortTable('Id')"
-        >
-          <div class="d-flex align-items-center justify-content-center">
-            ID
-            <i
-              class="material-icons text-black-50"
-              *ngIf="localPageSettings.sort != 'Id'"
-              >unfold_more</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'Id' &&
-                !itemTypesRequestModel.isSortDsc
-              "
-              >expand_less</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'Id' &&
-                itemTypesRequestModel.isSortDsc
-              "
-              >expand_more</i
-            >
-          </div>
-        </th>
-        <th
-          scope="col"
-          class="table-header-sortable"
-          id="dateTableHeader"
-          (click)="onSortTable('CreatedDate')"
-        >
-          <div class="d-flex align-items-center justify-content-center">
-            {{ 'Date' | translate }}
-            <i
-              class="material-icons text-black-50"
-              *ngIf="localPageSettings.sort != 'CreatedDate'"
-              >unfold_more</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'CreatedDate' &&
-                !itemTypesRequestModel.isSortDsc
-              "
-              >expand_less</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'CreatedDate' &&
-                itemTypesRequestModel.isSortDsc
-              "
-              >expand_more</i
-            >
-          </div>
-        </th>
-        <th
-          scope="col"
-          class="table-header-sortable"
-          id="createdByTableHeader"
-          (click)="onSortTable('CreatedBy')"
-        >
-          <div class="d-flex align-items-center justify-content-center">
-            {{ 'Created by' | translate }}
-            <i
-              class="material-icons text-black-50"
-              *ngIf="localPageSettings.sort != 'CreatedBy'"
-              >unfold_more</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'CreatedBy' &&
-                !itemTypesRequestModel.isSortDsc
-              "
-              >expand_less</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'CreatedBy' &&
-                itemTypesRequestModel.isSortDsc
-              "
-              >expand_more</i
-            >
-          </div>
-        </th>
-        <th
-          scope="col"
-          class="table-header-sortable"
-          id="itemTypeTableHeader"
-          (click)="onSortTable('ParentTypeName')"
-        >
-          <div class="d-flex align-items-center justify-content-center">
-            {{ 'Parent group' | translate }}
-            <i
-              class="material-icons text-black-50"
-              *ngIf="localPageSettings.sort != 'ParentTypeName'"
-              >unfold_more</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'ParentTypeName' &&
-                !itemTypesRequestModel.isSortDsc
-              "
-              >expand_less</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'ParentTypeName' &&
-                itemTypesRequestModel.isSortDsc
-              "
-              >expand_more</i
-            >
-          </div>
-        </th>
-        <th
-          scope="col"
-          class="table-header-sortable"
-          id="nameTableHeader"
-          (click)="onSortTable('Name')"
-        >
-          <div class="d-flex align-items-center justify-content-center">
-            {{ 'Name' | translate }}
-            <i
-              class="material-icons text-black-50"
-              *ngIf="localPageSettings.sort != 'Name'"
-              >unfold_more</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'Name' &&
-                !itemTypesRequestModel.isSortDsc
-              "
-              >expand_less</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'Name' &&
-                itemTypesRequestModel.isSortDsc
-              "
-              >expand_more</i
-            >
-          </div>
-        </th>
-        <th
-          scope="col"
-          class="table-header-sortable"
-          id="usageTableHeader"
-          (click)="onSortTable('Usage')"
-        >
-          <div class="d-flex align-items-center justify-content-center">
-            {{ 'Usage' | translate }}
-            <i
-              class="material-icons text-black-50"
-              *ngIf="localPageSettings.sort != 'Usage'"
-              >unfold_more</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'Usage' &&
-                !itemTypesRequestModel.isSortDsc
-              "
-              >expand_less</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'Usage' &&
-                itemTypesRequestModel.isSortDsc
-              "
-              >expand_more</i
-            >
-          </div>
-        </th>
-        <th
-          scope="col"
-          class="table-header-sortable"
-          id="descriptionTableHeader"
-          (click)="onSortTable('Description')"
-        >
-          <div class="d-flex align-items-center justify-content-center">
-            {{ 'Description' | translate }}
-            <i
-              class="material-icons text-black-50"
-              *ngIf="localPageSettings.sort != 'Description'"
-              >unfold_more</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'Description' &&
-                !itemTypesRequestModel.isSortDsc
-              "
-              >expand_less</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'Description' &&
-                itemTypesRequestModel.isSortDsc
-              "
-              >expand_more</i
-            >
-          </div>
-        </th>
-        <th
-          scope="col"
-          class="table-header-sortable"
-          id="riscDescriptionTableHeader"
-          (click)="onSortTable('RiskDescription')"
-        >
-          <div class="d-flex align-items-center justify-content-center">
-            {{ 'Risk description' | translate }}
-            <i
-              class="material-icons text-black-50"
-              *ngIf="localPageSettings.sort != 'RiskDescription'"
-              >unfold_more</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'RiskDescription' &&
-                !itemTypesRequestModel.isSortDsc
-              "
-              >expand_less</i
-            >
-            <i
-              class="material-icons"
-              *ngIf="
-                localPageSettings.sort == 'RiskDescription' &&
-                itemTypesRequestModel.isSortDsc
-              "
-              >expand_more</i
-            >
-          </div>
-        </th>
-        <th scope="col">
-          {{ 'Comment' | translate }}
-        </th>
-        <th scope="col">
-          {{ 'Tags' | translate }}
-        </th>
-        <th scope="col">
-          {{ 'Actions' | translate }}
-        </th>
-      </tr>
-    </thead>
+    <thead
+      table-headers
+      [tableHeaders]="tableHeaders"
+      [currentSortName]="localPageSettings.sort"
+      (sortChanged)="onSortTable($event)"
+      [isSortDsc]="itemTypesRequestModel.isSortDsc"
+    ></thead>
     <tbody id="tableBodyInventoryItemType">
       <tr *ngFor="let itemTypeModel of itemTypesModel.entities; let i = index">
         <td id="itemTypeId">
@@ -318,7 +64,8 @@
         <td>
           <div class="d-flex flex-row justify-content-center">
             <button
-              id="workOrderShowPicturesOfTask" *ngIf="itemTypeModel.pictogramImages"
+              id="workOrderShowPicturesOfTask"
+              *ngIf="itemTypeModel.pictogramImages"
               (click)="openPicturesModal(itemTypeModel.dangerLabelImages, true)"
               class="btn btn-accent text-black-50 btn-icon mb-2"
               mdbTooltip="{{ 'View pictogram images' | translate }}"
@@ -329,11 +76,14 @@
                 [fixedWidth]="true"
               ></fa-icon>
             </button>
-            <button *ngIf="itemTypeModel.dangerLabelImages"
-                    id="workOrderShowPicturesOfTaskDone"
-                    (click)="openPicturesModal(itemTypeModel.dangerLabelImages, false)"
-                    class="btn btn-accent text-black-50 btn-icon mb-2"
-                    mdbTooltip="{{ 'View danger label images' | translate }}"
+            <button
+              *ngIf="itemTypeModel.dangerLabelImages"
+              id="workOrderShowPicturesOfTaskDone"
+              (click)="
+                openPicturesModal(itemTypeModel.dangerLabelImages, false)
+              "
+              class="btn btn-accent text-black-50 btn-icon mb-2"
+              mdbTooltip="{{ 'View danger label images' | translate }}"
             >
               <fa-icon
                 icon="clipboard-check"
