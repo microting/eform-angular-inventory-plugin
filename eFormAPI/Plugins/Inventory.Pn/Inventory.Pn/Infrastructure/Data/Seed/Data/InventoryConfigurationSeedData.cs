@@ -21,7 +21,6 @@ SOFTWARE.
 
 namespace Inventory.Pn.Infrastructure.Data.Seed.Data
 {
-    using Const;
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Database.Entities;
 
@@ -32,7 +31,7 @@ namespace Inventory.Pn.Infrastructure.Data.Seed.Data
             new PluginConfigurationValue
             {
                 Name = "InventoryBaseSettings:InventoryFormId",
-                Value = InventoryEFormConst.EFormId.ToString(),
+                Value = 0.ToString(),
             },
             new PluginConfigurationValue
             {

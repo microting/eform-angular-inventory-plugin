@@ -29,6 +29,7 @@ namespace Inventory.Pn.Services.InventoryItemService
     using InventoryLocalizationService;
     using Microsoft.EntityFrameworkCore;
     using Microting.eForm.Infrastructure.Constants;
+    using Microting.eForm.Infrastructure.Models;
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Extensions;
     using Microting.eFormApi.BasePn.Infrastructure.Helpers.PluginDbOptions;
@@ -37,7 +38,7 @@ namespace Inventory.Pn.Services.InventoryItemService
     using Microting.eFormInventoryBase.Infrastructure.Data;
     using Microting.eFormInventoryBase.Infrastructure.Data.Entities;
 
-    public class InventoryItemService: IInventoryItemService
+    public class InventoryItemService : IInventoryItemService
     {
         private readonly InventoryPnDbContext _dbContext;
         private readonly IInventoryLocalizationService _inventoryLocalizationService;
@@ -189,6 +190,7 @@ namespace Inventory.Pn.Services.InventoryItemService
                         {
 
                             var siteLanguageId = await sdkDbContext.Sites
+                                .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                                 .Where(x => x.MicrotingUid == assignedSite.SiteUid)
                                 .Select(x => x.LanguageId)
                                 .SingleAsync();
@@ -203,7 +205,7 @@ namespace Inventory.Pn.Services.InventoryItemService
                             mainElement.PushMessageTitle = mainElement.Label;
 
                             // ReSharper disable once PossibleInvalidOperationException
-                            await theCore.CaseCreate(mainElement, "", assignedSite.SiteUid, (int) folder.MicrotingUid);
+                            await theCore.CaseCreate(mainElement, "", assignedSite.SiteUid, (int)folder.MicrotingUid);
                         }
                     }
 
@@ -215,6 +217,7 @@ namespace Inventory.Pn.Services.InventoryItemService
                             x.WorkflowState != Constants.WorkflowStates.Removed))
                         {
                             var siteLanguageId = await sdkDbContext.Sites
+                                .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                                 .Where(x => x.MicrotingUid == assignedSite.SiteUid)
                                 .Select(x => x.LanguageId)
                                 .SingleAsync();
@@ -278,7 +281,7 @@ namespace Inventory.Pn.Services.InventoryItemService
                         {
                             var siteLanguageId = await sdkDbContext.Sites
                                 .Where(x => x.MicrotingUid == assignedSite.SiteUid)
-                                .Select(x=>x.LanguageId)
+                                .Select(x => x.LanguageId)
                                 .SingleAsync();
 
                             var language = await sdkDbContext.Languages.SingleAsync(x => x.Id == siteLanguageId);
@@ -290,7 +293,7 @@ namespace Inventory.Pn.Services.InventoryItemService
                             mainElement.PushMessageTitle = mainElement.Label;
 
                             // ReSharper disable once PossibleInvalidOperationException
-                            await theCore.CaseCreate(mainElement, "", assignedSite.SiteUid, (int) folder.MicrotingUid);
+                            await theCore.CaseCreate(mainElement, "", assignedSite.SiteUid, (int)folder.MicrotingUid);
                         }
                     }
                 }
@@ -352,9 +355,9 @@ namespace Inventory.Pn.Services.InventoryItemService
                 },
                 ItemGroup = new CommonDictionaryModel()
                 {
-                   Id = x.ItemType.ItemGroup.Id,
-                   Name = x.ItemType.ItemGroup.Name,
-                   Description = x.ItemType.ItemGroup.Description,
+                    Id = x.ItemType.ItemGroup.Id,
+                    Name = x.ItemType.ItemGroup.Name,
+                    Description = x.ItemType.ItemGroup.Description,
                 },
             });
         }
