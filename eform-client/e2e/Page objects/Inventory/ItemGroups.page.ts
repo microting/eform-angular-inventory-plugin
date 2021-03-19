@@ -1,5 +1,6 @@
 import { PageWithNavbarPage } from '../PageWithNavbar.page';
 import inventoryItemsPage from './Items.page';
+import { generateRandmString } from '../../Helpers/helper-functions';
 
 class InventoryItemGroupsPage extends PageWithNavbarPage {
   constructor() {
@@ -244,6 +245,34 @@ class InventoryItemGroupsPage extends PageWithNavbarPage {
       const itemGroup = this.getFirstInventoryItemGroupByNumber();
       itemGroup.delete();
     }
+  }
+
+  public createDummyInventoryItemGroups(
+    createCount = 3,
+    parentGroup?: string
+  ): ItemGroup[] {
+    const masResult = new Array<ItemGroup>();
+    for (let i = 0; i < createCount; i++) {
+      const itemGroup: ItemGroup = {
+        name: generateRandmString(),
+        description: generateRandmString(),
+        code: generateRandmString(),
+        parentGroup: parentGroup,
+      };
+      masResult.push(itemGroup);
+      this.createInventoryItemGroup(itemGroup);
+    }
+    return masResult;
+  }
+
+  public getAllItemGroups(): InventoryItemGroup[] {
+    browser.pause(500);
+    const rowCount = this.rowNum;
+    const result = new Array<InventoryItemGroup>();
+    for (let i = 1; i <= rowCount; i++) {
+      result.push(this.getFirstInventoryItemGroupByNumber());
+    }
+    return result;
   }
 }
 
