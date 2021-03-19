@@ -5,55 +5,43 @@
   <mdb-card-body>
     <div class="row">
       <div class="col-xs-12 col-md-12">
-        <!--    <div class="row">-->
-        <!--      <ng-container-->
-        <!--        *ngFor="-->
-        <!--                    let dependencyControl of dependencies.controls;-->
-        <!--                    let dependencyIndex = index-->
-        <!--                  "-->
-        <!--      >-->
-        <!--        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">-->
-        <!--          <mdb-card class="mb-2">-->
-        <!--            <mdb-card-body></mdb-card-body>-->
-        <!--          </mdb-card>-->
-        <!--        </div>-->
-        <!--      </ng-container>-->
-        <!--    </div>-->
-        <div class="row">
-          <div
-            class="col-lg-2 col-md-2 col-sm-4 col-xs-12"
+        <div class="d-flex flex-wrap">
+          <mdb-card class="flex-column mr-4 mb-4"
             *ngFor="let image of processedImages; let i = index"
           >
-            <mdb-card>
-              <mdb-card-img
-                [src]="image"
-                alt="Card image cap"
-              ></mdb-card-img>
-              <!--Card content-->
-              <mdb-card-body>
-                <mdb-card-text>
-                  <div class="d-flex justify-content-center">
-                    <button
-                      mdbBtn
-                      class="btn-icon btn-danger"
-                      mdbTooltip="{{ 'Delete picture' | translate }}"
-                      (click)="deletePicture(image)"
-                    >
-                      <fa-icon
-                        icon="trash-restore-alt"
-                        size="lg"
-                        [fixedWidth]="true"
-                      ></fa-icon>
-                    </button>
-                  </div>
-                </mdb-card-text>
-              </mdb-card-body>
-            </mdb-card>
-          </div>
+            <img
+              class="card-img-fixed"
+              [src]="image.dataUrl"
+              alt="Card image cap"
+            />
+            <button
+              mdbBtn
+              class="btn-icon btn-danger"
+              mdbTooltip="{{ 'Delete picture' | translate }}"
+              (click)="onDeleteImage(i, image.imageType)"
+            >
+              <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+          </mdb-card>
         </div>
-        <div class="form-group">
-          <input type="file" (change)="uploadFile($event)" />
-        </div>
+        <button
+          mdbBtn
+          class="btn-success btn-icon btn-sm m-0 ml-auto"
+          id="imageFileInputBtn"
+          (click)="imageUploader.click()"
+          type="button"
+        >
+          <fa-icon icon="plus" [fixedWidth]="true" size="lg"></fa-icon>
+          {{ 'Add new' | translate }}
+        </button>
+        <input
+          type="file"
+          #imageUploader
+          accept="image/*"
+          id="imageFileInput"
+          style="display: none"
+          (change)="uploadFile($event)"
+        />
       </div>
     </div>
   </mdb-card-body>

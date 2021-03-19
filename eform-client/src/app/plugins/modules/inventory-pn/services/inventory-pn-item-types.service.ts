@@ -67,7 +67,7 @@ export class InventoryPnItemTypesService extends BaseService {
 
   createItemType(
     model: InventoryItemTypeCreateModel
-  ): Observable<OperationResult> {
+  ): Observable<OperationDataResult<number>> {
     return this.post(InventoryPnItemTypesMethods.ItemTypes, model);
   }
 

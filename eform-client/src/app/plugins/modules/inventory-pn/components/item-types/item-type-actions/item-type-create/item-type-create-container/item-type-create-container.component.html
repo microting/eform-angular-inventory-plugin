@@ -29,12 +29,13 @@
         [availableTags]="availableTags"
         [filteredItemTypes]="filteredItemTypes"
         [dependencies]="itemTypeDependencies"
-        [pictogramImagesPreview]="pictogramImagesPreview"
-        [dangerLabelImagesPreview]="dangerLabelImagesPreview"
+        [pictogramImagesPreview]="pictogramImages"
+        [dangerLabelImagesPreview]="dangerLabelImages"
         (dependentItemGroupChanged)="onDependentItemGroupChanged($event)"
         (createNewDependency)="addNewDependency()"
         (deleteDependency)="onDeleteDependency($event)"
         (imageProcessed)="onImageProcessed($event)"
+        (deleteImage)="onDeleteImage($event)"
       ></app-item-type-create-form>
     </div>
   </div>

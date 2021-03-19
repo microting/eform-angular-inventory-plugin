@@ -4,3 +4,4 @@ export * from './inventory-item-type-update.model';
 export * from './inventory-item-type-request.model';
 export * from './inventory-item-type-simple.model';
 export * from './inventory-item-type-dependency.model';
+export * from './inventory-item-type-image.model';

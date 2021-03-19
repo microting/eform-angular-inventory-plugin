@@ -6,7 +6,10 @@ import * as R from 'ramda';
 import { Subscription } from 'rxjs';
 import { CommonDictionaryModel } from 'src/app/common/models';
 import { InventoryPnImageTypesEnum } from '../../../../../enums';
-import { InventoryItemTypeCreateModel } from '../../../../../models';
+import {
+  InventoryItemTypeCreateModel,
+  InventoryItemTypeImageModel,
+} from '../../../../../models';
 import {
   InventoryPnItemGroupsService,
   InventoryPnItemTypesService,
@@ -25,13 +28,15 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
   filteredItemTypes: CommonDictionaryModel[][] = [];
   newItemTypeForm: FormGroup;
   itemTypeDependencies: FormArray = new FormArray([]);
-  pictogramImagesPreview: string[] = [];
-  dangerLabelImagesPreview: string[] = [];
+  pictogramImages: InventoryItemTypeImageModel[] = [];
+  dangerLabelImages: InventoryItemTypeImageModel[] = [];
 
   getTagsSub$: Subscription;
   createItemTypeSub$: Subscription;
   getItemGroupsDictionarySub$: Subscription;
   getItemTypesDictionarySub$: Subscription;
+  uploadItemTypePictograms$: Subscription;
+  uploadItemTypeDangerLabels$: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -121,37 +126,39 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
       .createItemType({ ...createModel, dependencies: [...dependencies] })
       .subscribe((data) => {
         if (data && data.success) {
-          this.location.back();
+          this.uploadImages(data.model);
         }
       });
+  }
+
+  uploadImages(itemTypeId: number) {
+    if (this.pictogramImages) {
+      this.uploadItemTypePictograms$ = this.itemTypesService
+        .uploadItemTypeImages({
+          files: this.pictogramImages.map((x) => {
+            return x.file;
+          }),
+          itemTypeId,
+          itemTypeImageType: InventoryPnImageTypesEnum.Pictogram,
+        })
+        .subscribe((data) => {});
+    }
+    if (this.dangerLabelImages) {
+      this.uploadItemTypeDangerLabels$ = this.itemTypesService
+        .uploadItemTypeImages({
+          files: this.dangerLabelImages.map((x) => {
+            return x.file;
+          }),
+          itemTypeId,
+          itemTypeImageType: InventoryPnImageTypesEnum.DangerLabel,
+        })
+        .subscribe((data) => {});
+    }
   }
 
   getInitialData() {
     this.getTags();
     this.getItemGroupsDictionary();
-  }
-
-  uploadFile(event, fieldName: string = 'pictogramImages') {
-    const file = (event.target as HTMLInputElement).files[0];
-    this.newItemTypeForm.patchValue({
-      pictogramImages: [...this.newItemTypeForm.get(fieldName).value, file],
-    });
-    this.newItemTypeForm.get(fieldName).updateValueAndValidity();
-
-    // File Preview
-    const reader = new FileReader();
-    reader.onload = () => {
-      fieldName === 'pictogramImages'
-        ? (this.pictogramImagesPreview = [
-            ...this.pictogramImagesPreview,
-            reader.result as string,
-          ])
-        : (this.dangerLabelImagesPreview = [
-            ...this.dangerLabelImagesPreview,
-            reader.result as string,
-          ]);
-    };
-    reader.readAsDataURL(file);
   }
 
   ngOnDestroy(): void {}
@@ -175,21 +182,30 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
     );
   }
 
-  onImageProcessed(model: {
-    imageType: InventoryPnImageTypesEnum;
-    dataUrl: string;
-  }) {
-    debugger;
+  onImageProcessed(model: InventoryItemTypeImageModel) {
     if (model.imageType === InventoryPnImageTypesEnum.Pictogram) {
-      this.pictogramImagesPreview = [
-        ...this.dangerLabelImagesPreview,
-        model.dataUrl,
-      ];
+      this.pictogramImages = [...this.pictogramImages, model];
     } else {
-      this.dangerLabelImagesPreview = [
-        ...this.dangerLabelImagesPreview,
-        model.dataUrl,
-      ];
+      this.dangerLabelImages = [...this.dangerLabelImages, model];
+    }
+  }
+
+  onDeleteImage(model: {
+    imageIndex: number;
+    imageType: InventoryPnImageTypesEnum;
+  }) {
+    if (model.imageType === InventoryPnImageTypesEnum.Pictogram) {
+      this.pictogramImages = R.remove(
+        model.imageIndex,
+        1,
+        this.pictogramImages
+      );
+    } else {
+      this.pictogramImages = R.remove(
+        model.imageIndex,
+        1,
+        this.dangerLabelImages
+      );
     }
   }
 }

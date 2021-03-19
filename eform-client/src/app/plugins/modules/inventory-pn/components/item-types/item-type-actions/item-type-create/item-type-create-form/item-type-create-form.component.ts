@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { CommonDictionaryModel } from 'src/app/common/models';
-import { InventoryPnImageTypesEnum } from 'src/app/plugins/modules/inventory-pn/enums';
+import { InventoryPnImageTypesEnum } from '../../../../../enums';
+import { InventoryItemTypeImageModel } from '../../../../../models';
 
 @Component({
   selector: 'app-item-type-create-form',
@@ -14,8 +15,8 @@ export class ItemTypeCreateFormComponent implements OnInit {
   @Input() availableTags: CommonDictionaryModel[] = [];
   @Input() filteredItemTypes: CommonDictionaryModel[][] = [];
   @Input() dependencies: FormArray;
-  @Input() pictogramImagesPreview: string[];
-  @Input() dangerLabelImagesPreview: string[];
+  @Input() pictogramImagesPreview: InventoryItemTypeImageModel[];
+  @Input() dangerLabelImagesPreview: InventoryItemTypeImageModel[];
   @Output() createNewDependency: EventEmitter<void> = new EventEmitter<void>();
   @Output() dependentItemGroupChanged: EventEmitter<{
     itemGroupId: number;
@@ -25,9 +26,18 @@ export class ItemTypeCreateFormComponent implements OnInit {
   @Output() imageProcessed: EventEmitter<{
     imageType: InventoryPnImageTypesEnum;
     dataUrl: string;
+    file: File;
   }> = new EventEmitter<{
     imageType: InventoryPnImageTypesEnum;
     dataUrl: string;
+    file: File;
+  }>();
+  @Output() deleteImage: EventEmitter<{
+    imageIndex: number;
+    imageType: InventoryPnImageTypesEnum;
+  }> = new EventEmitter<{
+    imageIndex: number;
+    imageType: InventoryPnImageTypesEnum;
   }>();
 
   get imageTypes() {
@@ -56,10 +66,14 @@ export class ItemTypeCreateFormComponent implements OnInit {
     this.deleteDependency.emit(dependencyIndex);
   }
 
-  onImageProcessed(model: {
-    imageType: InventoryPnImageTypesEnum;
-    dataUrl: string;
-  }) {
+  onImageProcessed(model: InventoryItemTypeImageModel) {
     this.imageProcessed.emit(model);
+  }
+
+  onDeleteImage(model: {
+    imageIndex: number;
+    imageType: InventoryPnImageTypesEnum;
+  }) {
+    this.deleteImage.emit(model);
   }
 }

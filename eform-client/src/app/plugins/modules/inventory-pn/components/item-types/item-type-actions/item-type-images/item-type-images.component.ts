@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { InventoryItemTypeImageModel } from '../../../../models';
 import { InventoryPnImageTypesEnum } from '../../../../enums';
 
 @Component({
@@ -10,35 +11,25 @@ import { InventoryPnImageTypesEnum } from '../../../../enums';
 })
 export class ItemTypeImagesComponent implements OnInit {
   @Input() uploadedImageNames: string[];
-  @Input() processedImages: any[];
+  @Input() processedImages: InventoryItemTypeImageModel[];
   @Input() imageType: InventoryPnImageTypesEnum;
   @Output()
-  imageProcessed: EventEmitter<{
+  imageProcessed: EventEmitter<InventoryItemTypeImageModel> = new EventEmitter<InventoryItemTypeImageModel>();
+  @Output()
+  deleteImage: EventEmitter<{
+    imageIndex: number;
     imageType: InventoryPnImageTypesEnum;
-    dataUrl: string;
   }> = new EventEmitter<{
+    imageIndex: number;
     imageType: InventoryPnImageTypesEnum;
-    dataUrl: string;
   }>();
-  imagesForm: FormGroup;
 
-  constructor(public fb: FormBuilder, public router: Router) {
-    this.imagesForm = this.fb.group({
-      name: [''],
-      avatar: [null],
-    });
-  }
+  constructor() {}
 
   ngOnInit() {}
 
-  // Image Preview
   uploadFile(event) {
-    // TODO: Change
     const file = (event.target as HTMLInputElement).files[0];
-    // this.imagesForm.patchValue({
-    //   avatar: file,
-    // });
-    // this.imagesForm.get('avatar').updateValueAndValidity();
 
     // File Preview
     const reader = new FileReader();
@@ -46,10 +37,13 @@ export class ItemTypeImagesComponent implements OnInit {
       this.imageProcessed.emit({
         dataUrl: reader.result as string,
         imageType: this.imageType,
+        file,
       });
     };
     reader.readAsDataURL(file);
   }
 
-  deletePicture(image: any) {}
+  onDeleteImage(imageIndex: number, imageType: InventoryPnImageTypesEnum) {
+    this.deleteImage.emit({ imageIndex, imageType });
+  }
 }
