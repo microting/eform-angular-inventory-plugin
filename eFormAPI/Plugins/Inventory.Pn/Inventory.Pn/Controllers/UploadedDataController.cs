@@ -18,39 +18,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace Inventory.Pn.Infrastructure.Models.ItemType
+namespace Inventory.Pn.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
+    using System.Threading.Tasks;
+    using Infrastructure.Models.UploadedData;
+    using Microsoft.AspNetCore.Mvc;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Services.UploadedDataService;
 
-    public class ItemTypeSimpleModel
+    public class UploadedDataController : Controller
     {
-        public int Id { get; set; }
 
-        public string CreatedBy { get; set; }
+        private readonly IUploadedDataService _uploadedDataService;
 
-        public DateTime CreatedDate { get; set; }
+        public UploadedDataController(IUploadedDataService uploadedDataService)
+        {
+            _uploadedDataService = uploadedDataService;
+        }
 
-        public string Description { get; set; }
+        [HttpPost]
+        [Route("api/inventory-pn/item-types/images")]
+        public async Task<OperationResult> UploadUploadedData(UploadedDataModel uploadModel)
+        {
+            return await _uploadedDataService.UploadUploadedData(uploadModel);
+        }
 
-        public string ParentTypeName { get; set; }
-
-        public string Usage { get; set; }
-
-        public string RiskDescription { get; set; }
-
-        public List<string> PictogramImages { get; set; }
-            = new List<string>();
-
-        public List<string> DangerLabelImages { get; set; }
-            = new List<string>();
-
-        public string Name { get; set; }
-
-        public string Comment { get; set; }
-
-        public List<CommonTagModel> Tags { get; set; }
-            = new List<CommonTagModel>();
     }
 }

@@ -51,6 +51,7 @@ namespace Inventory.Pn
     using eFormCore;
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Helpers.PluginDbOptions;
+    using Services.UploadedDataService;
 
     public class EformInventoryPlugin : IEformPlugin
     {
@@ -83,10 +84,11 @@ namespace Inventory.Pn
         {
             services.AddSingleton<IInventoryLocalizationService, InventoryLocalizationService>();
             services.AddTransient<IInventoryPnSettingsService, InventoryPnSettingsService>();
-            services.AddTransient<IInventoryTagsService, InventoryTagsService>();
-            services.AddTransient<IInventoryItemTypeService, InventoryItemTypeService>();
             services.AddTransient<IInventoryItemGroupService, InventoryItemGroupService>();
+            services.AddTransient<IInventoryItemTypeService, InventoryItemTypeService>();
             services.AddTransient<IInventoryItemService, InventoryItemService>();
+            services.AddTransient<IInventoryTagsService, InventoryTagsService>();
+            services.AddTransient<IUploadedDataService, UploadedDataService>();
             services.AddSingleton<IRebusService, RebusService>();
             services.AddControllers();
 

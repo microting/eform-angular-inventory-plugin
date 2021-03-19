@@ -36,6 +36,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
     using System.Threading.Tasks;
     using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Microting.eFormInventoryBase.Infrastructure.Const;
+    using UploadedDataService;
 
     public class InventoryItemTypeService : IInventoryItemTypeService
     {
@@ -43,16 +44,19 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
         private readonly IInventoryLocalizationService _inventoryLocalizationService;
         private readonly IUserService _userService;
         //private readonly IEFormCoreService _coreService;
+        private static string _folderImages;
 
         public InventoryItemTypeService(InventoryPnDbContext dbContext,
             IInventoryLocalizationService inventoryLocalizationService,
-            IUserService userService/*,
+            IUserService userService,
+            IUploadedDataService uploadedDataService/*,
             IEFormCoreService coreService*/)
         {
             _userService = userService;
             _inventoryLocalizationService = inventoryLocalizationService;
             //_coreService = coreService;
             _dbContext = dbContext;
+            _folderImages = uploadedDataService.SaveFolder;
         }
         public async Task<OperationDataResult<int>> CreateItemType(ItemTypeCreateModel itemTypeCreateModel)
         {
@@ -490,22 +494,22 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
 
                     RiskDescription = x.RiskDescription,
                     Description = x.Description,
-                    EformId = x.EformId,
+                    Comment = x.Comment,
                     Usage = x.Usage,
                     Name = x.Name,
                     Id = x.Id,
                     CreatedDate = x.CreatedAt,
                     CreatedBy = userService.GetFullNameUserByUserIdAsync(x.CreatedByUserId).Result,
-                    DangerLabelImageName = x.ItemTypeUploadedDatas
+                    DangerLabelImages = x.ItemTypeUploadedDatas
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Where(y => y.Type == TypeUploadedData.Danger)
-                        .Select(y => y.FileName)
-                        .FirstOrDefault(),
-                    PictogramImageName = x.ItemTypeUploadedDatas
+                        .Select(y => $"{_folderImages}/{y.FileName}")
+                        .ToList(),
+                    PictogramImages = x.ItemTypeUploadedDatas
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Where(y => y.Type == TypeUploadedData.Pictogram)
-                        .Select(y => y.FileName)
-                        .FirstOrDefault(),
+                        .Select(y => $"{_folderImages}/{y.FileName}")
+                        .ToList(),
                     ParentTypeName = x.DependItemTypes
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Select(y => y.DependItemType.Name)

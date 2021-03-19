@@ -18,39 +18,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace Inventory.Pn.Infrastructure.Models.ItemType
+namespace Inventory.Pn.Services.UploadedDataService
 {
-    using System;
-    using System.Collections.Generic;
-    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
+    using System.Threading.Tasks;
+    using Infrastructure.Models.UploadedData;
+    using Microsoft.AspNetCore.Mvc;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 
-    public class ItemTypeSimpleModel
+    public interface IUploadedDataService
     {
-        public int Id { get; set; }
+        Task<OperationDataResult<UploadedDatasModel>> Index(int itemTypeId);
+        
+        Task<OperationResult> Update(UploadedDataModel uploadedDataModel);
 
-        public string CreatedBy { get; set; }
+        Task<OperationResult> Delete(int id);
 
-        public DateTime CreatedDate { get; set; }
+        Task<OperationResult> UploadUploadedData(UploadedDataModel uploadModel);
 
-        public string Description { get; set; }
+        Task<IActionResult> DownloadUploadedData(string fileName);
 
-        public string ParentTypeName { get; set; }
-
-        public string Usage { get; set; }
-
-        public string RiskDescription { get; set; }
-
-        public List<string> PictogramImages { get; set; }
-            = new List<string>();
-
-        public List<string> DangerLabelImages { get; set; }
-            = new List<string>();
-
-        public string Name { get; set; }
-
-        public string Comment { get; set; }
-
-        public List<CommonTagModel> Tags { get; set; }
-            = new List<CommonTagModel>();
+        string SaveFolder { get; }
     }
 }

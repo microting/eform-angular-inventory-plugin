@@ -18,39 +18,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace Inventory.Pn.Infrastructure.Models.ItemType
+namespace Inventory.Pn.Infrastructure.Models.UploadedData
 {
-    using System;
-    using System.Collections.Generic;
-    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
-
-    public class ItemTypeSimpleModel
+    public class UploadedDatasModel
     {
-        public int Id { get; set; }
-
-        public string CreatedBy { get; set; }
-
-        public DateTime CreatedDate { get; set; }
-
-        public string Description { get; set; }
-
-        public string ParentTypeName { get; set; }
-
-        public string Usage { get; set; }
-
-        public string RiskDescription { get; set; }
-
-        public List<string> PictogramImages { get; set; }
-            = new List<string>();
-
-        public List<string> DangerLabelImages { get; set; }
-            = new List<string>();
-
-        public string Name { get; set; }
-
-        public string Comment { get; set; }
-
-        public List<CommonTagModel> Tags { get; set; }
-            = new List<CommonTagModel>();
+        
     }
 }
