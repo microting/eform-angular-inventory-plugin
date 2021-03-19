@@ -165,27 +165,12 @@
       </div>
       <div class="row">
         <div class="col">
-          <mdb-card>
-            <mdb-card-header>
-              {{ 'Pictogram' | translate }}
-            </mdb-card-header>
-            <mdb-card-body>
-              <div class="row">
-                <ng-container
-                  *ngFor="
-                    let dependencyControl of dependencies.controls;
-                    let dependencyIndex = index
-                  "
-                >
-                  <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
-                    <mdb-card class="mb-2">
-                      <mdb-card-body></mdb-card-body>
-                    </mdb-card>
-                  </div>
-                </ng-container>
-              </div>
-            </mdb-card-body>
-          </mdb-card>
+          <app-item-type-images
+            [imageType]="imageTypes.Pictogram"
+            [processedImages]="pictogramImages"
+            (imageProcessed)="onImageProcessed($event)"
+            (deleteImage)="onDeleteImage($event)"
+          ></app-item-type-images>
         </div>
       </div>
       <div class="row">
@@ -207,27 +192,12 @@
       </div>
       <div class="row">
         <div class="col">
-          <mdb-card>
-            <mdb-card-header>
-              {{ 'Danger labels' | translate }}
-            </mdb-card-header>
-            <mdb-card-body>
-              <div class="row">
-                <ng-container
-                  *ngFor="
-                    let dependencyControl of dependencies.controls;
-                    let dependencyIndex = index
-                  "
-                >
-                  <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
-                    <mdb-card class="mb-2">
-                      <mdb-card-body></mdb-card-body>
-                    </mdb-card>
-                  </div>
-                </ng-container>
-              </div>
-            </mdb-card-body>
-          </mdb-card>
+          <app-item-type-images
+            [imageType]="imageTypes.DangerLabel"
+            [processedImages]="dangerLabelImages"
+            (imageProcessed)="onImageProcessed($event)"
+            (deleteImage)="onDeleteImage($event)"
+          ></app-item-type-images>
         </div>
       </div>
     </form>

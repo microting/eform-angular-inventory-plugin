@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { InventoryItemTypeImageModel } from '../../../../models';
 import { InventoryPnImageTypesEnum } from '../../../../enums';
+import { InventoryItemTypeImageModel } from '../../../../models';
 
 @Component({
   selector: 'app-item-type-images',

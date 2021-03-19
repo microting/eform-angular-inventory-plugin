@@ -201,7 +201,7 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
         this.pictogramImages
       );
     } else {
-      this.pictogramImages = R.remove(
+      this.dangerLabelImages = R.remove(
         model.imageIndex,
         1,
         this.dangerLabelImages

@@ -5,8 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subscription } from 'rxjs';
 import { CommonDictionaryModel } from 'src/app/common/models';
+import { InventoryPnImageTypesEnum } from 'src/app/plugins/modules/inventory-pn/enums';
 import {
   InventoryItemTypeCreateModel,
+  InventoryItemTypeImageModel,
   InventoryItemTypeModel,
   InventoryItemTypeUpdateModel,
 } from '../../../../../models';
@@ -31,6 +33,8 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   editItemTypeForm: FormGroup;
   itemTypeDependencies: FormArray = new FormArray([]);
   dependenciesIdsForDelete: number[] = [];
+  pictogramImages: InventoryItemTypeImageModel[] = [];
+  dangerLabelImages: InventoryItemTypeImageModel[] = [];
 
   getTagsSub$: Subscription;
   activatedRouteSub$: Subscription;
@@ -38,6 +42,8 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   updateItemTypeSub$: Subscription;
   getItemGroupsDictionarySub$: Subscription;
   getItemTypesDictionarySub$: Subscription;
+  uploadItemTypePictograms$: Subscription;
+  uploadItemTypeDangerLabels$: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -157,6 +163,31 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       });
   }
 
+  uploadImages(itemTypeId: number) {
+    if (this.pictogramImages) {
+      this.uploadItemTypePictograms$ = this.itemTypesService
+        .uploadItemTypeImages({
+          files: this.pictogramImages.map((x) => {
+            return x.file;
+          }),
+          itemTypeId,
+          itemTypeImageType: InventoryPnImageTypesEnum.Pictogram,
+        })
+        .subscribe((data) => {});
+    }
+    if (this.dangerLabelImages) {
+      this.uploadItemTypeDangerLabels$ = this.itemTypesService
+        .uploadItemTypeImages({
+          files: this.dangerLabelImages.map((x) => {
+            return x.file;
+          }),
+          itemTypeId,
+          itemTypeImageType: InventoryPnImageTypesEnum.DangerLabel,
+        })
+        .subscribe((data) => {});
+    }
+  }
+
   updateItemType() {
     // Compose model from array of dependencies and ids for delete
     const dependencies = this.itemTypeDependencies.value as {
@@ -174,7 +205,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       })
       .subscribe((data) => {
         if (data && data.success) {
-          this.location.back();
+          this.uploadImages(this.selectedItemTypeId);
         }
       });
   }
@@ -213,4 +244,31 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {}
+
+  onImageProcessed(model: InventoryItemTypeImageModel) {
+    if (model.imageType === InventoryPnImageTypesEnum.Pictogram) {
+      this.pictogramImages = [...this.pictogramImages, model];
+    } else {
+      this.dangerLabelImages = [...this.dangerLabelImages, model];
+    }
+  }
+
+  onDeleteImage(model: {
+    imageIndex: number;
+    imageType: InventoryPnImageTypesEnum;
+  }) {
+    if (model.imageType === InventoryPnImageTypesEnum.Pictogram) {
+      this.pictogramImages = R.remove(
+        model.imageIndex,
+        1,
+        this.pictogramImages
+      );
+    } else {
+      this.dangerLabelImages = R.remove(
+        model.imageIndex,
+        1,
+        this.dangerLabelImages
+      );
+    }
+  }
 }

@@ -29,9 +29,13 @@
         [availableTags]="availableTags"
         [filteredItemTypes]="filteredItemTypes"
         [dependencies]="itemTypeDependencies"
+        [dangerLabelImages]="dangerLabelImages"
+        [pictogramImages]="pictogramImages"
         (dependentItemGroupChanged)="onDependentItemGroupChanged($event)"
         (createNewDependency)="addNewDependency()"
+        (imageProcessed)="onImageProcessed($event)"
         (deleteDependency)="onDeleteDependency($event)"
+        (deleteImage)="onDeleteImage($event)"
       ></app-item-type-edit-form>
     </div>
   </div>
