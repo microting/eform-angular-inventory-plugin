@@ -67,7 +67,7 @@ export class ItemTypesTableComponent implements OnInit {
     this.tagSelected.emit(id);
   }
 
-  openPicturesModal(images: string[], isPictogram: boolean) {
+  openImagesModal(images: string[], isPictogram: boolean) {
     this.showPictures.emit({ images, isPictogram });
   }
 }

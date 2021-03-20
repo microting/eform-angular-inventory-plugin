@@ -164,7 +164,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   }
 
   uploadImages(itemTypeId: number) {
-    if (this.pictogramImages) {
+    if (this.pictogramImages && this.pictogramImages.length) {
       this.uploadItemTypePictograms$ = this.itemTypesService
         .uploadItemTypeImages({
           files: this.pictogramImages.map((x) => {
@@ -175,7 +175,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
         })
         .subscribe((data) => {});
     }
-    if (this.dangerLabelImages) {
+    if (this.dangerLabelImages && this.dangerLabelImages.length) {
       this.uploadItemTypeDangerLabels$ = this.itemTypesService
         .uploadItemTypeImages({
           files: this.dangerLabelImages.map((x) => {

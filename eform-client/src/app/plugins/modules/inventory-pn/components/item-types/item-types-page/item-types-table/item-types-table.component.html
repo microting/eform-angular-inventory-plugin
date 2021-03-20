@@ -64,9 +64,9 @@
         <td>
           <div class="d-flex flex-row justify-content-center">
             <button
-              id="workOrderShowPicturesOfTask"
+              id="showPictogramImages"
               *ngIf="itemTypeModel.pictogramImages"
-              (click)="openPicturesModal(itemTypeModel.dangerLabelImages, true)"
+              (click)="openImagesModal(itemTypeModel.dangerLabelImages, true)"
               class="btn btn-accent text-black-50 btn-icon mb-2"
               mdbTooltip="{{ 'View pictogram images' | translate }}"
             >
@@ -78,9 +78,9 @@
             </button>
             <button
               *ngIf="itemTypeModel.dangerLabelImages"
-              id="workOrderShowPicturesOfTaskDone"
+              id="showDangerLabelImages"
               (click)="
-                openPicturesModal(itemTypeModel.dangerLabelImages, false)
+                openImagesModal(itemTypeModel.dangerLabelImages, false)
               "
               class="btn btn-accent text-black-50 btn-icon mb-2"
               mdbTooltip="{{ 'View danger label images' | translate }}"
