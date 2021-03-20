@@ -27,6 +27,7 @@ namespace Inventory.Pn.Services.UploadedDataService
     using Infrastructure.Models.UploadedData;
     using InventoryLocalizationService;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Net.Http.Headers;
     using Microting.eForm.Dto;
     using Microting.eForm.Infrastructure.Data.Entities;
     using Microting.eFormApi.BasePn.Abstractions;
@@ -42,8 +43,7 @@ namespace Inventory.Pn.Services.UploadedDataService
         private readonly IEFormCoreService _coreService;
 
         public string SaveFolder =>
-            Path.Combine(_coreService.GetCore().Result.GetSdkSetting(Settings.fileLocationPicture).Result,
-                Path.Combine("itemTypeImageFiles"));
+            Path.Combine(_coreService.GetCore().Result.GetSdkSetting(Settings.fileLocationPicture).Result, "itemTypeImageFiles");
 
         public UploadedDataService(InventoryPnDbContext dbContext,
             IInventoryLocalizationService inventoryLocalizationService,
@@ -72,7 +72,7 @@ namespace Inventory.Pn.Services.UploadedDataService
         }
 
         public async Task<OperationResult> UploadUploadedData(UploadedDataModel uploadModel)
-        {
+        {   
             try
             {
                 var core = await _coreService.GetCore();
@@ -120,7 +120,34 @@ namespace Inventory.Pn.Services.UploadedDataService
 
         public async Task<IActionResult> DownloadUploadedData(string fileName)
         {
-            throw new System.NotImplementedException();
+            var core = await _coreService.GetCore();
+
+            if (core.GetSdkSetting(Settings.swiftEnabled).ToString()?.ToLower() == "true")
+            {
+                var ss = await core.GetFileFromSwiftStorage(fileName);
+
+                if (ss == null)
+                {
+                    return new NotFoundResult();
+                }
+                return new OkObjectResult(ss);
+            }
+
+            byte[] fileBytes;
+
+            if (File.Exists(fileName))
+            {
+                fileBytes = await File.ReadAllBytesAsync(fileName);
+            }
+            else
+            {
+                return new NotFoundResult();
+            }
+
+            return new FileContentResult(fileBytes, MediaTypeHeaderValue.Parse("image"))
+            {
+                FileDownloadName = fileName
+            };
         }
     }
 }
