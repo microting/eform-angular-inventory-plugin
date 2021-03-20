@@ -23,7 +23,7 @@ const itemType: InventoryItemType = {
   itemGroup: itemGroup.name,
 };
 
-describe('Inventory Item Types Page', function () {
+describe('Inventory Item Types Delete', function () {
   before(function () {
     loginPage.open('/');
     loginPage.login();

@@ -33,7 +33,7 @@ const itemType: InventoryItemType = {
 
 const tagsForEdit = [generateRandmString(), generateRandmString()];
 
-describe('Inventory Item Types Page', function () {
+describe('Inventory Item Types Edit', function () {
   before(function () {
     loginPage.open('/');
     loginPage.login();
@@ -132,6 +132,7 @@ describe('Inventory Item Types Page', function () {
     expect(inventoryItemTypesPage.rowNum).eq(countBeforeCreate);
   });
   after(function () {
+    inventoryItemTypesPage.deleteTags(itemType.tags);
     inventoryItemTypesPage.clearTable();
     inventoryItemGroupsPage.goToInventoryItemGroups();
     for (let i = 0; i < itemGroups.length; i++) {

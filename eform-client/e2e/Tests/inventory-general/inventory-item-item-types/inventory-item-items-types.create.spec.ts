@@ -24,7 +24,7 @@ const itemType: InventoryItemType = {
   tags: [generateRandmString(), generateRandmString()],
 };
 
-describe('Inventory Item Types Page', function () {
+describe('Inventory Item Types Create', function () {
   before(function () {
     loginPage.open('/');
     loginPage.login();
