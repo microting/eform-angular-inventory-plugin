@@ -16,6 +16,14 @@ exports.config = {
       'e2e/Tests/inventory-general/inventory-item-groups/inventory-item-groups.sort.spec.ts',
       'e2e/Tests/inventory-general/inventory-item-groups/inventory-item-groups.edit.spec.ts',
       'e2e/Tests/inventory-general/inventory-item-groups/inventory-item-groups.delete.spec.ts',
+      'e2e/Tests/inventory-general/inventory-item-item-types/inventory-item-items-types.create.spec.ts',
+      'e2e/Tests/inventory-general/inventory-item-item-types/inventory-item-items-types.sort.spec.ts',
+      'e2e/Tests/inventory-general/inventory-item-item-types/inventory-item-items-types.edit.spec.ts',
+      'e2e/Tests/inventory-general/inventory-item-item-types/inventory-item-items-types.delete.spec.ts',
+      'e2e/Tests/inventory-general/inventory-item-items/inventory-item-items.create.spec.ts',
+      'e2e/Tests/inventory-general/inventory-item-items/inventory-item-items.sort.spec.ts',
+      'e2e/Tests/inventory-general/inventory-item-items/inventory-item-items.edit.spec.ts',
+      'e2e/Tests/inventory-general/inventory-item-items/inventory-item-items.delete.spec.ts',
   ],
   suites: {
     settings: [

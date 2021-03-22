@@ -1,4 +1,9 @@
 import { PageWithNavbarPage } from '../PageWithNavbar.page';
+import {
+  generateRandmString,
+  getRandomInt,
+} from '../../Helpers/helper-functions';
+import { parse, format } from 'date-fns';
 
 class InventoryItemsPage extends PageWithNavbarPage {
   constructor() {
@@ -40,6 +45,55 @@ class InventoryItemsPage extends PageWithNavbarPage {
   public get SNFilterInput() {
     const ele = $('#SNFilterInput');
     ele.waitForDisplayed({ timeout: 20000 });
+    return ele;
+  }
+
+  public get idTableHeader() {
+    const ele = $('#idTableHeader');
+    ele.waitForDisplayed({ timeout: 20000 });
+    ele.waitForClickable({ timeout: 20000 });
+    return ele;
+  }
+
+  public get typeTableHeader() {
+    const ele = $('#typeTableHeader');
+    ele.waitForDisplayed({ timeout: 20000 });
+    ele.waitForClickable({ timeout: 20000 });
+    return ele;
+  }
+
+  public get locationTableHeader() {
+    const ele = $('#locationTableHeader');
+    ele.waitForDisplayed({ timeout: 20000 });
+    ele.waitForClickable({ timeout: 20000 });
+    return ele;
+  }
+
+  public get expiresTableHeader() {
+    const ele = $('#expiresTableHeader');
+    ele.waitForDisplayed({ timeout: 20000 });
+    ele.waitForClickable({ timeout: 20000 });
+    return ele;
+  }
+
+  public get SNTableHeader() {
+    const ele = $('#expiresTableHeader');
+    ele.waitForDisplayed({ timeout: 20000 });
+    ele.waitForClickable({ timeout: 20000 });
+    return ele;
+  }
+
+  public get itemGroupTableHeader() {
+    const ele = $('#itemGroupTableHeader');
+    ele.waitForDisplayed({ timeout: 20000 });
+    ele.waitForClickable({ timeout: 20000 });
+    return ele;
+  }
+
+  public get StatusTableHeader() {
+    const ele = $('#StatusTableHeader');
+    ele.waitForDisplayed({ timeout: 20000 });
+    ele.waitForClickable({ timeout: 20000 });
     return ele;
   }
 
@@ -182,11 +236,19 @@ class InventoryItemsPage extends PageWithNavbarPage {
         this.itemCreateSNInput.setValue(inventoryItem.sn);
       }
       if (inventoryItem.status !== undefined) {
-        this.itemCreateAvailableSelector
-          .$('input')
-          .setValue(inventoryItem.status);
+        let status;
+        if (typeof inventoryItem.status === 'boolean') {
+          if (inventoryItem.status) {
+            status = 'On';
+          } else {
+            status = 'Off';
+          }
+        } else {
+          status = inventoryItem.status;
+        }
+        this.itemCreateAvailableSelector.$('input').setValue(status);
         const value = this.itemCreateAvailableSelector.$(
-          `.ng-option=${inventoryItem.status}`
+          `.ng-option=${status}`
         );
         value.waitForDisplayed({ timeout: 20000 });
         value.click();
@@ -214,6 +276,56 @@ class InventoryItemsPage extends PageWithNavbarPage {
     this.createInventoryItemOpenModal(inventoryItem);
     this.createInventoryItemCloseModal(clickCancel);
   }
+
+  public getInventoryItemByNumber(number: number): InventoryItemObject {
+    return new InventoryItemObject(number);
+  }
+
+  public getInventoryItemByNameItemType(
+    nameItemType: string
+  ): InventoryItemObject {
+    browser.pause(500);
+    for (let i = 1; i < this.rowNum + 1; i++) {
+      const item = this.getInventoryItemByNumber(i);
+      if (item.itemType === nameItemType) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  public getFirstInventoryItem(): InventoryItemObject {
+    return this.getInventoryItemByNumber(1);
+  }
+
+  public clearTable() {
+    browser.pause(500);
+    const rowCount = this.rowNum;
+    for (let i = 1; i <= rowCount; i++) {
+      const item = this.getFirstInventoryItem();
+      item.delete();
+    }
+  }
+
+  public createDummyInventoryItemTypes(itemType: string, createCount = 3) {
+    for (let i = 0; i < createCount; i++) {
+      const item: InventoryItem = {
+        itemType: itemType,
+        expires: format(
+          new Date(
+            getRandomInt(2021, 2052),
+            getRandomInt(1, 12),
+            getRandomInt(1, 28)
+          ),
+          'M/d/yyyy'
+        ),
+        location: generateRandmString(),
+        sn: generateRandmString(),
+        status: Boolean(getRandomInt(0, 2)),
+      };
+      this.createInventoryItem(item);
+    }
+  }
 }
 
 const inventoryItemsPage = new InventoryItemsPage();
@@ -229,6 +341,7 @@ export class InventoryItemObject {
       this.expires = this.element.$('#itemExpirationDate').getText();
       this.sn = this.element.$('#itemSN').getText();
       this.status = this.element.$('#itemStatus').getText();
+      this.itemGroup = this.element.$('#itemGroup').getText();
       this.updateBtn = this.element.$('#editItemBtn');
       this.deleteBtn = this.element.$('#deleteItemBtn');
     }
@@ -241,6 +354,7 @@ export class InventoryItemObject {
   public expires: string;
   public sn: string;
   public status: string;
+  public itemGroup: string;
   public updateBtn;
   public deleteBtn;
 
@@ -291,7 +405,10 @@ export class InventoryItemObject {
       if (inventoryItem.expires && inventoryItem.expires !== this.expires) {
         inventoryItemsPage.itemEditExpiresInput.setValue(inventoryItem.expires);
       }
-      if (inventoryItem.location && inventoryItem.location !== this.location) {
+      if (
+        (inventoryItem.location && inventoryItem.location !== this.location) ||
+        inventoryItem.location === ''
+      ) {
         inventoryItemsPage.itemEditLocationInput.setValue(
           inventoryItem.location
         );
@@ -299,15 +416,22 @@ export class InventoryItemObject {
       if (inventoryItem.sn && inventoryItem.sn !== this.sn) {
         inventoryItemsPage.itemEditSNInput.setValue(inventoryItem.sn);
       }
-      if (
-        inventoryItem.status !== undefined &&
-        inventoryItem.status !== this.status
-      ) {
+      if (inventoryItem.status !== undefined) {
+        let status;
+        if (typeof inventoryItem.status === 'boolean') {
+          if (inventoryItem.status) {
+            status = 'On';
+          } else {
+            status = 'Off';
+          }
+        } else {
+          status = inventoryItem.status;
+        }
         inventoryItemsPage.itemEditAvailableSelector
           .$('input')
-          .setValue(inventoryItem.status);
+          .setValue(status);
         const value = inventoryItemsPage.itemEditAvailableSelector.$(
-          `.ng-option=${inventoryItem.status}`
+          `.ng-option=${status}`
         );
         value.waitForDisplayed({ timeout: 20000 });
         value.click();
@@ -340,5 +464,5 @@ export class InventoryItem {
   public location: string;
   public expires: string;
   public sn: string;
-  public status: string;
+  public status: string | boolean;
 }

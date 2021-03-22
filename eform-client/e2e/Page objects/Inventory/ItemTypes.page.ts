@@ -1,6 +1,7 @@
 import { PageWithNavbarPage } from '../PageWithNavbar.page';
 import inventoryItemsPage from './Items.page';
 import { parse } from 'date-fns';
+import { generateRandmString } from '../../Helpers/helper-functions';
 
 class InventoryItemTypesPage extends PageWithNavbarPage {
   constructor() {
@@ -85,13 +86,6 @@ class InventoryItemTypesPage extends PageWithNavbarPage {
 
   public get dateTableHeader() {
     const ele = $('#dateTableHeader');
-    ele.waitForDisplayed({ timeout: 20000 });
-    ele.waitForClickable({ timeout: 20000 });
-    return ele;
-  }
-
-  public get itemTypeTableHeader() {
-    const ele = $('#itemTypeTableHeader');
     ele.waitForDisplayed({ timeout: 20000 });
     ele.waitForClickable({ timeout: 20000 });
     return ele;
@@ -363,6 +357,24 @@ class InventoryItemTypesPage extends PageWithNavbarPage {
       itemType.delete();
     }
   }
+
+  public createDummyInventoryItemTypes(
+    itemGroup: string,
+    tags?: string[],
+    createCount = 3
+  ) {
+    for (let i = 0; i < createCount; i++) {
+      const itemType: InventoryItemType = {
+        itemGroup: itemGroup,
+        RiscDescription: generateRandmString(),
+        description: generateRandmString(),
+        name: generateRandmString(),
+        tags: [...tags[createCount - i - 1]],
+        usage: generateRandmString(),
+      };
+      this.createInventoryItemType(itemType);
+    }
+  }
 }
 
 const inventoryItemTypesPage = new InventoryItemTypesPage();
@@ -465,9 +477,7 @@ export class InventoryItemTypeObject {
           'span.ng-value-icon'
         );
         for (let i = 0; i < clearButtons.length; i++) {
-          if (clearButtons[i].isExisting()) {
-            clearButtons[i].click();
-          }
+          clearButtons[i].click();
         }
       }
       if (itemType.tags && itemType.tags.length > 0) {

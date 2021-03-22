@@ -31,7 +31,7 @@ const itemType: InventoryItemType = {
   tags: [generateRandmString(), generateRandmString()],
 };
 
-const tagsForEdit = [generateRandmString(), generateRandmString()];
+let tagsForEdit = [generateRandmString(), generateRandmString()];
 
 describe('Inventory Item Types Edit', function () {
   before(function () {
@@ -60,7 +60,8 @@ describe('Inventory Item Types Edit', function () {
     itemType.description = generateRandmString();
     itemType.RiscDescription = generateRandmString();
     itemType.itemGroup = itemGroups[1].name;
-    itemType.tags = tagsForEdit;
+    tagsForEdit = [...itemType.tags];
+    itemType.tags = [tagsForEdit[0], tagsForEdit[1]];
     inventoryItemTypeFromTable.update(itemType, true);
     expect(inventoryItemTypesPage.rowNum).eq(countBeforeCreate);
     inventoryItemTypeFromTable = inventoryItemTypesPage.getInventoryItemTypeByName(
@@ -132,7 +133,7 @@ describe('Inventory Item Types Edit', function () {
     expect(inventoryItemTypesPage.rowNum).eq(countBeforeCreate);
   });
   after(function () {
-    inventoryItemTypesPage.deleteTags(itemType.tags);
+    inventoryItemTypesPage.deleteTags(tagsForEdit);
     inventoryItemTypesPage.clearTable();
     inventoryItemGroupsPage.goToInventoryItemGroups();
     for (let i = 0; i < itemGroups.length; i++) {

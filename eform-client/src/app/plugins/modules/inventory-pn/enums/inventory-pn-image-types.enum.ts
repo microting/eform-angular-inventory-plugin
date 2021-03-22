@@ -1,5 +1,4 @@
 export enum InventoryPnImageTypesEnum {
-  Pictogram = 0,
-  DangerLabel = 1,
+  Pictogram = 1,
+  DangerLabel = 2,
 }
-
