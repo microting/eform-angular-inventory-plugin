@@ -65,7 +65,7 @@
           <div class="d-flex flex-row justify-content-center">
             <button
               id="showPictogramImages"
-              *ngIf="itemTypeModel.pictogramImages"
+              *ngIf="itemTypeModel.pictogramImages && itemTypeModel.pictogramImages.length > 0"
               (click)="openImagesModal(itemTypeModel.dangerLabelImages, true)"
               class="btn btn-accent text-black-50 btn-icon mb-2"
               mdbTooltip="{{ 'View pictogram images' | translate }}"
@@ -77,7 +77,7 @@
               ></fa-icon>
             </button>
             <button
-              *ngIf="itemTypeModel.dangerLabelImages"
+              *ngIf="itemTypeModel.dangerLabelImages && itemTypeModel.dangerLabelImages.length > 0"
               id="showDangerLabelImages"
               (click)="
                 openImagesModal(itemTypeModel.dangerLabelImages, false)

@@ -168,7 +168,9 @@
           <app-item-type-images
             [imageType]="imageTypes.Pictogram"
             [processedImages]="pictogramImages"
+            [uploadedImages]="selectedItemTypeModel.pictogramImages"
             (imageProcessed)="onImageProcessed($event)"
+            (deleteUploadedImage)="onDeleteUploadedImage($event)"
             (deleteImage)="onDeleteImage($event)"
           ></app-item-type-images>
         </div>
@@ -195,7 +197,9 @@
           <app-item-type-images
             [imageType]="imageTypes.DangerLabel"
             [processedImages]="dangerLabelImages"
+            [uploadedImages]="selectedItemTypeModel.dangerLabelImages"
             (imageProcessed)="onImageProcessed($event)"
+            (deleteUploadedImage)="onDeleteUploadedImage($event)"
             (deleteImage)="onDeleteImage($event)"
           ></app-item-type-images>
         </div>

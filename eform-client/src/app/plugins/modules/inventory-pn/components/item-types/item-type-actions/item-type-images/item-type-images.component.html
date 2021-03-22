@@ -7,6 +7,23 @@
       <div class="col-xs-12 col-md-12">
         <div class="d-flex flex-wrap">
           <mdb-card class="flex-column mr-4 mb-4"
+                    *ngFor="let image of uploadedImages"
+          >
+            <img
+              class="card-img-fixed"
+              [src]="(url + image.name) | authImage"
+              alt="Card image cap"
+            />
+            <button
+              mdbBtn
+              class="btn-icon btn-danger"
+              mdbTooltip="{{ 'Delete picture' | translate }}"
+              (click)="onDeleteUploadedImage(image.id)"
+            >
+              <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+          </mdb-card>
+          <mdb-card class="flex-column mr-4 mb-4"
             *ngFor="let image of processedImages; let i = index"
           >
             <img

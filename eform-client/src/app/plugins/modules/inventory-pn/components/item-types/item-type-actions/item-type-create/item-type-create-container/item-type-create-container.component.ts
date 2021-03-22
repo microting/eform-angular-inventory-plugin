@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import * as R from 'ramda';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, forkJoin } from 'rxjs';
 import { CommonDictionaryModel } from 'src/app/common/models';
 import { InventoryPnImageTypesEnum } from '../../../../../enums';
 import {
@@ -35,8 +35,14 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
   createItemTypeSub$: Subscription;
   getItemGroupsDictionarySub$: Subscription;
   getItemTypesDictionarySub$: Subscription;
-  uploadItemTypePictograms$: Subscription;
-  uploadItemTypeDangerLabels$: Subscription;
+  uploadItemTypeImages$: Subscription;
+
+  get pendingImagesExists() {
+    return (
+      (this.pictogramImages && this.pictogramImages.length) ||
+      (this.dangerLabelImages && this.dangerLabelImages.length)
+    );
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -126,33 +132,42 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
       .createItemType({ ...createModel, dependencies: [...dependencies] })
       .subscribe((data) => {
         if (data && data.success) {
-          this.uploadImages(data.model);
+          if (this.pendingImagesExists) {
+            this.uploadImages(data.model);
+          } else {
+            this.goBack();
+          }
         }
       });
   }
 
-  uploadImages(itemTypeId: number) {
+  uploadImages$(itemTypeId: number, imageType: InventoryPnImageTypesEnum) {
     if (this.pictogramImages && this.pictogramImages.length) {
-      this.uploadItemTypePictograms$ = this.itemTypesService
-        .uploadItemTypeImages({
-          files: this.pictogramImages.map((x) => {
-            return x.file;
-          }),
-          itemTypeId,
-          itemTypeImageType: InventoryPnImageTypesEnum.Pictogram,
-        })
-        .subscribe((data) => {});
+      return this.itemTypesService.uploadItemTypeImages({
+        files: this.pictogramImages.map((x) => {
+          return x.file;
+        }),
+        itemTypeId,
+        itemTypeImageType: imageType,
+      });
+    } else {
+      return new Observable<any>();
+    }
+  }
+
+  uploadImages(itemTypeId: number) {
+    let imagesSubs = {};
+    if (this.pictogramImages && this.pictogramImages.length) {
+      imagesSubs = {...imagesSubs, pictogram: this.uploadImages$(itemTypeId, InventoryPnImageTypesEnum.Pictogram)};
     }
     if (this.dangerLabelImages && this.dangerLabelImages.length) {
-      this.uploadItemTypeDangerLabels$ = this.itemTypesService
-        .uploadItemTypeImages({
-          files: this.dangerLabelImages.map((x) => {
-            return x.file;
-          }),
-          itemTypeId,
-          itemTypeImageType: InventoryPnImageTypesEnum.DangerLabel,
-        })
-        .subscribe((data) => {});
+      imagesSubs = {...imagesSubs, dangerLabel: this.uploadImages$(itemTypeId, InventoryPnImageTypesEnum.DangerLabel)};
+    }
+    // @ts-ignore
+    if (imagesSubs.pictogram || imagesSubs.dangerLabel) {
+      this.uploadItemTypeImages$ = forkJoin(imagesSubs).subscribe(() => {
+        this.goBack();
+      });
     }
   }
 

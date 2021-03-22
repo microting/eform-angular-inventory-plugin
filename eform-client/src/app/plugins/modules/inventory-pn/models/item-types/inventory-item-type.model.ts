@@ -1,3 +1,4 @@
+import { CommonDictionaryModel } from 'src/app/common/models';
 import { InventoryItemTypeDependencyModel } from './inventory-item-type-dependency.model';
 
 export class InventoryItemTypeModel {
@@ -8,7 +9,7 @@ export class InventoryItemTypeModel {
   usage: string;
   description: string;
   tagIds: number[];
-  pictogramImages: string[];
-  dangerLabelImages: string[];
+  pictogramImages: CommonDictionaryModel[];
+  dangerLabelImages: CommonDictionaryModel[];
   dependencies: InventoryItemTypeDependencyModel[];
 }

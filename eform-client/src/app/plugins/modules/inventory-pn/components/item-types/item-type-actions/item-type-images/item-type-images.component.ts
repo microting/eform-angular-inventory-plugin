@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CommonDictionaryModel } from 'src/app/common/models';
 import { InventoryPnImageTypesEnum } from '../../../../enums';
 import { InventoryItemTypeImageModel } from '../../../../models';
 
@@ -8,7 +9,7 @@ import { InventoryItemTypeImageModel } from '../../../../models';
   styleUrls: ['./item-type-images.component.scss'],
 })
 export class ItemTypeImagesComponent implements OnInit {
-  @Input() uploadedImageNames: string[];
+  @Input() uploadedImages: CommonDictionaryModel[];
   @Input() processedImages: InventoryItemTypeImageModel[];
   @Input() imageType: InventoryPnImageTypesEnum;
   @Output()
@@ -21,6 +22,15 @@ export class ItemTypeImagesComponent implements OnInit {
     imageIndex: number;
     imageType: InventoryPnImageTypesEnum;
   }>();
+  @Output()
+  deleteUploadedImage: EventEmitter<{
+    imageId: number;
+    imageType: InventoryPnImageTypesEnum;
+  }> = new EventEmitter<{
+    imageId: number;
+    imageType: InventoryPnImageTypesEnum;
+  }>();
+  url = '/api/images';
 
   constructor() {}
 
@@ -43,5 +53,9 @@ export class ItemTypeImagesComponent implements OnInit {
 
   onDeleteImage(imageIndex: number, imageType: InventoryPnImageTypesEnum) {
     this.deleteImage.emit({ imageIndex, imageType });
+  }
+
+  onDeleteUploadedImage(imageId: number) {
+    this.deleteUploadedImage.emit({ imageId, imageType: this.imageType });
   }
 }

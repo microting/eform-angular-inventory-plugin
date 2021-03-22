@@ -31,11 +31,13 @@
         [dependencies]="itemTypeDependencies"
         [dangerLabelImages]="dangerLabelImages"
         [pictogramImages]="pictogramImages"
+        [selectedItemTypeModel]="selectedItemTypeModel"
         (dependentItemGroupChanged)="onDependentItemGroupChanged($event)"
         (createNewDependency)="addNewDependency()"
         (imageProcessed)="onImageProcessed($event)"
         (deleteDependency)="onDeleteDependency($event)"
         (deleteImage)="onDeleteImage($event)"
+        (deleteUploadedImage)="onDeleteUploadedImage($event)"
       ></app-item-type-edit-form>
     </div>
   </div>

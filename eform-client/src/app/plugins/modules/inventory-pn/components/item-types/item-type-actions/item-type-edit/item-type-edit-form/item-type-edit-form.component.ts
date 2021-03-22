@@ -1,8 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { CommonDictionaryModel } from 'src/app/common/models';
-import {InventoryItemTypeImageModel} from 'src/app/plugins/modules/inventory-pn/models';
-import {InventoryPnImageTypesEnum} from '../../../../../enums';
+import {
+  InventoryItemTypeImageModel,
+  InventoryItemTypeModel,
+} from '../../../../../models';
+import { InventoryPnImageTypesEnum } from '../../../../../enums';
 
 @Component({
   selector: 'app-item-type-edit-form',
@@ -15,6 +18,7 @@ export class ItemTypeEditFormComponent implements OnInit {
   @Input() availableTags: CommonDictionaryModel[] = [];
   @Input() filteredItemTypes: CommonDictionaryModel[][] = [];
   @Input() dependencies: FormArray;
+  @Input() selectedItemTypeModel: InventoryItemTypeModel;
   @Output() createNewDependency: EventEmitter<void> = new EventEmitter<void>();
   @Output() dependentItemGroupChanged: EventEmitter<{
     itemGroupId: number;
@@ -35,6 +39,13 @@ export class ItemTypeEditFormComponent implements OnInit {
     imageType: InventoryPnImageTypesEnum;
   }> = new EventEmitter<{
     imageIndex: number;
+    imageType: InventoryPnImageTypesEnum;
+  }>();
+  @Output() deleteUploadedImage: EventEmitter<{
+    imageId: number;
+    imageType: InventoryPnImageTypesEnum;
+  }> = new EventEmitter<{
+    imageId: number;
     imageType: InventoryPnImageTypesEnum;
   }>();
   @Input() pictogramImages: InventoryItemTypeImageModel[];
@@ -75,5 +86,12 @@ export class ItemTypeEditFormComponent implements OnInit {
     imageType: InventoryPnImageTypesEnum;
   }) {
     this.deleteImage.emit(model);
+  }
+
+  onDeleteUploadedImage(model: {
+    imageId: number;
+    imageType: InventoryPnImageTypesEnum;
+  }) {
+    this.deleteUploadedImage.emit(model);
   }
 }

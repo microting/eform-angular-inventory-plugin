@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { Subscription } from 'rxjs';
+import {forkJoin, merge, Observable, Subscription} from 'rxjs';
 import { CommonDictionaryModel } from 'src/app/common/models';
 import { InventoryPnImageTypesEnum } from 'src/app/plugins/modules/inventory-pn/enums';
 import {
@@ -27,6 +27,7 @@ import * as R from 'ramda';
 })
 export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   selectedItemTypeId: number;
+  selectedItemTypeModel: InventoryItemTypeModel = new InventoryItemTypeModel();
   availableTags: CommonDictionaryModel[] = [];
   availableItemGroups: CommonDictionaryModel[] = [];
   filteredItemTypes: CommonDictionaryModel[][] = [];
@@ -34,7 +35,9 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   itemTypeDependencies: FormArray = new FormArray([]);
   dependenciesIdsForDelete: number[] = [];
   pictogramImages: InventoryItemTypeImageModel[] = [];
+  pictogramImagesForDelete: number[] = [];
   dangerLabelImages: InventoryItemTypeImageModel[] = [];
+  dangerLabelImagesForDelete: number[] = [];
 
   getTagsSub$: Subscription;
   activatedRouteSub$: Subscription;
@@ -42,8 +45,14 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   updateItemTypeSub$: Subscription;
   getItemGroupsDictionarySub$: Subscription;
   getItemTypesDictionarySub$: Subscription;
-  uploadItemTypePictograms$: Subscription;
-  uploadItemTypeDangerLabels$: Subscription;
+  uploadItemTypeImages$: Subscription;
+
+  get pendingImagesExists() {
+    return (
+      (this.pictogramImages && this.pictogramImages.length) ||
+      (this.dangerLabelImages && this.dangerLabelImages.length)
+    );
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -128,6 +137,7 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         if (data && data.success) {
           this.updateEditForm(data.model);
+          this.selectedItemTypeModel = data.model;
         }
       });
   }
@@ -163,49 +173,48 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       });
   }
 
+  uploadImages$(itemTypeId: number, imageType: InventoryPnImageTypesEnum) {
+    return this.itemTypesService.uploadItemTypeImages({
+      files: this.pictogramImages.map((x) => {
+        return x.file;
+      }),
+      itemTypeId,
+      itemTypeImageType: imageType,
+    });
+  }
+
   uploadImages(itemTypeId: number) {
+    let imagesSubs = {};
     if (this.pictogramImages && this.pictogramImages.length) {
-      this.uploadItemTypePictograms$ = this.itemTypesService
-        .uploadItemTypeImages({
-          files: this.pictogramImages.map((x) => {
-            return x.file;
-          }),
-          itemTypeId,
-          itemTypeImageType: InventoryPnImageTypesEnum.Pictogram,
-        })
-        .subscribe((data) => {});
+      imagesSubs = {...imagesSubs, pictogram: this.uploadImages$(itemTypeId, InventoryPnImageTypesEnum.Pictogram)};
     }
     if (this.dangerLabelImages && this.dangerLabelImages.length) {
-      this.uploadItemTypeDangerLabels$ = this.itemTypesService
-        .uploadItemTypeImages({
-          files: this.dangerLabelImages.map((x) => {
-            return x.file;
-          }),
-          itemTypeId,
-          itemTypeImageType: InventoryPnImageTypesEnum.DangerLabel,
-        })
-        .subscribe((data) => {});
+      imagesSubs = {...imagesSubs, dangerLabel: this.uploadImages$(itemTypeId, InventoryPnImageTypesEnum.DangerLabel)};
+    }
+    // @ts-ignore
+    if (imagesSubs.pictogram || imagesSubs.dangerLabel) {
+      this.uploadItemTypeImages$ = forkJoin(imagesSubs).subscribe(() => {
+        this.goBack();
+      });
     }
   }
 
   updateItemType() {
-    // Compose model from array of dependencies and ids for delete
-    const dependencies = this.itemTypeDependencies.value as {
-      id: number;
-      itemGroupId: number;
-      itemTypesIds: number[];
-    }[];
-    const updateModel = this.editItemTypeForm
-      .value as InventoryItemTypeUpdateModel;
+    // Composing required values in a model
     this.updateItemTypeSub$ = this.itemTypesService
       .updateItemType({
-        ...updateModel,
-        dependencies: [...dependencies],
+        // Form values
+        ...this.editItemTypeForm.value,
+        dependencies: [...this.itemTypeDependencies.value],
         dependenciesIdsForDelete: [...this.dependenciesIdsForDelete],
-      })
-      .subscribe((data) => {
-        if (data && data.success) {
+        pictogramImagesForDelete: [...this.pictogramImagesForDelete],
+        dangerLabelImagesForDelete: [...this.dangerLabelImagesForDelete],
+      } as InventoryItemTypeUpdateModel)
+      .subscribe(() => {
+        if (this.pendingImagesExists) {
           this.uploadImages(this.selectedItemTypeId);
+        } else {
+          this.goBack();
         }
       });
   }
@@ -269,6 +278,23 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
         1,
         this.dangerLabelImages
       );
+    }
+  }
+
+  onDeleteUploadedImage(model: {
+    imageId: number;
+    imageType: InventoryPnImageTypesEnum;
+  }) {
+    if (model.imageType === InventoryPnImageTypesEnum.Pictogram) {
+      this.pictogramImagesForDelete = [
+        ...this.pictogramImagesForDelete,
+        model.imageId,
+      ];
+    } else {
+      this.dangerLabelImagesForDelete = [
+        ...this.pictogramImagesForDelete,
+        model.imageId,
+      ];
     }
   }
 }
