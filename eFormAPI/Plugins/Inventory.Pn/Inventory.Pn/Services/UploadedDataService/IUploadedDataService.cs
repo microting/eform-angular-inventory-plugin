@@ -24,15 +24,10 @@ namespace Inventory.Pn.Services.UploadedDataService
     using Infrastructure.Models.UploadedData;
     using Microsoft.AspNetCore.Mvc;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
 
     public interface IUploadedDataService
     {
-        Task<OperationDataResult<UploadedDatasModel>> Index(int itemTypeId);
-        
-        Task<OperationResult> Update(UploadedDataModel uploadedDataModel);
-
-        Task<OperationResult> Delete(int id);
-
         Task<OperationResult> UploadUploadedData(UploadedDataModel uploadModel);
 
         Task<IActionResult> DownloadUploadedData(string fileName);

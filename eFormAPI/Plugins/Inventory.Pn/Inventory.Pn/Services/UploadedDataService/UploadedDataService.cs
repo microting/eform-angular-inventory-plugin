@@ -25,11 +25,9 @@ namespace Inventory.Pn.Services.UploadedDataService
     using System.IO;
     using System.Threading.Tasks;
     using Infrastructure.Models.UploadedData;
-    using InventoryLocalizationService;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Net.Http.Headers;
     using Microting.eForm.Dto;
-    using Microting.eForm.Infrastructure.Data.Entities;
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using Microting.eFormInventoryBase.Infrastructure.Data;
@@ -38,7 +36,6 @@ namespace Inventory.Pn.Services.UploadedDataService
     public class UploadedDataService : IUploadedDataService
     {
         private readonly InventoryPnDbContext _dbContext;
-        private readonly IInventoryLocalizationService _inventoryLocalizationService;
         private readonly IUserService _userService;
         private readonly IEFormCoreService _coreService;
 
@@ -46,31 +43,14 @@ namespace Inventory.Pn.Services.UploadedDataService
             Path.Combine(_coreService.GetCore().Result.GetSdkSetting(Settings.fileLocationPicture).Result, "itemTypeImageFiles");
 
         public UploadedDataService(InventoryPnDbContext dbContext,
-            IInventoryLocalizationService inventoryLocalizationService,
             IUserService userService,
             IEFormCoreService coreService)
         {
             _dbContext = dbContext;
-            _inventoryLocalizationService = inventoryLocalizationService;
             _userService = userService;
             _coreService = coreService;
         }
-
-        public async Task<OperationDataResult<UploadedDatasModel>> Index(int itemTypeId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<OperationResult> Update(UploadedDataModel uploadedDataModel)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<OperationResult> Delete(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
+        
         public async Task<OperationResult> UploadUploadedData(UploadedDataModel uploadModel)
         {   
             try

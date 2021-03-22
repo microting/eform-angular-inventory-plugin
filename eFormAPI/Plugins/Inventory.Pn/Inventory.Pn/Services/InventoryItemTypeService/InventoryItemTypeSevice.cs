@@ -347,13 +347,16 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
             }
         }
 
-        public async Task<OperationResult> UpdateItemType(ItemTypeUpdateModel model)
+        public async Task<OperationResult> UpdateItemType(ItemTypeUpdateModel updateModel)
         {
             try
             {
                 var itemTypesFromDb = await _dbContext.ItemTypes
-                    .Where(x => x.Id == model.Id)
+                    .Where(x => x.Id == updateModel.Id)
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Include(x => x.ItemTypeTags)
+                    .Include(x => x.ItemGroupDependencies)
+                    .Include(x => x.ItemTypeUploadedDatas)
                     .FirstOrDefaultAsync();
 
                 if (itemTypesFromDb == null)
@@ -361,14 +364,21 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     return new OperationResult(false, _inventoryLocalizationService.GetString("InventoryItemTypeNotFount"));
                 }
 
+
+                var tagIds = itemTypesFromDb.ItemTypeTags
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Select(x => x.InventoryTagId)
+                    .ToList();
+
                 var tagsForDelete = itemTypesFromDb.ItemTypeTags
-                    .Where(x => !model.TagIds.Contains(x.InventoryTagId))
+                    .Where(x => !updateModel.TagIds.Contains(x.InventoryTagId))
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .ToList();
 
-                var tagIdsForAdd = model.TagIds
-                    .Where(x => !itemTypesFromDb.ItemTypeTags.Select(y => y.InventoryTagId).Contains(x))
+                var tagsForAdd = updateModel.TagIds
+                    .Where(x => !tagIds.Contains(x))
                     .ToList();
-
+                
                 // delete tags from item type
                 foreach (var itemTypeTag in tagsForDelete)
                 {
@@ -376,7 +386,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 }
 
                 // add tags to item type
-                foreach (var tagId in tagIdsForAdd)
+                foreach (var tagId in tagsForAdd)
                 {
                     var tag = await _dbContext.InventoryTags
                         .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
@@ -403,10 +413,10 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
 
                 var itemGroupDependenciesForDelete = itemTypesFromDb.ItemGroupDependencies
                     .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
-                    .Where(x => model.DependenciesIdsForDelete.Contains(x.Id))
+                    .Where(x => updateModel.DependenciesIdsForDelete.Contains(x.Id))
                     .ToList();
 
-                var itemGroupIdsDependenciesForAdd = model.Dependencies.Where(x =>
+                var itemGroupIdsDependenciesForAdd = updateModel.Dependencies.Where(x =>
                         !itemTypesFromDb.ItemGroupDependencies
                             .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                             .Select(y => y.ItemGroupId).ToList()
@@ -414,13 +424,11 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     .Select(x => x.ItemGroupId);
 
                 var itemTypeDependenciesForDelete = dependItemTypes.Where(x =>
-                    model.Dependencies.Any(y => y.ItemTypesIds.Any(z => z != x.DependItemTypeId))).ToList();
+                    updateModel.Dependencies.Any(y => y.ItemTypesIds.Any(z => z != x.DependItemTypeId))).ToList();
 
-                var itemTypeDependenciesForAdd = model.Dependencies
+                var itemTypeDependenciesForAdd = updateModel.Dependencies
                     .SelectMany(x => x.ItemTypesIds)
                     .Where(x => !dependItemTypes.Select(y => y.DependItemTypeId).Contains(x));
-
-
 
                 // remove item group Dependency from item type 
                 foreach (var itemGroupDependency in itemGroupDependenciesForDelete)
@@ -466,12 +474,27 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     }
                 }
 
-                itemTypesFromDb.RiskDescription = model.RiskDescription;
+                // delete uploaded images
+                foreach (var uploadedDataType in itemTypesFromDb.ItemTypeUploadedDatas
+                    .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed))
+                {
+                    if (uploadedDataType.Type == TypeUploadedData.Pictogram &&
+                        updateModel.PictogramImagesForDelete.Contains(uploadedDataType.Id) ||
+                        uploadedDataType.Type == TypeUploadedData.Danger &&
+                        updateModel.DangerLabelImagesForDelete.Contains(uploadedDataType.Id))
+                    {
+                        uploadedDataType.UpdatedByUserId = _userService.UserId;
+                        await uploadedDataType.Delete(_dbContext);
+                    }
+                }
+
+
+                itemTypesFromDb.RiskDescription = updateModel.RiskDescription;
                 itemTypesFromDb.UpdatedByUserId = _userService.UserId;
-                itemTypesFromDb.ItemGroupId = model.ItemGroupId;
-                itemTypesFromDb.Description = model.Description;
-                itemTypesFromDb.Usage = model.Usage;
-                itemTypesFromDb.Name = model.Name;
+                itemTypesFromDb.ItemGroupId = updateModel.ItemGroupId;
+                itemTypesFromDb.Description = updateModel.Description;
+                itemTypesFromDb.Usage = updateModel.Usage;
+                itemTypesFromDb.Name = updateModel.Name;
 
                 await itemTypesFromDb.Update(_dbContext);
 
@@ -503,12 +526,20 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     DangerLabelImages = x.ItemTypeUploadedDatas
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Where(y => y.Type == TypeUploadedData.Danger)
-                        .Select(y => $"{_folderImages}/{y.FileName}")
+                        .Select(y => new CommonDictionaryModel
+                        {
+                            Name = $"{_folderImages}{y.FileName}",
+                            Id = y.Id
+                        })
                         .ToList(),
                     PictogramImages = x.ItemTypeUploadedDatas
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Where(y => y.Type == TypeUploadedData.Pictogram)
-                        .Select(y => $"{_folderImages}/{y.FileName}")
+                        .Select(y => new CommonDictionaryModel
+                        {
+                            Name = $"{_folderImages}{y.FileName}",
+                            Id = y.Id
+                        })
                         .ToList(),
                     ParentTypeName = x.DependItemTypes
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)

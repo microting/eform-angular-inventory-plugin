@@ -23,20 +23,27 @@ namespace Inventory.Pn.Controllers
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Infrastructure.Models.ItemType;
+    using Infrastructure.Models.UploadedData;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Services.InventoryItemTypeService;
+    using Services.UploadedDataService;
 
     [Authorize]
     public class InventoryItemTypeController : Controller
     {
         private readonly IInventoryItemTypeService _inventoryItemTypeService;
+        private readonly IUploadedDataService _uploadedDataService;
 
-        public InventoryItemTypeController(IInventoryItemTypeService inventoryItemTypeService)
+        public InventoryItemTypeController(
+            IInventoryItemTypeService inventoryItemTypeService,
+            IUploadedDataService uploadedDataService
+            )
         {
             _inventoryItemTypeService = inventoryItemTypeService;
+            _uploadedDataService = uploadedDataService;
         }
 
         /// <summary>
@@ -105,6 +112,21 @@ namespace Inventory.Pn.Controllers
         public async Task<OperationDataResult<List<CommonDictionaryModel>>> Dictionary([FromQuery] int? itemGroupId)
         {
             return await _inventoryItemTypeService.GetItemTypesDictionary(itemGroupId);
+        }
+
+        [HttpPost]
+        [Route("api/inventory-pn/item-types/images")]
+        public async Task<OperationResult> UploadItemTypeImages(UploadedDataModel uploadModel)
+        {
+            return await _uploadedDataService.UploadUploadedData(uploadModel);
+        }
+
+
+        [HttpPost]
+        [Route("api/inventory-pn/item-types/images/download")]
+        public async Task<IActionResult> GetItemTypeImage(string fileName)
+        {
+            return await _uploadedDataService.DownloadUploadedData(fileName);
         }
     }
 }

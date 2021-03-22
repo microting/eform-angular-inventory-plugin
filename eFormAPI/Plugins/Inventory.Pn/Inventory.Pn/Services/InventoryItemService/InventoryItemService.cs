@@ -67,26 +67,6 @@ namespace Inventory.Pn.Services.InventoryItemService
                 var inventoryItemQuery = _dbContext.Items
                     .AsQueryable();
 
-                // sort
-                if (!string.IsNullOrEmpty(itemRequest.Sort))
-                {
-                    if (itemRequest.IsSortDsc)
-                    {
-                        inventoryItemQuery = inventoryItemQuery
-                            .CustomOrderByDescending(itemRequest.Sort);
-                    }
-                    else
-                    {
-                        inventoryItemQuery = inventoryItemQuery
-                            .CustomOrderBy(itemRequest.Sort);
-                    }
-                }
-                else
-                {
-                    inventoryItemQuery = inventoryItemQuery
-                        .OrderBy(x => x.Id);
-                }
-
                 inventoryItemQuery = inventoryItemQuery
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed);
 
@@ -113,8 +93,59 @@ namespace Inventory.Pn.Services.InventoryItemService
                         .Skip(itemRequest.Offset)
                         .Take(itemRequest.PageSize);
 
-                // add select and take objects from db
-                var inventoryItemsFromDb = await AddSelectToItemQuery(inventoryItemQuery).ToListAsync();
+                // add select
+                var inventoryItemQueryWithSelect = AddSelectToItemQuery(inventoryItemQuery);
+
+
+                // sort
+                if (!string.IsNullOrEmpty(itemRequest.Sort))
+                {
+                    if (itemRequest.IsSortDsc)
+                    {
+                        if (itemRequest.Sort == "ItemType")
+                        {
+                            inventoryItemQueryWithSelect = inventoryItemQueryWithSelect
+                                .OrderByDescending(x => x.ItemType.Name);
+                        }
+                        else if (itemRequest.Sort == "ItemGroup")
+                        {
+                            inventoryItemQueryWithSelect = inventoryItemQueryWithSelect
+                                .OrderByDescending(x => x.ItemGroup.Name);
+                        }
+                        else
+                        {
+                            inventoryItemQueryWithSelect = inventoryItemQueryWithSelect
+                                .CustomOrderByDescending(itemRequest.Sort);
+                        }
+                    }
+                    else
+                    {
+                        if (itemRequest.Sort == "ItemType")
+                        {
+                            inventoryItemQueryWithSelect = inventoryItemQueryWithSelect
+                                .OrderBy(x => x.ItemType.Name);
+                        }
+                        else if (itemRequest.Sort == "ItemGroup")
+                        {
+                            inventoryItemQueryWithSelect = inventoryItemQueryWithSelect
+                                .OrderBy(x => x.ItemGroup.Name);
+                        }
+                        else
+                        {
+                            inventoryItemQueryWithSelect = inventoryItemQueryWithSelect
+                                .CustomOrderBy(itemRequest.Sort);
+                        }
+                    }
+                }
+                else
+                {
+                    inventoryItemQueryWithSelect = inventoryItemQueryWithSelect
+                        .OrderBy(x => x.Id);
+                }
+
+                // take objects from db
+                var inventoryItemsFromDb = await inventoryItemQueryWithSelect.ToListAsync();
+
                 var returnValue = new Paged<ItemModel>
                 {
                     Entities = inventoryItemsFromDb,

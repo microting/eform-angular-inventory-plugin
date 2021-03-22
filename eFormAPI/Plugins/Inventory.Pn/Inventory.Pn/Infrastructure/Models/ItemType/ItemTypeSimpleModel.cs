@@ -40,11 +40,11 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 
         public string RiskDescription { get; set; }
 
-        public List<string> PictogramImages { get; set; }
-            = new List<string>();
+        public List<CommonDictionaryModel> PictogramImages { get; set; }
+            = new List<CommonDictionaryModel>();
 
-        public List<string> DangerLabelImages { get; set; }
-            = new List<string>();
+        public List<CommonDictionaryModel> DangerLabelImages { get; set; }
+            = new List<CommonDictionaryModel>();
 
         public string Name { get; set; }
 

@@ -44,5 +44,11 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 
         public List<int> DependenciesIdsForDelete { get; set; }
             = new List<int>();
+
+        public List<int> PictogramImagesForDelete { get; set; }
+            = new List<int>();
+
+        public List<int> DangerLabelImagesForDelete { get; set; }
+            = new List<int>();
     }
 }

@@ -6,7 +6,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Paged, PageSettingsModel } from 'src/app/common/models';
+import {
+  Paged,
+  PageSettingsModel,
+  TableHeaderElementModel,
+} from 'src/app/common/models';
 import {
   InventoryItemModel,
   InventoryItemsRequestModel,
@@ -30,6 +34,17 @@ export class ItemsPageTableComponent implements OnInit {
   showDeleteItemModal: EventEmitter<InventoryItemModel> = new EventEmitter<InventoryItemModel>();
   @Output()
   showEditItemModal: EventEmitter<InventoryItemModel> = new EventEmitter<InventoryItemModel>();
+
+  tableHeaders: TableHeaderElementModel[] = [
+    { name: 'Id', elementId: 'idTableHeader', sortable: true },
+    { name: 'ItemType', elementId: 'typeTableHeader', sortable: true },
+    { name: 'Location', elementId: 'locationTableHeader', sortable: true },
+    { name: 'ExpirationDate', elementId: 'expiresTableHeader', sortable: true },
+    { name: 'SN', elementId: 'SNTableHeader', sortable: true },
+    { name: 'ItemGroup', elementId: 'itemGroupTableHeader', sortable: true },
+    { name: 'Available', elementId: 'StatusTableHeader', sortable: true },
+    { name: 'Actions', elementId: '', sortable: false },
+  ];
 
   constructor() {}
 
