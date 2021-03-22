@@ -80,10 +80,10 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
     this.editItemTypeForm = this.formBuilder.group({
       id: [null, Validators.required],
       itemGroupId: [null, Validators.required],
-      name: ['', Validators.required],
+      name: [null, Validators.required],
       riskDescription: [''],
       usage: [''],
-      description: ['', Validators.required],
+      description: [null, Validators.required],
       pictogramImages: [],
       dangerLabelImages: [],
       tagIds: [],
