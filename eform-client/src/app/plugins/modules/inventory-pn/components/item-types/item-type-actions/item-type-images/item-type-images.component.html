@@ -1,17 +1,23 @@
 <mdb-card>
   <mdb-card-header>
-    {{ 'Pictogram' | translate }}
+    <ng-container *ngIf="imageType === imageTypes.Pictogram">
+      {{ 'Pictogram' | translate }}</ng-container
+    >
+    <ng-container *ngIf="imageType === imageTypes.DangerLabel">
+      {{ 'Danger label' | translate }}</ng-container
+    >
   </mdb-card-header>
   <mdb-card-body>
     <div class="row">
       <div class="col-xs-12 col-md-12">
         <div class="d-flex flex-wrap">
-          <mdb-card class="flex-column mr-4 mb-4"
-                    *ngFor="let image of uploadedImages"
+          <mdb-card
+            class="flex-column mr-4 mb-4"
+            *ngFor="let image of uploadedImages"
           >
             <img
               class="card-img-fixed"
-              [src]="(url + image.name) | authImage"
+              [src]="imagesUrl + '/' + image.name | authImage"
               alt="Card image cap"
             />
             <button
@@ -23,7 +29,8 @@
               <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
             </button>
           </mdb-card>
-          <mdb-card class="flex-column mr-4 mb-4"
+          <mdb-card
+            class="flex-column mr-4 mb-4"
             *ngFor="let image of processedImages; let i = index"
           >
             <img

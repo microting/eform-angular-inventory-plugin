@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonDictionaryModel } from 'src/app/common/models';
+import { InventoryPnItemTypesMethods } from '../../../../services';
 import { InventoryPnImageTypesEnum } from '../../../../enums';
 import { InventoryItemTypeImageModel } from '../../../../models';
 
@@ -30,7 +31,14 @@ export class ItemTypeImagesComponent implements OnInit {
     imageId: number;
     imageType: InventoryPnImageTypesEnum;
   }>();
-  url = '/api/images';
+
+  get imageTypes() {
+    return InventoryPnImageTypesEnum;
+  }
+
+  get imagesUrl() {
+    return InventoryPnItemTypesMethods.ItemTypesImages;
+  }
 
   constructor() {}
 

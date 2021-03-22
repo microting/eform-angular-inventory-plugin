@@ -19,7 +19,7 @@ import {
   InventoryItemTypeUpdateModel,
 } from '../models';
 
-const InventoryPnItemTypesMethods = {
+export  const InventoryPnItemTypesMethods = {
   ItemTypes: 'api/inventory-pn/item-types',
   ItemTypesIndex: 'api/inventory-pn/item-types/index',
   ItemTypesDictionary: 'api/inventory-pn/item-types/dictionary',

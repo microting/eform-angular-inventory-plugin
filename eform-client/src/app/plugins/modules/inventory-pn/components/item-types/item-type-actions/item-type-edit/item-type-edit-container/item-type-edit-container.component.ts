@@ -103,7 +103,6 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
     });
 
     model.dependencies.map((x, index) => {
-      debugger;
       this.itemTypeDependencies.push(
         this.formBuilder.group({
           itemGroupId: [x.itemGroupId, Validators.required],
