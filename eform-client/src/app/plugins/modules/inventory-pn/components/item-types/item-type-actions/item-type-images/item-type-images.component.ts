@@ -54,7 +54,7 @@ export class ItemTypeImagesComponent implements OnInit {
         this.imageProcessed.emit({
           dataUrl: reader.result as string,
           imageType: this.imageType,
-          file: { ...files.item(i) },
+          file: files.item(i),
         });
       };
       reader.readAsDataURL(files.item(i));
