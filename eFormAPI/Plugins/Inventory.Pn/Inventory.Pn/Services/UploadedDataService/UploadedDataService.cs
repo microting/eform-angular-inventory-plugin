@@ -25,8 +25,6 @@ namespace Inventory.Pn.Services.UploadedDataService
     using System.IO;
     using System.Threading.Tasks;
     using Infrastructure.Models.UploadedData;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Net.Http.Headers;
     using Microting.eForm.Dto;
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
@@ -39,7 +37,7 @@ namespace Inventory.Pn.Services.UploadedDataService
         private readonly IUserService _userService;
         private readonly IEFormCoreService _coreService;
 
-        public string SaveFolder =>
+        private string SaveFolder =>
             Path.Combine(_coreService.GetCore().Result.GetSdkSetting(Settings.fileLocationPicture).Result, "itemTypeImageFiles");
 
         public UploadedDataService(InventoryPnDbContext dbContext,
@@ -50,9 +48,9 @@ namespace Inventory.Pn.Services.UploadedDataService
             _userService = userService;
             _coreService = coreService;
         }
-        
+
         public async Task<OperationResult> UploadUploadedData(UploadedDataModel uploadModel)
-        {   
+        {
             try
             {
                 var core = await _coreService.GetCore();
@@ -98,38 +96,38 @@ namespace Inventory.Pn.Services.UploadedDataService
             }
         }
 
-        public async Task<IActionResult> DownloadUploadedData(string fileName)
-        {
-            var core = await _coreService.GetCore();
+        //public async Task<IActionResult> DownloadUploadedData(string fileName)
+        //{
+        //    var core = await _coreService.GetCore();
 
-            if (core.GetSdkSetting(Settings.swiftEnabled).ToString()?.ToLower() == "true")
-            {
-                var ss = await core.GetFileFromSwiftStorage(fileName);
+        //    if (core.GetSdkSetting(Settings.swiftEnabled).ToString()?.ToLower() == "true")
+        //    {
+        //        var ss = await core.GetFileFromSwiftStorage(fileName);
 
-                if (ss == null)
-                {
-                    return new NotFoundResult();
-                }
-                return new OkObjectResult(ss);
-            }
+        //        if (ss == null)
+        //        {
+        //            return new NotFoundResult();
+        //        }
+        //        return new OkObjectResult(ss);
+        //    }
 
-            fileName = Path.Combine(SaveFolder, fileName);
+        //    fileName = Path.Combine(SaveFolder, fileName);
 
-            byte[] fileBytes;
+        //    byte[] fileBytes;
 
-            if (File.Exists(fileName))
-            {
-                fileBytes = await File.ReadAllBytesAsync(fileName);
-            }
-            else
-            {
-                return new NotFoundResult();
-            }
+        //    if (File.Exists(fileName))
+        //    {
+        //        fileBytes = await File.ReadAllBytesAsync(fileName);
+        //    }
+        //    else
+        //    {
+        //        return new NotFoundResult();
+        //    }
 
-            return new FileContentResult(fileBytes, MediaTypeHeaderValue.Parse("image/*"))
-            {
-                FileDownloadName = fileName
-            };
-        }
+        //    return new FileContentResult(fileBytes, MediaTypeHeaderValue.Parse("image/*"))
+        //    {
+        //        FileDownloadName = fileName
+        //    };
+        //}
     }
 }

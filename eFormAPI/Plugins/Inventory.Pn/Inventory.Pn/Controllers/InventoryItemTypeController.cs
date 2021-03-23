@@ -20,30 +20,38 @@ SOFTWARE.
 
 namespace Inventory.Pn.Controllers
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using Infrastructure.Models.ItemType;
     using Infrastructure.Models.UploadedData;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microting.eForm.Dto;
+    using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
+    using OpenStack.NetCoreSwiftClient.Extensions;
     using Services.InventoryItemTypeService;
     using Services.UploadedDataService;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Threading.Tasks;
 
     [Authorize]
     public class InventoryItemTypeController : Controller
     {
         private readonly IInventoryItemTypeService _inventoryItemTypeService;
         private readonly IUploadedDataService _uploadedDataService;
+        private readonly IEFormCoreService _coreService;
 
         public InventoryItemTypeController(
             IInventoryItemTypeService inventoryItemTypeService,
-            IUploadedDataService uploadedDataService
+            IUploadedDataService uploadedDataService,
+            IEFormCoreService coreService
             )
         {
             _inventoryItemTypeService = inventoryItemTypeService;
             _uploadedDataService = uploadedDataService;
+            _coreService = coreService;
         }
 
         /// <summary>
@@ -126,7 +134,50 @@ namespace Inventory.Pn.Controllers
         [Route("api/inventory-pn/item-types/images/{fileName}")]
         public async Task<IActionResult> GetItemTypeImage(string fileName)
         {
-            return await _uploadedDataService.DownloadUploadedData(fileName);
+            var core = await _coreService.GetCore();
+
+            var filePath = Path.Combine(await core.GetSdkSetting(Settings.fileLocationPicture), "itemTypeImageFiles", fileName);
+            var ext = Path.GetExtension(fileName).Replace(".", "");
+
+            if (ext == "jpg")
+            {
+                ext = "jpeg";
+            }
+
+            var fileType = $"image/{ext}";
+
+            if (core.GetSdkSetting(Settings.swiftEnabled).Result.ToLower() == "true")
+            {
+                var ss = await core.GetFileFromSwiftStorage(fileName);
+
+                if (ss == null)
+                {
+                    return new NotFoundResult();
+                }
+
+                Response.ContentType = ss.ContentType;
+                Response.ContentLength = ss.ContentLength;
+
+                return File(ss.ObjectStreamContent, ss.ContentType.IfNullOrEmpty(fileType), fileName);
+            }
+
+            if (core.GetSdkSetting(Settings.s3Enabled).Result.ToLower() == "true")
+            {
+                var ss = await core.GetFileFromS3Storage($"{fileName}");
+
+                Response.ContentLength = ss.ContentLength;
+
+                return File(ss.ResponseStream, ss.Headers["Content-Type"]);
+            }
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound($"Trying to find file at location: {filePath}");
+            }
+
+            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+
+            return File(fileStream, fileType);
         }
     }
 }

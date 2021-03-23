@@ -29,6 +29,6 @@ namespace Inventory.Pn.Services.UploadedDataService
     {
         Task<OperationResult> UploadUploadedData(UploadedDataModel uploadModel);
 
-        Task<IActionResult> DownloadUploadedData(string fileName);
+        //Task<IActionResult> DownloadUploadedData(string fileName);
     }
 }
