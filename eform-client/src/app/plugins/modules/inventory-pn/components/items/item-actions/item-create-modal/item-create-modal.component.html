@@ -19,7 +19,7 @@
               <ng-select
                 class="custom"
                 dropdownPosition="'bottom'"
-                [placeholder]="'Item type' | translate"
+                [placeholder]="'ItemType' | translate"
                 [(ngModel)]="newItemModel.itemTypeId"
                 [required]="true"
                 [bindValue]="'id'"
@@ -43,7 +43,7 @@
                 />
                 <owl-date-time [pickerType]="'calendar'" [firstDayOfWeek]="1" #dt1></owl-date-time>
                 <label for="itemCreateExpiresInput">{{
-                  'Expires' | translate
+                  'ExpirationDate' | translate
                 }}</label>
               </div>
             </div>
@@ -86,7 +86,7 @@
               <ng-select
                 class="custom"
                 dropdownPosition="'bottom'"
-                [placeholder]="'Status' | translate"
+                [placeholder]="'Available' | translate"
                 [(ngModel)]="newItemModel.available"
                 [bindValue]="'value'"
                 [bindLabel]="'text'"

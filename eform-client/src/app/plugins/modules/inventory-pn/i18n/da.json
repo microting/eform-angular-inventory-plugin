@@ -21,10 +21,10 @@
   "Manage tags": "Administrer tags",
   "Create item type": "Opret elementtype",
   "New type": "Ny type",
-  "Date": "Dato",
+  "CreatedDate": "Dato",
   "Created by": "Skabt af",
   "Pictogram": "Piktogram",
-  "Risk description": "Beskrivelse af risiko",
+  "RiskDescription": "Beskrivelse af risiko",
   "Danger label": "Faremærke",
   "Tags": "Tag",
   "Edit item type": "Rediger elementtype",
@@ -48,5 +48,13 @@
   "Add site": "Tilføj websted",
   "Assign site": "Tildel siteebsted",
   "Assign": "Tildele",
-  "Comment": "Kommentar"
+  "Comment": "Kommentar",
+  "Dependent item group": "Afhængig varegruppe",
+  "Protective equipment": "Beskyttelsesudstyr",
+  "Remove dependency": "Fjern afhængighed",
+  "On": "På",
+  "Off": "Ved",
+  "View pictogram images": "Se piktogram billeder",
+  "View danger label images": "Se danger label billeder",
+  "Delete picture": "Slet billede"
 }

@@ -38,7 +38,7 @@ export class ItemTypesTableComponent implements OnInit {
     },
     { name: 'Created by', elementId: '', sortable: false },
     {
-      name: 'ParentTypeName',
+      name: 'ItemType',
       elementId: 'itemTypeTableHeader',
       sortable: false,
     },

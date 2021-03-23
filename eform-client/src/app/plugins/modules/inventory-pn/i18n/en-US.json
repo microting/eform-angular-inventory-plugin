@@ -21,10 +21,10 @@
   "Manage tags": "Manage tags",
   "Create item type": "Create item type",
   "New type": "New type",
-  "Date": "Date",
+  "CreatedDate": "Date",
   "Created by": "Created by",
   "Pictogram": "Pictogram",
-  "Risk description": "Risk description",
+  "RiskDescription": "Risk description",
   "Danger label": "Danger label",
   "Tags": "Tags",
   "Edit item type": "Edit item type",
@@ -48,5 +48,13 @@
   "Add site": "Add site",
   "Assign site": "Assign site",
   "Assign": "Assign",
-  "Comment": "Comment"
+  "Comment": "Comment",
+  "Dependent item group": "Dependent item group",
+  "Protective equipment": "Protective equipment",
+  "Remove dependency": "Remove dependency",
+  "On": "On",
+  "Off": "Off",
+  "View pictogram images": "View pictogram images",
+  "View danger label images": "View danger label images",
+  "Delete picture": "Delete picture"
 }
