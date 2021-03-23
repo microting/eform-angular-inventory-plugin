@@ -51,7 +51,7 @@
         <button
           mdbBtn
           class="btn-success btn-icon btn-sm m-0 ml-auto"
-          id="imageFileInputBtn"
+          id="imageFileInputBtn_{{imageType}}"
           (click)="imageUploader.click()"
           type="button"
         >
@@ -62,7 +62,7 @@
           type="file"
           #imageUploader
           accept="image/*"
-          id="imageFileInput"
+          id="imageFileInput_{{imageType}}"
           style="display: none"
           (change)="uploadFile($event)"
         />
