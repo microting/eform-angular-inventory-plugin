@@ -144,9 +144,14 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
   uploadImages$(itemTypeId: number, imageType: InventoryPnImageTypesEnum) {
     if (this.pictogramImages && this.pictogramImages.length) {
       return this.itemTypesService.uploadItemTypeImages({
-        files: this.pictogramImages.map((x) => {
-          return x.file;
-        }),
+        files:
+          imageType === InventoryPnImageTypesEnum.Pictogram
+            ? this.pictogramImages.map((x) => {
+                return x.file;
+              })
+            : this.dangerLabelImages.map((x) => {
+                return x.file;
+              }),
         itemTypeId,
         itemTypeImageType: imageType,
       });
@@ -158,10 +163,22 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
   uploadImages(itemTypeId: number) {
     let imagesSubs = {};
     if (this.pictogramImages && this.pictogramImages.length) {
-      imagesSubs = {...imagesSubs, pictogram: this.uploadImages$(itemTypeId, InventoryPnImageTypesEnum.Pictogram)};
+      imagesSubs = {
+        ...imagesSubs,
+        pictogram: this.uploadImages$(
+          itemTypeId,
+          InventoryPnImageTypesEnum.Pictogram
+        ),
+      };
     }
     if (this.dangerLabelImages && this.dangerLabelImages.length) {
-      imagesSubs = {...imagesSubs, dangerLabel: this.uploadImages$(itemTypeId, InventoryPnImageTypesEnum.DangerLabel)};
+      imagesSubs = {
+        ...imagesSubs,
+        dangerLabel: this.uploadImages$(
+          itemTypeId,
+          InventoryPnImageTypesEnum.DangerLabel
+        ),
+      };
     }
     // @ts-ignore
     if (imagesSubs.pictogram || imagesSubs.dangerLabel) {

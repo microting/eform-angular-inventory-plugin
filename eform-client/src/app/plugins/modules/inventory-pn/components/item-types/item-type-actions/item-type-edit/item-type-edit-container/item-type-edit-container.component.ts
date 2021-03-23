@@ -3,11 +3,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import {forkJoin, merge, Observable, Subscription} from 'rxjs';
+import * as R from 'ramda';
+import { forkJoin, Subscription } from 'rxjs';
 import { CommonDictionaryModel } from 'src/app/common/models';
 import { InventoryPnImageTypesEnum } from 'src/app/plugins/modules/inventory-pn/enums';
 import {
-  InventoryItemTypeCreateModel,
   InventoryItemTypeImageModel,
   InventoryItemTypeModel,
   InventoryItemTypeUpdateModel,
@@ -17,7 +17,6 @@ import {
   InventoryPnItemTypesService,
   InventoryPnItemTypeTagsService,
 } from '../../../../../services';
-import * as R from 'ramda';
 
 @AutoUnsubscribe()
 @Component({
@@ -174,9 +173,14 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
 
   uploadImages$(itemTypeId: number, imageType: InventoryPnImageTypesEnum) {
     return this.itemTypesService.uploadItemTypeImages({
-      files: this.pictogramImages.map((x) => {
-        return x.file;
-      }),
+      files:
+        imageType === InventoryPnImageTypesEnum.Pictogram
+          ? this.pictogramImages.map((x) => {
+              return x.file;
+            })
+          : this.dangerLabelImages.map((x) => {
+              return x.file;
+            }),
       itemTypeId,
       itemTypeImageType: imageType,
     });
@@ -185,10 +189,22 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   uploadImages(itemTypeId: number) {
     let imagesSubs = {};
     if (this.pictogramImages && this.pictogramImages.length) {
-      imagesSubs = {...imagesSubs, pictogram: this.uploadImages$(itemTypeId, InventoryPnImageTypesEnum.Pictogram)};
+      imagesSubs = {
+        ...imagesSubs,
+        pictogram: this.uploadImages$(
+          itemTypeId,
+          InventoryPnImageTypesEnum.Pictogram
+        ),
+      };
     }
     if (this.dangerLabelImages && this.dangerLabelImages.length) {
-      imagesSubs = {...imagesSubs, dangerLabel: this.uploadImages$(itemTypeId, InventoryPnImageTypesEnum.DangerLabel)};
+      imagesSubs = {
+        ...imagesSubs,
+        dangerLabel: this.uploadImages$(
+          itemTypeId,
+          InventoryPnImageTypesEnum.DangerLabel
+        ),
+      };
     }
     // @ts-ignore
     if (imagesSubs.pictogram || imagesSubs.dangerLabel) {
