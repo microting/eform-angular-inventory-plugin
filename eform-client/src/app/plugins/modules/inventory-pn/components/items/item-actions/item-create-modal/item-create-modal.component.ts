@@ -18,8 +18,8 @@ import { InventoryItemCreateModel } from '../../../../models';
 export class ItemCreateModalComponent implements OnInit {
   @ViewChild('frame', { static: false }) frame;
   @Output()
-  createItem: EventEmitter<InventoryItemCreateModel> = new EventEmitter<InventoryItemCreateModel>();
-  newItemModel: InventoryItemCreateModel = new InventoryItemCreateModel();
+  createItem: EventEmitter<InventoryItemCreateModel<Date>> = new EventEmitter<InventoryItemCreateModel<Date>>();
+  newItemModel: InventoryItemCreateModel<Date> = new InventoryItemCreateModel<Date>();
   @Input() itemTypesList: CommonDictionaryModel[];
   @Input() selectedItemGroupId: number | null = null;
 
@@ -28,7 +28,7 @@ export class ItemCreateModalComponent implements OnInit {
   ngOnInit(): void {}
 
   show() {
-    this.newItemModel = new InventoryItemCreateModel();
+    this.newItemModel = new InventoryItemCreateModel<Date>();
     this.frame.show();
   }
 

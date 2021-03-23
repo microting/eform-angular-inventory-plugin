@@ -20,8 +20,8 @@ import {
 export class ItemEditModalComponent implements OnInit {
   @ViewChild('frame', { static: false }) frame;
   @Output()
-  updateItem: EventEmitter<InventoryItemUpdateModel> = new EventEmitter<InventoryItemUpdateModel>();
-  selectedItemModel: InventoryItemUpdateModel = new InventoryItemUpdateModel();
+  updateItem: EventEmitter<InventoryItemUpdateModel<Date>> = new EventEmitter<InventoryItemUpdateModel<Date>>();
+  selectedItemModel: InventoryItemUpdateModel<Date> = new InventoryItemUpdateModel<Date>();
   @Input() itemTypesList: CommonDictionaryModel[];
   @Input() selectedItemGroupId: number | null = null;
 
@@ -34,7 +34,7 @@ export class ItemEditModalComponent implements OnInit {
       id: model.id,
       available: model.available,
       customerId: model.customerId,
-      expirationDate: model.expirationDate,
+      expirationDate: model.expirationDate as Date,
       itemTypeId: model.itemType ? model.itemType.id : null,
       itemGroupId: model.itemGroup ? model.itemGroup.id : null,
       location: model.location,

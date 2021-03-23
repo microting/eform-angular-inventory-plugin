@@ -41,7 +41,7 @@
                   name="itemCreateExpiresInput"
                   class="form-control"
                 />
-                <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                <owl-date-time [pickerType]="'calendar'" [firstDayOfWeek]="1" #dt1></owl-date-time>
                 <label for="itemCreateExpiresInput">{{
                   'Expires' | translate
                 }}</label>
