@@ -300,16 +300,33 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
     imageId: number;
     imageType: InventoryPnImageTypesEnum;
   }) {
+    // Add to arrays for delete and remove from uploaded images for preview
     if (model.imageType === InventoryPnImageTypesEnum.Pictogram) {
       this.pictogramImagesForDelete = [
         ...this.pictogramImagesForDelete,
         model.imageId,
       ];
+      const foundImageIndex = this.selectedItemTypeModel.pictogramImages.findIndex(
+        (x) => x.id === model.imageId
+      );
+      this.selectedItemTypeModel.dangerLabelImages = R.remove(
+        foundImageIndex,
+        1,
+        this.selectedItemTypeModel.dangerLabelImages
+      );
     } else {
       this.dangerLabelImagesForDelete = [
         ...this.pictogramImagesForDelete,
         model.imageId,
       ];
+      const foundImageIndex = this.selectedItemTypeModel.dangerLabelImages.findIndex(
+        (x) => x.id === model.imageId
+      );
+      this.selectedItemTypeModel.dangerLabelImages = R.remove(
+        foundImageIndex,
+        1,
+        this.selectedItemTypeModel.dangerLabelImages
+      );
     }
   }
 }
