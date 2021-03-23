@@ -309,14 +309,14 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       const foundImageIndex = this.selectedItemTypeModel.pictogramImages.findIndex(
         (x) => x.id === model.imageId
       );
-      this.selectedItemTypeModel.dangerLabelImages = R.remove(
+      this.selectedItemTypeModel.pictogramImages = R.remove(
         foundImageIndex,
         1,
-        this.selectedItemTypeModel.dangerLabelImages
+        this.selectedItemTypeModel.pictogramImages
       );
     } else {
       this.dangerLabelImagesForDelete = [
-        ...this.pictogramImagesForDelete,
+        ...this.dangerLabelImagesForDelete,
         model.imageId,
       ];
       const foundImageIndex = this.selectedItemTypeModel.dangerLabelImages.findIndex(
