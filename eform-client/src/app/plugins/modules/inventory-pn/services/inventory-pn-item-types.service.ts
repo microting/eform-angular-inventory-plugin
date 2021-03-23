@@ -10,7 +10,7 @@ import {
   OperationResult,
 } from 'src/app/common/models/operation.models';
 import { BaseService } from 'src/app/common/services/base.service';
-import {InventoryPnImageTypesEnum} from 'src/app/plugins/modules/inventory-pn/enums';
+import { InventoryPnImageTypesEnum } from 'src/app/plugins/modules/inventory-pn/enums';
 import {
   InventoryItemTypeCreateModel,
   InventoryItemTypeModel,
@@ -19,7 +19,7 @@ import {
   InventoryItemTypeUpdateModel,
 } from '../models';
 
-export  const InventoryPnItemTypesMethods = {
+export const InventoryPnItemTypesMethods = {
   ItemTypes: 'api/inventory-pn/item-types',
   ItemTypesIndex: 'api/inventory-pn/item-types/index',
   ItemTypesDictionary: 'api/inventory-pn/item-types/dictionary',
@@ -56,7 +56,7 @@ export class InventoryPnItemTypesService extends BaseService {
   getSingleItemType(
     itemTypeId: number
   ): Observable<OperationDataResult<InventoryItemTypeModel>> {
-    return this.get(InventoryPnItemTypesMethods.ItemTypes + '/' + itemTypeId);
+    return this.get(`${InventoryPnItemTypesMethods.ItemTypes}/${itemTypeId}`);
   }
 
   updateItemType(
@@ -73,7 +73,13 @@ export class InventoryPnItemTypesService extends BaseService {
 
   deleteItemType(itemTypeId: number): Observable<OperationResult> {
     return this.delete(
-      InventoryPnItemTypesMethods.ItemTypes + '/' + itemTypeId
+      `${InventoryPnItemTypesMethods.ItemTypes}/${itemTypeId}`
+    );
+  }
+
+  getItemTypeImage(name: string): Observable<any> {
+    return this.getBlobData(
+      `${InventoryPnItemTypesMethods.ItemTypesImages}/${name}`
     );
   }
 

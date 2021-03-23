@@ -46,6 +46,7 @@ import {
   ItemTypesTableComponent,
   ItemTypeTagsComponent,
   ItemTypeImagesComponent,
+  ItemTypeImagesModalComponent,
 } from './components';
 import { InventoryPnRouting } from './inventory-pn.routing';
 import { InventoryPnLayoutComponent } from './layouts';
@@ -86,6 +87,7 @@ import {
     ItemGroupDeleteModalComponent,
     ItemTypeTagsComponent,
     ItemTypeImagesComponent,
+    ItemTypeImagesModalComponent,
   ],
   imports: [
     CommonModule,
