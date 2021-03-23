@@ -21,6 +21,7 @@ SOFTWARE.
 namespace Inventory.Pn.Infrastructure.Models.ItemType
 {
     using System.Collections.Generic;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
 
     public class ItemTypeModel
     {
@@ -41,5 +42,11 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 
         public List<ItemTypeDependencies> Dependencies { get; set; }
             = new List<ItemTypeDependencies>();
+
+        public List<CommonDictionaryModel> PictogramImages { get; set; }
+            = new List<CommonDictionaryModel>();
+
+        public List<CommonDictionaryModel> DangerLabelImages { get; set; }
+            = new List<CommonDictionaryModel>();
     }
 }

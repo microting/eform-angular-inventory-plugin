@@ -24,14 +24,11 @@ namespace Inventory.Pn.Services.UploadedDataService
     using Infrastructure.Models.UploadedData;
     using Microsoft.AspNetCore.Mvc;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
-    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
 
     public interface IUploadedDataService
     {
         Task<OperationResult> UploadUploadedData(UploadedDataModel uploadModel);
 
         Task<IActionResult> DownloadUploadedData(string fileName);
-
-        string SaveFolder { get; }
     }
 }

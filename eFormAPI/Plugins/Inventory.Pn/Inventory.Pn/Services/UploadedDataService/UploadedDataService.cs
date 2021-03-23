@@ -113,6 +113,8 @@ namespace Inventory.Pn.Services.UploadedDataService
                 return new OkObjectResult(ss);
             }
 
+            fileName = Path.Combine(SaveFolder, fileName);
+
             byte[] fileBytes;
 
             if (File.Exists(fileName))
@@ -124,7 +126,7 @@ namespace Inventory.Pn.Services.UploadedDataService
                 return new NotFoundResult();
             }
 
-            return new FileContentResult(fileBytes, MediaTypeHeaderValue.Parse("image"))
+            return new FileContentResult(fileBytes, MediaTypeHeaderValue.Parse("image/*"))
             {
                 FileDownloadName = fileName
             };

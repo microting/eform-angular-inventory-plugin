@@ -36,7 +36,6 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
     using System.Threading.Tasks;
     using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Microting.eFormInventoryBase.Infrastructure.Const;
-    using UploadedDataService;
 
     public class InventoryItemTypeService : IInventoryItemTypeService
     {
@@ -44,19 +43,16 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
         private readonly IInventoryLocalizationService _inventoryLocalizationService;
         private readonly IUserService _userService;
         //private readonly IEFormCoreService _coreService;
-        private static string _folderImages;
 
         public InventoryItemTypeService(InventoryPnDbContext dbContext,
             IInventoryLocalizationService inventoryLocalizationService,
-            IUserService userService,
-            IUploadedDataService uploadedDataService/*,
+            IUserService userService/*,
             IEFormCoreService coreService*/)
         {
             _userService = userService;
             _inventoryLocalizationService = inventoryLocalizationService;
             //_coreService = coreService;
             _dbContext = dbContext;
-            _folderImages = uploadedDataService.SaveFolder;
         }
         public async Task<OperationDataResult<int>> CreateItemType(ItemTypeCreateModel itemTypeCreateModel)
         {
@@ -378,7 +374,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 var tagsForAdd = updateModel.TagIds
                     .Where(x => !tagIds.Contains(x))
                     .ToList();
-                
+
                 // delete tags from item type
                 foreach (var itemTypeTag in tagsForDelete)
                 {
@@ -437,7 +433,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 }
 
                 foreach (var itemTypeDependency in itemTypeDependenciesForDelete)
-                {   
+                {
                     await itemTypeDependency.Delete(_dbContext);
                 }
 
@@ -526,20 +522,12 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     DangerLabelImages = x.ItemTypeUploadedDatas
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Where(y => y.Type == TypeUploadedData.Danger)
-                        .Select(y => new CommonDictionaryModel
-                        {
-                            Name = $"{_folderImages}{y.FileName}",
-                            Id = y.Id
-                        })
+                        .Select(y => y.FileName)
                         .ToList(),
                     PictogramImages = x.ItemTypeUploadedDatas
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Where(y => y.Type == TypeUploadedData.Pictogram)
-                        .Select(y => new CommonDictionaryModel
-                        {
-                            Name = $"{_folderImages}{y.FileName}",
-                            Id = y.Id
-                        })
+                        .Select(y => y.FileName)
                         .ToList(),
                     ParentTypeName = x.DependItemTypes
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
@@ -581,6 +569,24 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                                  .Where(z => z.DependItemType.ItemGroupId == y.ItemGroupId)
                                  .Where(z => z.WorkflowState != Constants.WorkflowStates.Removed)
                                  .Select(z => z.DependItemTypeId).ToList(),
+                         })
+                         .ToList(),
+                     DangerLabelImages = x.ItemTypeUploadedDatas
+                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                         .Where(y => y.Type == TypeUploadedData.Danger)
+                         .Select(y => new CommonDictionaryModel
+                         {
+                             Id = y.Id,
+                             Name = y.FileName
+                         })
+                         .ToList(),
+                     PictogramImages = x.ItemTypeUploadedDatas
+                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
+                         .Where(y => y.Type == TypeUploadedData.Pictogram)
+                         .Select(y => new CommonDictionaryModel
+                         {
+                             Id = y.Id,
+                             Name = y.FileName
                          })
                          .ToList(),
                  });

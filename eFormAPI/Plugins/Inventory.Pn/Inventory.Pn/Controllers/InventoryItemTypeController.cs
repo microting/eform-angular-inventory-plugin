@@ -122,8 +122,8 @@ namespace Inventory.Pn.Controllers
         }
 
 
-        [HttpPost]
-        [Route("api/inventory-pn/item-types/images/download")]
+        [HttpGet]
+        [Route("api/inventory-pn/item-types/images/{fileName}")]
         public async Task<IActionResult> GetItemTypeImage(string fileName)
         {
             return await _uploadedDataService.DownloadUploadedData(fileName);
