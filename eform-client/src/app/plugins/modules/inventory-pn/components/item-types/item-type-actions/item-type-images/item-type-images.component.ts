@@ -45,18 +45,20 @@ export class ItemTypeImagesComponent implements OnInit {
   ngOnInit() {}
 
   uploadFile(event) {
-    const file = (event.target as HTMLInputElement).files[0];
+    const files = (event.target as HTMLInputElement).files;
 
     // File Preview
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imageProcessed.emit({
-        dataUrl: reader.result as string,
-        imageType: this.imageType,
-        file,
-      });
-    };
-    reader.readAsDataURL(file);
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imageProcessed.emit({
+          dataUrl: reader.result as string,
+          imageType: this.imageType,
+          file: { ...files.item(i) },
+        });
+      };
+      reader.readAsDataURL(files.item(i));
+    }
   }
 
   onDeleteImage(imageIndex: number, imageType: InventoryPnImageTypesEnum) {
