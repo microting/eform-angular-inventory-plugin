@@ -17,9 +17,9 @@ import { composeFolderName } from 'src/app/common/helpers';
   styleUrls: ['./inventory-settings.component.scss'],
 })
 export class InventorySettingsComponent implements OnInit, OnDestroy {
-  @ViewChild('siteRemoveModal')
+  @ViewChild('removeSiteModal')
   siteRemoveModal: InventorySiteRemoveModalComponent;
-  @ViewChild('siteAddModal') siteAddModal: InventorySiteAddModalComponent;
+  @ViewChild('addSiteModal') siteAddModal: InventorySiteAddModalComponent;
   @ViewChild('foldersModal', { static: false })
   foldersModal: InventoryFoldersModalComponent;
   settingsModel: InventoryPnSettingsModel = new InventoryPnSettingsModel();
