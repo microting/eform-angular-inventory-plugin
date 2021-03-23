@@ -1,9 +1,9 @@
-export class InventoryItemCreateModel {
+export class InventoryItemCreateModel<T> {
   itemTypeId: number;
   itemGroupId: number;
   location: string;
   customerId: number;
-  expirationDate: string;
+  expirationDate: T | null;
   sn: string;
   available: boolean;
 }

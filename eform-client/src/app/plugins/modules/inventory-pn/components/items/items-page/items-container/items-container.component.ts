@@ -14,10 +14,9 @@ import {
   PageSettingsModel,
 } from 'src/app/common/models';
 import { SharedPnService } from 'src/app/plugins/modules/shared/services';
+import { format } from 'date-fns';
 import {
   InventoryItemCreateModel,
-  InventoryItemGroupCreateModel,
-  InventoryItemGroupUpdateModel,
   InventoryItemModel,
   InventoryItemsRequestModel,
   InventoryItemUpdateModel,
@@ -161,9 +160,14 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
     this.SNSearchSubject.next(name);
   }
 
-  onCreateItem(model: InventoryItemCreateModel) {
+  onCreateItem(model: InventoryItemCreateModel<Date>) {
     this.createItemSub$ = this.itemsService
-      .createItem(model)
+      .createItem({
+        ...model,
+        expirationDate: model.expirationDate
+          ? format(model.expirationDate, 'yyyy-MM-dd')
+          : null,
+      })
       .subscribe((data) => {
         if (data && data.success) {
           this.createItemModal.hide();
@@ -172,9 +176,14 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
       });
   }
 
-  onUpdateItem(model: InventoryItemUpdateModel) {
+  onUpdateItem(model: InventoryItemUpdateModel<Date>) {
     this.updateItemSub$ = this.itemsService
-      .updateItem(model)
+      .updateItem({
+        ...model,
+        expirationDate: model.expirationDate
+          ? format(model.expirationDate, 'yyyy-MM-dd')
+          : null,
+      })
       .subscribe((data) => {
         if (data && data.success) {
           this.editItemModal.hide();

@@ -1,10 +1,10 @@
-export class InventoryItemUpdateModel {
+export class InventoryItemUpdateModel<T> {
   id: number;
   itemTypeId: number;
   itemGroupId: number;
   location: string;
   customerId: number;
-  expirationDate: string | Date;
+  expirationDate: T | null;
   sn: string;
   available: boolean;
 }

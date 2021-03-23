@@ -17,7 +17,7 @@
           >
             <img
               class="card-img-fixed"
-              [src]="imagesUrl + '/' + image.name | authImage"
+              [src]="(imagesUrl + '/' + image.name) | authImage | async"
               alt="Card image cap"
             />
             <button

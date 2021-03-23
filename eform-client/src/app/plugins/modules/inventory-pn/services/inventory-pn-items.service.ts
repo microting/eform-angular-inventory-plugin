@@ -46,11 +46,11 @@ export class InventoryPnItemsService extends BaseService {
     return this.get(InventoryPnItemsMethods.Items + '/' + inventoryItemId);
   }
 
-  updateItem(model: InventoryItemUpdateModel): Observable<OperationResult> {
+  updateItem(model: InventoryItemUpdateModel<string>): Observable<OperationResult> {
     return this.put(InventoryPnItemsMethods.Items, model);
   }
 
-  createItem(model: InventoryItemCreateModel): Observable<OperationResult> {
+  createItem(model: InventoryItemCreateModel<string>): Observable<OperationResult> {
     return this.post(InventoryPnItemsMethods.Items, model);
   }
 
