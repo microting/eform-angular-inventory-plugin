@@ -136,10 +136,6 @@ describe('Inventory Item Types Edit', function () {
     inventoryItemTypesPage.deleteTags(tagsForEdit);
     inventoryItemTypesPage.clearTable();
     inventoryItemGroupsPage.goToInventoryItemGroups();
-    for (let i = 0; i < itemGroups.length; i++) {
-      inventoryItemGroupsPage
-        .getInventoryItemGroupByName(itemGroups[i].name)
-        .delete();
-    }
+    inventoryItemGroupsPage.clearTable();
   });
 });

@@ -338,10 +338,8 @@ export class InventoryItemGroup {
       'input'
     );
     if (
-      itemGroup.parentGroup === '' ||
-      (itemGroup.parentGroup &&
-        itemGroupsEditListParentSelectorInput.getValue() !==
-          itemGroup.parentGroup)
+      itemGroup.parentGroup &&
+      itemGroupsEditListParentSelectorInput.getValue() !== itemGroup.parentGroup
     ) {
       itemGroupsEditListParentSelectorInput.setValue(itemGroup.parentGroup);
       const value = inventoryItemGroupsPage.itemGroupsEditListParentSelector.$(
@@ -349,24 +347,32 @@ export class InventoryItemGroup {
       );
       value.waitForDisplayed({ timeout: 20000 });
       value.click();
+    } else if (itemGroup.parentGroup === '') {
+      inventoryItemGroupsPage.itemGroupsEditListParentSelector
+        .$('span.ng-clear-wrapper')
+        .click();
     }
     if (
-      itemGroup.name === '' ||
-      (itemGroup.name &&
-        inventoryItemGroupsPage.itemGroupEditNameInput.getValue() !==
-          itemGroup.name)
+      itemGroup.name &&
+      inventoryItemGroupsPage.itemGroupEditNameInput.getValue() !==
+        itemGroup.name
     ) {
       inventoryItemGroupsPage.itemGroupEditNameInput.setValue(itemGroup.name);
+    } else if (itemGroup.name === '') {
+      inventoryItemGroupsPage.itemGroupEditNameInput.click();
+      browser.keys(['Control', 'a', 'Control', 'Delete']);
     }
     if (
-      itemGroup.description === '' ||
-      (itemGroup.description &&
-        inventoryItemGroupsPage.itemGroupEditDescriptionInput.getValue() !==
-          itemGroup.description)
+      itemGroup.description &&
+      inventoryItemGroupsPage.itemGroupEditDescriptionInput.getValue() !==
+        itemGroup.description
     ) {
       inventoryItemGroupsPage.itemGroupEditDescriptionInput.setValue(
         itemGroup.description
       );
+    } else if (itemGroup.description === '') {
+      inventoryItemGroupsPage.itemGroupEditDescriptionInput.click();
+      browser.keys(['Control', 'a', 'Control', 'Delete']);
     }
     if (
       itemGroup.code === '' ||
@@ -375,6 +381,9 @@ export class InventoryItemGroup {
           itemGroup.code)
     ) {
       inventoryItemGroupsPage.itemGroupEditCodeInput.setValue(itemGroup.code);
+    } else if (itemGroup.code === '') {
+      inventoryItemGroupsPage.itemGroupEditCodeInput.click();
+      browser.keys(['Control', 'a', 'Control', 'Delete']);
     }
   }
 

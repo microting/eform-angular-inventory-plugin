@@ -33,7 +33,7 @@ const item: InventoryItem = {
   itemType: itemType.name,
 };
 
-describe('Inventory Items Create', function () {
+describe('Inventory Items Edit', function () {
   before(function () {
     loginPage.open('/');
     loginPage.login();
@@ -95,10 +95,8 @@ describe('Inventory Items Create', function () {
   after(function () {
     inventoryItemsPage.clearTable();
     inventoryItemTypesPage.goToInventoryItemTypes();
-    inventoryItemTypesPage.getInventoryItemTypeByName(itemType.name).delete();
+    inventoryItemTypesPage.clearTable();
     inventoryItemGroupsPage.goToInventoryItemGroups();
-    inventoryItemGroupsPage
-      .getInventoryItemGroupByName(itemGroup.name)
-      .delete();
+    inventoryItemGroupsPage.clearTable();
   });
 });

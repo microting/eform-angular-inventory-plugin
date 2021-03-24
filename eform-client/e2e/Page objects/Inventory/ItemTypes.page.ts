@@ -85,7 +85,7 @@ class InventoryItemTypesPage extends PageWithNavbarPage {
   }
 
   public get dateTableHeader() {
-    const ele = $('#dateTableHeader');
+    const ele = $('#createdDateTableHeader');
     ele.waitForDisplayed({ timeout: 20000 });
     ele.waitForClickable({ timeout: 20000 });
     return ele;
@@ -113,7 +113,7 @@ class InventoryItemTypesPage extends PageWithNavbarPage {
   }
 
   public get riscDescriptionTableHeader() {
-    const ele = $('#riscDescriptionTableHeader');
+    const ele = $('#riskDescriptionTableHeader');
     ele.waitForDisplayed({ timeout: 20000 });
     ele.waitForClickable({ timeout: 20000 });
     return ele;
@@ -369,7 +369,7 @@ class InventoryItemTypesPage extends PageWithNavbarPage {
         RiscDescription: generateRandmString(),
         description: generateRandmString(),
         name: generateRandmString(),
-        tags: [...tags[createCount - i - 1]],
+        tags: [tags[createCount - i - 1]],
         usage: generateRandmString(),
       };
       this.createInventoryItemType(itemType);
@@ -492,13 +492,19 @@ export class InventoryItemTypeObject {
           value.click();
         }
       }
-      if (itemType.name || itemType.name === '') {
+      if (itemType.name) {
         inventoryItemTypesPage.editNameSelector.setValue(itemType.name);
+      } else if (itemType.name === '') {
+        inventoryItemTypesPage.editNameSelector.click();
+        browser.keys(['Control', 'a', 'Control', 'Delete']);
       }
-      if (itemType.description || itemType.description === '') {
+      if (itemType.description) {
         inventoryItemTypesPage.editDescriptionSelector.setValue(
           itemType.description
         );
+      } else if (itemType.description === '') {
+        inventoryItemTypesPage.editDescriptionSelector.click();
+        browser.keys(['Control', 'a', 'Control', 'Delete']);
       }
       if (itemType.usage) {
         inventoryItemTypesPage.editUsage.setValue(itemType.usage);

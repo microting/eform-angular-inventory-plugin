@@ -44,7 +44,7 @@ describe('Inventory Item Types Delete', function () {
       itemType.name
     );
     inventoryItemTypeObject.deleteOpenModal();
-    expect(inventoryItemTypesPage.selectedItemTypeId.getText()).equal(
+    expect(+inventoryItemTypesPage.selectedItemTypeId.getText()).equal(
       inventoryItemTypeObject.id
     );
     expect(inventoryItemTypesPage.selectedItemTypeDescription.getText()).equal(
@@ -71,8 +71,6 @@ describe('Inventory Item Types Delete', function () {
   after(function () {
     inventoryItemTypesPage.clearTable();
     inventoryItemGroupsPage.goToInventoryItemGroups();
-    inventoryItemGroupsPage
-      .getInventoryItemGroupByName(itemGroup.name)
-      .delete();
+    inventoryItemGroupsPage.clearTable();
   });
 });

@@ -82,5 +82,7 @@ describe('Inventory Item Type Sort', function () {
   });
   after(function () {
     inventoryItemTypesPage.clearTable();
+    inventoryItemGroupsPage.goToInventoryItemGroups();
+    inventoryItemGroupsPage.clearTable();
   });
 });

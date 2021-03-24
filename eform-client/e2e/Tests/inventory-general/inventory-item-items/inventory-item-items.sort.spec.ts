@@ -79,9 +79,9 @@ describe('Inventory Items Sort', function () {
   it('should be able to sort by Status', function () {
     const mapFunc = (ele) => {
       switch (ele.getText()) {
-        case 'On':
+        case 'På':
           return true;
-        case 'Off':
+        case 'Ved':
           return false;
       }
     };
@@ -95,10 +95,8 @@ describe('Inventory Items Sort', function () {
   after(function () {
     inventoryItemsPage.clearTable();
     inventoryItemTypesPage.goToInventoryItemTypes();
-    inventoryItemTypesPage.getInventoryItemTypeByName(itemType.name).delete();
+    inventoryItemTypesPage.clearTable();
     inventoryItemGroupsPage.goToInventoryItemGroups();
-    inventoryItemGroupsPage
-      .getInventoryItemGroupByName(itemGroup.name)
-      .delete();
+    inventoryItemGroupsPage.clearTable();
   });
 });

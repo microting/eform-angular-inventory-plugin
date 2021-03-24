@@ -131,8 +131,6 @@ describe('Inventory Item Types Create', function () {
     inventoryItemTypesPage.deleteTags(itemType.tags);
     inventoryItemTypesPage.clearTable();
     inventoryItemGroupsPage.goToInventoryItemGroups();
-    inventoryItemGroupsPage
-      .getInventoryItemGroupByName(itemGroup.name)
-      .delete();
+    inventoryItemGroupsPage.clearTable();
   });
 });

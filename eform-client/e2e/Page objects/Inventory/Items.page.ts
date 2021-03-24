@@ -405,13 +405,13 @@ export class InventoryItemObject {
       if (inventoryItem.expires && inventoryItem.expires !== this.expires) {
         inventoryItemsPage.itemEditExpiresInput.setValue(inventoryItem.expires);
       }
-      if (
-        (inventoryItem.location && inventoryItem.location !== this.location) ||
-        inventoryItem.location === ''
-      ) {
+      if (inventoryItem.location && inventoryItem.location !== this.location) {
         inventoryItemsPage.itemEditLocationInput.setValue(
           inventoryItem.location
         );
+      } else if (inventoryItem.location === '') {
+        inventoryItemsPage.itemEditLocationInput.click();
+        browser.keys(['Control', 'a', 'Control', 'Delete']);
       }
       if (inventoryItem.sn && inventoryItem.sn !== this.sn) {
         inventoryItemsPage.itemEditSNInput.setValue(inventoryItem.sn);

@@ -73,10 +73,8 @@ describe('Inventory Items Delete', function () {
   after(function () {
     inventoryItemsPage.clearTable();
     inventoryItemTypesPage.goToInventoryItemTypes();
-    inventoryItemTypesPage.getInventoryItemTypeByName(itemType.name).delete();
+    inventoryItemTypesPage.clearTable();
     inventoryItemGroupsPage.goToInventoryItemGroups();
-    inventoryItemGroupsPage
-      .getInventoryItemGroupByName(itemGroup.name)
-      .delete();
+    inventoryItemGroupsPage.clearTable();
   });
 });
