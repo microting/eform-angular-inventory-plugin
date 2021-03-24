@@ -162,9 +162,8 @@ exports.config = {
   // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: 'bdd',
-    require: 'ts-node/register',
     compilers: ['tsconfig-paths/register'],
-    timeout: 1200000
+    timeout: 1200000,
   },
   //
   // =====
@@ -197,7 +196,6 @@ exports.config = {
    * @param {Array.<String>} specs List of spec file paths that are to be run
    */
   before: function () {
-    require('ts-node/register');
     browser.timeouts('implicit', 5000);
   },
   /**
@@ -249,20 +247,24 @@ exports.config = {
      * const date = (new Date()).toString().replace(/\s/g, '-').replace(/-\(\w+\)/, '');
      */
     //const { browserName } = browser.desiredCapabilities;
-    const timestamp = new Date().toLocaleString('iso', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    }).replace(/[ ]/g, '--').replace(':', '-');
+    const timestamp = new Date()
+      .toLocaleString('iso', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      })
+      .replace(/[ ]/g, '--')
+      .replace(':', '-');
 
     // get current test title and clean it, to use it as file name
     const filename = encodeURIComponent(
-      `${
-        test.fullTitle.replace(/\s+/g, '-')
-      }-chrome-${timestamp}`.replace(/[/]/g, '__')
+      `${test.fullTitle.replace(/\s+/g, '-')}-chrome-${timestamp}`.replace(
+        /[/]/g,
+        '__'
+      )
     ).replace(/%../, '.');
 
     const filePath = path.resolve(this.screenshotPath, `${filename}.png`);
@@ -310,4 +312,4 @@ exports.config = {
    */
   // onComplete: function(exitCode, config, capabilities) {
   // }
-}
+};
