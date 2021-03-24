@@ -26,7 +26,7 @@ const itemType: InventoryItemType = {
 };
 
 const item: InventoryItem = {
-  status: 'On',
+  status: 'På',
   sn: generateRandmString(),
   location: generateRandmString(),
   expires: '10/30/2031',
@@ -55,17 +55,14 @@ describe('Inventory Items Create', function () {
     expect(item.sn).eq(itemFromTable.sn);
     expect(item.location).eq(itemFromTable.location);
     expect(item.expires).eq(
-      format(
-        parse(itemFromTable.expires, 'dd.MM.yyyy HH:mm:ss', new Date()),
-        'M/d/yyyy'
-      )
+      format(parse(itemFromTable.expires, 'dd.MM.yyyy', new Date()), 'M/d/yyyy')
     );
     expect(itemType.itemGroup).eq(itemFromTable.itemGroup);
   });
   it('should not created item without item type', function () {
     const countBeforeCreate = inventoryItemsPage.rowNum;
     const itemInvalid: InventoryItem = {
-      status: 'On',
+      status: 'På',
       sn: generateRandmString(),
       location: generateRandmString(),
       expires: '10/30/2031',
@@ -79,7 +76,7 @@ describe('Inventory Items Create', function () {
   it('should not created item without location', function () {
     const countBeforeCreate = inventoryItemsPage.rowNum;
     const itemInvalid: InventoryItem = {
-      status: 'On',
+      status: 'På',
       sn: generateRandmString(),
       location: undefined,
       expires: '10/30/2031',
@@ -93,7 +90,7 @@ describe('Inventory Items Create', function () {
   it('should not created item without item type and location', function () {
     const countBeforeCreate = inventoryItemsPage.rowNum;
     const itemInvalid: InventoryItem = {
-      status: 'On',
+      status: 'På',
       sn: generateRandmString(),
       location: undefined,
       expires: '10/30/2031',

@@ -26,7 +26,7 @@ const itemType: InventoryItemType = {
 };
 
 const item: InventoryItem = {
-  status: 'On',
+  status: 'På',
   sn: generateRandmString(),
   location: generateRandmString(),
   expires: '10/30/2031',

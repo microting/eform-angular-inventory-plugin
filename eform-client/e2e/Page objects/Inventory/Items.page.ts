@@ -239,9 +239,9 @@ class InventoryItemsPage extends PageWithNavbarPage {
         let status;
         if (typeof inventoryItem.status === 'boolean') {
           if (inventoryItem.status) {
-            status = 'On';
+            status = 'På';
           } else {
-            status = 'Off';
+            status = 'Ved';
           }
         } else {
           status = inventoryItem.status;
@@ -420,9 +420,9 @@ export class InventoryItemObject {
         let status;
         if (typeof inventoryItem.status === 'boolean') {
           if (inventoryItem.status) {
-            status = 'On';
+            status = 'På';
           } else {
-            status = 'Off';
+            status = 'Ved';
           }
         } else {
           status = inventoryItem.status;

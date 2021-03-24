@@ -44,13 +44,13 @@ describe('Inventory Item Types Delete', function () {
       itemType.name
     );
     inventoryItemTypeObject.deleteOpenModal();
-    expect(inventoryItemTypesPage.selectedItemTypeId).equal(
+    expect(inventoryItemTypesPage.selectedItemTypeId.getText()).equal(
       inventoryItemTypeObject.id
     );
-    expect(inventoryItemTypesPage.selectedItemTypeDescription).equal(
+    expect(inventoryItemTypesPage.selectedItemTypeDescription.getText()).equal(
       inventoryItemTypeObject.description
     );
-    expect(inventoryItemTypesPage.selectedItemTypeName).equal(
+    expect(inventoryItemTypesPage.selectedItemTypeName.getText()).equal(
       inventoryItemTypeObject.name
     );
     inventoryItemTypeObject.deleteCloseModal(true);

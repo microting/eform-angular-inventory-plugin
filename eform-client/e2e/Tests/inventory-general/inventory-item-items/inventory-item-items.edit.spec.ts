@@ -26,7 +26,7 @@ const itemType: InventoryItemType = {
 };
 
 const item: InventoryItem = {
-  status: 'On',
+  status: 'På',
   sn: generateRandmString(),
   location: generateRandmString(),
   expires: '10/30/2031',
@@ -55,10 +55,7 @@ describe('Inventory Items Create', function () {
     expect(item.sn).eq(itemFromTable.sn);
     expect(item.location).eq(itemFromTable.location);
     expect(item.expires).eq(
-      format(
-        parse(itemFromTable.expires, 'dd.MM.yyyy HH:mm:ss', new Date()),
-        'M/d/yyyy'
-      )
+      format(parse(itemFromTable.expires, 'dd.MM.yyyy', new Date()), 'M/d/yyyy')
     );
     expect(itemType.itemGroup).eq(itemFromTable.itemGroup);
   });
@@ -66,7 +63,7 @@ describe('Inventory Items Create', function () {
     const countBeforeCreate = inventoryItemsPage.rowNum;
     item.location = generateRandmString();
     item.sn = generateRandmString();
-    item.status = 'Off';
+    item.status = 'Ved';
     item.expires = '11/21/2032';
     inventoryItemsPage.getFirstInventoryItem().update(item);
     expect(countBeforeCreate, 'item created').eq(inventoryItemsPage.rowNum);
@@ -76,17 +73,14 @@ describe('Inventory Items Create', function () {
     expect(item.sn).eq(itemFromTable.sn);
     expect(item.location).eq(itemFromTable.location);
     expect(item.expires).eq(
-      format(
-        parse(itemFromTable.expires, 'dd.MM.yyyy HH:mm:ss', new Date()),
-        'M/d/yyyy'
-      )
+      format(parse(itemFromTable.expires, 'dd.MM.yyyy', new Date()), 'M/d/yyyy')
     );
     expect(itemType.itemGroup).eq(itemFromTable.itemGroup);
   });
   it('should not edited item without location', function () {
     const countBeforeCreate = inventoryItemsPage.rowNum;
     const itemInvalid: InventoryItem = {
-      status: 'On',
+      status: 'På',
       sn: generateRandmString(),
       location: '',
       expires: '10/30/2031',

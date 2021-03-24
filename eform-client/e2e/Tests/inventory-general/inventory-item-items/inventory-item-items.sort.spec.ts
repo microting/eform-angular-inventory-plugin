@@ -63,7 +63,7 @@ describe('Inventory Items Sort', function () {
   //     inventoryItemsPage.expiresTableHeader,
   //     '#itemExpirationDate',
   //     'Expires',
-  //     (ele) => parse(ele.getText(), 'dd.MM.yyyy HH:mm:ss', new Date())
+  //     (ele) => parse(ele.getText(), 'dd.MM.yyyy', new Date())
   //   );
   // });
   // it('should be able to sort by SN', function () {
