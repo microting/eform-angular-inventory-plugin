@@ -128,7 +128,7 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
     this.updateLocalPageSettings();
   }
 
-  changePage(offset: any) {
+  changePage(offset: number) {
     const updatedRequestModel = updateTablePage(
       offset,
       this.itemTypesRequestModel

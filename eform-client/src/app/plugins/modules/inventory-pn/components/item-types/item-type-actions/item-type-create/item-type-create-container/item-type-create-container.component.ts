@@ -4,6 +4,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import * as R from 'ramda';
 import { Observable, Subscription, forkJoin } from 'rxjs';
+import {noWhitespaceValidator} from 'src/app/common/helpers';
 import { CommonDictionaryModel } from 'src/app/common/models';
 import { InventoryPnImageTypesEnum } from '../../../../../enums';
 import {
@@ -64,10 +65,10 @@ export class ItemTypeCreateContainerComponent implements OnInit, OnDestroy {
   initCreateForm() {
     this.newItemTypeForm = this.formBuilder.group({
       itemGroupId: [null, Validators.required],
-      name: ['', Validators.required],
+      name: ['', [Validators.required, noWhitespaceValidator]],
       riskDescription: [''],
       usage: [''],
-      description: ['', Validators.required],
+      description: ['', [Validators.required, noWhitespaceValidator]],
       pictogramImages: [[]],
       dangerLabelImages: [[]],
       tagIds: [[]],

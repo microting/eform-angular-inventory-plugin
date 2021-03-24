@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import * as R from 'ramda';
 import { forkJoin, Subscription } from 'rxjs';
+import {noWhitespaceValidator} from 'src/app/common/helpers';
 import { CommonDictionaryModel } from 'src/app/common/models';
 import { InventoryPnImageTypesEnum } from 'src/app/plugins/modules/inventory-pn/enums';
 import {
@@ -78,11 +79,11 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
   initEditForm() {
     this.editItemTypeForm = this.formBuilder.group({
       id: [null, Validators.required],
-      itemGroupId: [null, Validators.required],
-      name: [null, Validators.required],
+      itemGroupId: ['', Validators.required],
+      name: ['', [Validators.required, noWhitespaceValidator]],
       riskDescription: [''],
       usage: [''],
-      description: [null, Validators.required],
+      description: ['', [Validators.required, noWhitespaceValidator]],
       pictogramImages: [],
       dangerLabelImages: [],
       tagIds: [],
