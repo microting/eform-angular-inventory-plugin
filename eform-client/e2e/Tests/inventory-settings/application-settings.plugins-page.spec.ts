@@ -14,10 +14,12 @@ describe('Application settings page - site header section', function () {
     $('#plugin-name').waitForDisplayed({ timeout: 50000 });
 
     const plugin = pluginPage.getFirstPluginRowObj();
-    expect(plugin.id).equal(1);
-    expect(plugin.name).equal('Microting Inventory Plugin');
-    expect(plugin.version).equal('1.0.0.0');
-    expect(plugin.status).eq(false);
+    expect(plugin.id, 'id is not equal').equal(1);
+    expect(plugin.name, 'name is not equal').equal(
+      'Microting Inventory Plugin'
+    );
+    expect(plugin.version, 'version is not equal').equal('1.0.0.0');
+    expect(plugin.status, 'status is not equal').eq(false);
   });
 
   it('should activate the plugin', function () {
@@ -25,9 +27,11 @@ describe('Application settings page - site header section', function () {
     plugin.enableOrDisablePlugin();
 
     plugin = pluginPage.getFirstPluginRowObj();
-    expect(plugin.id).equal(1);
-    expect(plugin.name).equal('Microting Inventory Plugin');
-    expect(plugin.version).equal('1.0.0.0');
-    expect(plugin.status).eq(true);
+    expect(plugin.id, 'id is not equal').equal(1);
+    expect(plugin.name, 'name is not equal').equal(
+      'Microting Inventory Plugin'
+    );
+    expect(plugin.version, 'version is not equal').equal('1.0.0.0');
+    expect(plugin.status, 'status is not equal').eq(true);
   });
 });
