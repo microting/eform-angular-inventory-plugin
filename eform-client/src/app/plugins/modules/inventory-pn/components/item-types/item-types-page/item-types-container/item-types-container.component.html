@@ -53,7 +53,6 @@
     </div>
     <div class="col-md-4 ml-auto d-flex justify-content-end p-2">
       <pagination-pn
-        *ngIf="itemTypesModel.total > itemTypesRequestModel.pageSize"
         [limit]="itemTypesRequestModel.pageSize"
         [size]="itemTypesModel.total"
         [offset]="itemTypesRequestModel.offset"

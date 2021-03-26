@@ -44,8 +44,16 @@ export class ItemTypesTableComponent implements OnInit {
     },
     { name: 'Name', elementId: 'nameTableHeader', sortable: true },
     { name: 'Usage', elementId: 'usageTableHeader', sortable: true },
-    { name: 'Description', elementId: 'descriptionTableHeader', sortable: true },
-    { name: 'RiskDescription', elementId: 'riskDescriptionTableHeader', sortable: true },
+    {
+      name: 'Description',
+      elementId: 'descriptionTableHeader',
+      sortable: true,
+    },
+    {
+      name: 'RiskDescription',
+      elementId: 'riskDescriptionTableHeader',
+      sortable: true,
+    },
     { name: 'Comment', elementId: '', sortable: false },
     { name: 'Tags', elementId: '', sortable: false },
     { name: 'Actions', elementId: '', sortable: false },

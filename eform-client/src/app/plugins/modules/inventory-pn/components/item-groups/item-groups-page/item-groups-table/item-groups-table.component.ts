@@ -6,7 +6,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Paged, PageSettingsModel } from 'src/app/common/models';
+import {
+  Paged,
+  PageSettingsModel,
+  TableHeaderElementModel,
+} from 'src/app/common/models';
 import {
   InventoryItemGroupModel,
   InventoryItemGroupsRequestModel,
@@ -30,6 +34,26 @@ export class ItemGroupsTableComponent implements OnInit {
   @Output()
   showEditItemGroupModal: EventEmitter<InventoryItemGroupModel> = new EventEmitter<InventoryItemGroupModel>();
 
+  tableHeaders: TableHeaderElementModel[] = [
+    { name: 'Id', elementId: 'idTableHeader', sortable: true },
+    {
+      name: 'Code',
+      elementId: 'codeTableHeader',
+      sortable: true,
+    },
+    { name: 'Name', elementId: 'nameTableHeader', sortable: true },
+    {
+      name: 'Description',
+      elementId: 'descriptionTableHeader',
+      sortable: true,
+    },
+    {
+      name: 'ParentGroup',
+      elementId: 'parentGroupTableHeader',
+      sortable: true,
+    },
+    { name: 'Actions', elementId: '', sortable: false },
+  ];
   constructor() {}
 
   ngOnInit(): void {}
