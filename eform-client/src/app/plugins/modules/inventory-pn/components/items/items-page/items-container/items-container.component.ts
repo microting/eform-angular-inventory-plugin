@@ -26,6 +26,7 @@ import {
   InventoryPnItemsService,
   InventoryPnItemTypesService,
 } from '../../../../services';
+import { getOffset } from 'src/app/common/helpers/pagination.helper';
 
 @AutoUnsubscribe()
 @Component({
@@ -129,6 +130,14 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         if (data && data.success) {
           this.deleteItemModal.hide();
+          this.itemsRequestModel = {
+            ...this.itemsRequestModel,
+            offset: getOffset(
+              this.itemsRequestModel.pageSize,
+              this.itemsRequestModel.offset,
+              this.itemsModel.total - 1
+            ),
+          };
           this.getItems();
         }
       });

@@ -20,6 +20,7 @@ import {
   InventoryItemGroupUpdateModel,
 } from '../../../../models';
 import { InventoryPnItemGroupsService } from '../../../../services';
+import { getOffset } from 'src/app/common/helpers/pagination.helper';
 
 @AutoUnsubscribe()
 @Component({
@@ -176,6 +177,14 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         if (data && data.success) {
           this.deleteItemGroupModal.hide();
+          this.itemGroupsRequestModel = {
+            ...this.itemGroupsRequestModel,
+            offset: getOffset(
+              this.itemGroupsRequestModel.pageSize,
+              this.itemGroupsRequestModel.offset,
+              this.itemGroupsModel.total - 1
+            ),
+          };
           this.getItemGroups();
           this.getItemGroupsDictionary();
         }

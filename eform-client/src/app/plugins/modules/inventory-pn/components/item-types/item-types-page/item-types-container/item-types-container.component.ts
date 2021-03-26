@@ -17,6 +17,7 @@ import {
   InventoryPnItemTypeTagsService,
   InventoryPnItemTypesService,
 } from '../../../../services';
+import { getOffset } from 'src/app/common/helpers/pagination.helper';
 
 @AutoUnsubscribe()
 @Component({
@@ -179,6 +180,14 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
       .deleteItemType(model.id)
       .subscribe((data) => {
         if (data && data.success) {
+          this.itemTypesRequestModel = {
+            ...this.itemTypesRequestModel,
+            offset: getOffset(
+              this.itemTypesRequestModel.pageSize,
+              this.itemTypesRequestModel.offset,
+              this.itemTypesModel.total - 1
+            ),
+          };
           this.getItemTypes();
           this.deleteItemTypeModal.hide();
         }
