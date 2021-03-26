@@ -1,0 +1,65 @@
+<div class="row p-1 table-responsive no-gutters">
+  <table
+    mdbTable
+    striped="true"
+    hover="true"
+    small="true"
+    class="z-depth-1 text-center"
+  >
+    <thead
+      table-headers
+      [tableHeaders]="tableHeaders"
+      [currentSortName]="localPageSettings.sort"
+      (sortChanged)="onSortTable($event)"
+      [isSortDsc]="itemsRequestModel.isSortDsc"
+    ></thead>
+    <tbody id="tableBodyInventoryItems">
+      <tr *ngFor="let itemModel of itemsModel.entities; let i = index">
+        <td id="itemId">
+          {{ itemModel.id }}
+        </td>
+        <td id="itemType">
+          {{ itemModel.itemType ? itemModel.itemType.name : '' }}
+        </td>
+        <td id="itemLocation">
+          {{ itemModel.location }}
+        </td>
+        <td id="itemExpirationDate">
+          <date-formatter
+            [date]="itemModel.expirationDate"
+            [Format]="'date'"
+          ></date-formatter>
+        </td>
+        <td id="itemSN">
+          {{ itemModel.sn }}
+        </td>
+        <td id="itemGroup" *ngIf="!selectedItemGroupId">
+          {{ itemModel.itemGroup ? itemModel.itemGroup.name : '' }}
+        </td>
+        <td id="itemStatus">
+          {{ itemModel.available ? ('On' | translate) : ('Off' | translate) }}
+        </td>
+        <td>
+          <div class="d-flex flex-row justify-content-center">
+            <button
+              id="editItemBtn"
+              class="btn btn-accent text-black-50 btn-icon mb-2"
+              mdbTooltip="{{ 'Edit item' | translate }}"
+              (click)="onShowEditItemModal(itemModel)"
+            >
+              <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+            <button
+              id="deleteItemBtn"
+              class="btn btn-danger btn-icon mb-2"
+              mdbTooltip="{{ 'Delete item' | translate }}"
+              (click)="onShowDeleteItemModal(itemModel)"
+            >
+              <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,73 @@
+<mdb-card>
+  <mdb-card-header>
+    <ng-container *ngIf="imageType === imageTypes.Pictogram">
+      {{ 'Pictogram' | translate }}</ng-container
+    >
+    <ng-container *ngIf="imageType === imageTypes.DangerLabel">
+      {{ 'Danger label' | translate }}</ng-container
+    >
+  </mdb-card-header>
+  <mdb-card-body>
+    <div class="row">
+      <div class="col-xs-12 col-md-12">
+        <div class="d-flex flex-wrap">
+          <mdb-card
+            class="flex-column mr-4 mb-4"
+            *ngFor="let image of uploadedImages"
+          >
+            <img
+              class="card-img-fixed"
+              [src]="(imagesUrl + '/' + image.name) | authImage | async"
+              alt="Card image cap"
+            />
+            <button
+              mdbBtn
+              class="btn-icon btn-danger"
+              mdbTooltip="{{ 'Delete picture' | translate }}"
+              (click)="onDeleteUploadedImage(image.id)"
+            >
+              <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+          </mdb-card>
+          <mdb-card
+            class="flex-column mr-4 mb-4"
+            *ngFor="let image of processedImages; let i = index"
+          >
+            <img
+              class="card-img-fixed"
+              [src]="image.dataUrl"
+              alt="Card image cap"
+            />
+            <button
+              mdbBtn
+              class="btn-icon btn-danger"
+              mdbTooltip="{{ 'Delete picture' | translate }}"
+              (click)="onDeleteImage(i, image.imageType)"
+            >
+              <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+          </mdb-card>
+        </div>
+        <button
+          mdbBtn
+          class="btn-success btn-icon btn-sm m-0 ml-auto"
+          id="imageFileInputBtn_{{imageType}}"
+          (click)="imageUploader.click()"
+          type="button"
+        >
+          <fa-icon icon="plus" [fixedWidth]="true" size="lg"></fa-icon>
+          {{ 'Add new' | translate }}
+        </button>
+        <input
+          type="file"
+          #imageUploader
+          accept="image/*"
+          id="imageFileInput_{{imageType}}"
+          style="display: none"
+          multiple
+          (change)="uploadFile($event)"
+        />
+      </div>
+    </div>
+  </mdb-card-body>
+</mdb-card>

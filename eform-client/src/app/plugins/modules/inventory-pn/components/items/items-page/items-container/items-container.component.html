@@ -1,0 +1,67 @@
+<subheader-pn>
+  <div class="p-3">
+    <button
+      mdbBtn
+      id="itemCreateBtn"
+      class="btn-success btn-small-height"
+      mdbTooltip="{{ 'Create item' | translate }}"
+      (click)="showCreateItemModal()"
+    >
+      {{ 'New item' | translate }}
+    </button>
+  </div>
+</subheader-pn>
+
+<div class="container-fluid">
+  <app-items-page-header
+    [itemsRequestModel]="itemsRequestModel"
+    (SNFilterChanged)="onSNFilterChanged($event)"
+  ></app-items-page-header>
+  <app-items-page-table
+    [selectedItemGroupId]="selectedItemGroupId"
+    [itemsRequestModel]="itemsRequestModel"
+    [localPageSettings]="localPageSettings"
+    [itemsModel]="itemsModel"
+    (showDeleteItemModal)="showDeleteItemModal($event)"
+    (showEditItemModal)="showEditItemModal($event)"
+    (sortTable)="sortTable($event)"
+  ></app-items-page-table>
+  <div class="row justify-content-between mr-2 ml-2">
+    <div class="col-md-1">
+      <page-size-pn
+        [pageSize]="localPageSettings.pageSize"
+        (onPageSizeChanged)="
+          localPageSettings.pageSize = $event;
+          itemsRequestModel.pageIndex = 1;
+          updateLocalPageSettings()
+        "
+      >
+      </page-size-pn>
+    </div>
+    <div class="col-md-4 ml-auto d-flex justify-content-end p-2">
+      <pagination-pn
+        *ngIf="itemsModel.total > itemsRequestModel.pageSize"
+        [limit]="itemsRequestModel.pageSize"
+        [size]="itemsModel.total"
+        [offset]="itemsRequestModel.offset"
+        (onPageChanged)="changePage($event)"
+      ></pagination-pn>
+    </div>
+  </div>
+</div>
+<app-item-create-modal
+  #createItemModal
+  [itemTypesList]="itemTypesList"
+  [selectedItemGroupId]="selectedItemGroupId"
+  (createItem)="onCreateItem($event)"
+></app-item-create-modal>
+<app-item-edit-modal
+  #editItemModal
+  [itemTypesList]="itemTypesList"
+  [selectedItemGroupId]="selectedItemGroupId"
+  (updateItem)="onUpdateItem($event)"
+></app-item-edit-modal>
+<app-item-delete-modal
+  #deleteItemModal
+  (deleteItem)="onDeleteItem($event)"
+></app-item-delete-modal>

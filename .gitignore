@@ -348,3 +348,9 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+eform-client/.idea/
+
+eFormAPI/eFormAPI.Web/
+
+eFormAPI/Plugins/Inventory.Pn/Inventory.Pn/Properties/

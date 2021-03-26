@@ -1,0 +1,107 @@
+<div
+  [config]="{ ignoreBackdropClick: true }"
+  mdbModal
+  class="modal fade"
+  #frame="mdbModal"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>{{ 'New item group' | translate }}</h3>
+        <button class="close" data-dismiss="modal" (click)="frame.hide()">
+          <span>×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <ng-select
+                class="custom"
+                dropdownPosition="'bottom'"
+                [placeholder]="'Parent group' | translate"
+                [(ngModel)]="newItemGroupModel.parentId"
+                [bindValue]="'id'"
+                [bindLabel]="'name'"
+                [items]="itemGroupsList"
+                id="itemGroupsCreateListParentSelector"
+              ></ng-select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="md-form">
+                <input
+                  mdbInput
+                  type="text"
+                  [(ngModel)]="newItemGroupModel.name"
+                  [required]="true"
+                  name="itemGroupCreateNameInput"
+                  class="form-control"
+                  id="itemGroupCreateNameInput"
+                />
+                <label for="itemGroupCreateNameInput">{{
+                  'Name' | translate
+                }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="md-form">
+                <input
+                  mdbInput
+                  type="text"
+                  [(ngModel)]="newItemGroupModel.description"
+                  [required]="true"
+                  name="itemGroupCreateDescriptionInput"
+                  class="form-control"
+                  id="itemGroupCreateDescriptionInput"
+                />
+                <label for="itemGroupCreateDescriptionInput">{{
+                  'Description' | translate
+                }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="md-form">
+                <input
+                  mdbInput
+                  type="text"
+                  [(ngModel)]="newItemGroupModel.code"
+                  name="itemGroupCreateCodeInput"
+                  class="form-control"
+                  id="itemGroupCreateCodeInput"
+                />
+                <label for="itemGroupCreateCodeInput">{{
+                  'Code' | translate
+                }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          id="itemGroupCreateConfirmBtn"
+          class="btn-success btn-small-height"
+          [disabled]="!newItemGroupModel.name || !newItemGroupModel.description"
+          (click)="create()"
+        >
+          {{ 'Create' | translate }}
+        </button>
+        <button
+          mdbBtn
+          id="itemGroupCreateCancelBtn"
+          class="btn-accent text-black-50 btn-small-height"
+          (click)="frame.hide()"
+        >
+          {{ 'Cancel' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

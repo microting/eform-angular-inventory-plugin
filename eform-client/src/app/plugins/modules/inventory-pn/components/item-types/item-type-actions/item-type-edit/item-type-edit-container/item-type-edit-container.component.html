@@ -1,0 +1,44 @@
+<subheader-pn [title]="'Edit item type' | translate">
+  <div class="p-3">
+    <button
+      mdbBtn
+      id="itemTypeEditSaveBtn"
+      class="btn-success btn-small-height"
+      [disabled]="!editItemTypeForm.valid"
+      (click)="updateItemType()"
+    >
+      {{ 'Save' | translate }}
+    </button>
+    <button
+      mdbBtn
+      id="itemTypeEditCancelBtn"
+      class="btn-accent text-black-50 btn-small-height"
+      (click)="goBack()"
+    >
+      {{ 'Cancel' | translate }}
+    </button>
+  </div>
+</subheader-pn>
+
+<div class="container-fluid">
+  <div class="row mt-4 mb-4">
+    <div class="col-md-12 col-xs-12" role="main">
+      <app-item-type-edit-form
+        [editItemTypeForm]="editItemTypeForm"
+        [availableItemGroups]="availableItemGroups"
+        [availableTags]="availableTags"
+        [filteredItemTypes]="filteredItemTypes"
+        [dependencies]="itemTypeDependencies"
+        [dangerLabelImages]="dangerLabelImages"
+        [pictogramImages]="pictogramImages"
+        [selectedItemTypeModel]="selectedItemTypeModel"
+        (dependentItemGroupChanged)="onDependentItemGroupChanged($event)"
+        (createNewDependency)="addNewDependency()"
+        (imageProcessed)="onImageProcessed($event)"
+        (deleteDependency)="onDeleteDependency($event)"
+        (deleteImage)="onDeleteImage($event)"
+        (deleteUploadedImage)="onDeleteUploadedImage($event)"
+      ></app-item-type-edit-form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,330 @@
+[
+  {
+    "Key": "Inventory",
+    "LocalizedValue": {
+      "da": "Opgørelse",
+      "en-US": "Inventory",
+      "de-DE": "Inventar"
+    }
+  },
+  {
+    "Key": "Items",
+    "LocalizedValue": {
+      "da": "Element",
+      "en-US": "Items",
+      "de-DE": "Gegenst"
+    }
+  },
+  {
+    "Key": "ErrorWhileObtainingInventorySettings",
+    "LocalizedValue": {
+      "da": "Fejl under opnåelse af lagerindstillinger",
+      "en-US": "Error while obtaining inventory settings",
+      "de-DE": "Fehler beim Abrufen der Inventareinstellungen"
+    }
+  },
+  {
+    "Key": "SettingsHaveBeenUpdatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Indstillinger er blevet opdateret med succes",
+      "en-US": "Settings have been updated successfully",
+      "de-DE": "Einstellungen wurden erfolgreich aktualisiert"
+    }
+  },
+  {
+    "Key": "ErrorWhileUpdatingSettings",
+    "LocalizedValue": {
+      "da": "Fejl under opdatering af indstillinger",
+      "en-US": "Error while updating settings",
+      "de-DE": "Fehler beim Aktualisieren der Einstellungen"
+    }
+  },
+  {
+    "Key": "ErrorWhileObtainingInventoryTags",
+    "LocalizedValue": {
+      "da": "Fejl under hentning af beholdningskoder",
+      "en-US": "Error while obtaining inventory tags",
+      "de-DE": "Fehler beim Abrufen der Inventar-Tags"
+    }
+  },
+  {
+    "Key": "ErrorWhileObtainingInventoryTag",
+    "LocalizedValue": {
+      "da": "Fejl under hentning af beholdningskode",
+      "en-US": "Error while obtaining inventory tag",
+      "de-DE": "Fehler beim Abrufen des Inventar-Tags"
+    }
+  },
+  {
+    "Key": "InventoryTagCreatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Beholdningstag blev oprettet med succes",
+      "en-US": "Inventory tag created successfully",
+      "de-DE": "Inventar-Tag erfolgreich erstellt"
+    }
+  },
+  {
+    "Key": "ErrorWhileCreatingInventoryTag",
+    "LocalizedValue": {
+      "da": "Fejl under oprettelse af beholdningskode",
+      "en-US": "Error while creating inventory tag",
+      "de-DE": "Fehler beim Erstellen des Inventar-Tags"
+    }
+  },
+  {
+    "Key": "InventoryTagNotFound",
+    "LocalizedValue": {
+      "da": "Inventar-Tag nicht gefunden",
+      "en-US": "Inventory tag not found",
+      "de-DE": "Inventar-Tag nicht gefunden"
+    }
+  },
+  {
+    "Key": "InventoryTagRemovedSuccessfully",
+    "LocalizedValue": {
+      "da": "Beholdningstagget blev fjernet",
+      "en-US": "Inventory tag removed successfully",
+      "de-DE": "Inventar-Tag erfolgreich entfernt"
+    }
+  },
+  {
+    "Key": "ErrorWhileRemovingInventoryTag",
+    "LocalizedValue": {
+      "da": "Fejl under fjernelse af beholdningskode",
+      "en-US": "Error while removing inventory tag",
+      "de-DE": "Fehler beim Entfernen des Inventar-Tags"
+    }
+  },
+  {
+    "Key": "InventoryTagUpdatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Beholdningstag blev opdateret",
+      "en-US": "Inventory tag updated successfully",
+      "de-DE": "Inventory tag updated successfully"
+    }
+  },
+  {
+    "Key": "ErrorWhileUpdatingInventoryTag",
+    "LocalizedValue": {
+      "da": "Fejl under opdatering af lagermærke",
+      "en-US": "Error while updating inventory tag",
+      "de-DE": "Fehler beim Aktualisieren des Inventar-Tags"
+    }
+  },
+  {
+    "Key": "TagsNotFound",
+    "LocalizedValue": {
+      "da": "Mærker ikke fundet",
+      "en-US": "Tags not found",
+      "de-DE": "Tags nicht gefunden"
+    }
+  },
+  {
+    "Key": "ErrorWhileCreatingItemType",
+    "LocalizedValue": {
+      "da": "Fejl under oprettelse af artikeltype",
+      "en-US": "Error while creating item type",
+      "de-DE": "Fejl under oprettelse af artikeltype"
+    }
+  },
+  {
+    "Key": "InventoryItemTypeNotFount",
+    "LocalizedValue": {
+      "da": "Varetype blev ikke fundet",
+      "en-US": "Item type not found",
+      "de-DE": "Artikeltyp nicht gefunden"
+    }
+  },
+  {
+    "Key": "ErrorWhileGetInventoryItemType",
+    "LocalizedValue": {
+      "da": "Fejl under hent varetype",
+      "en-US": "Error while get item type",
+      "de-DE": "Fejl under hent varetype"
+    }
+  },
+  {
+    "Key": "ErrorObtainingLists",
+    "LocalizedValue": {
+      "da": "Fejl ved indhentning af varetyper",
+      "en-US": "Error obtaining item types",
+      "de-DE": "Fehler beim Abrufen der Elementtypen"
+    }
+  },
+  {
+    "Key": "InventoryItemTypeNotFount",
+    "LocalizedValue": {
+      "da": "Varetype blev ikke fundet",
+      "en-US": "Item type not found",
+      "de-DE": "Artikeltyp nicht gefunden"
+    }
+  },
+  {
+    "Key": "ErrorWhileUpdateInventoryItemType",
+    "LocalizedValue": {
+      "da": "Error while update item type",
+      "en-US": "Error while update item type",
+      "de-DE": "Fehler beim Aktualisieren des Elementtyps"
+    }
+  },
+  {
+    "Key": "ErrorObtainingItems",
+    "LocalizedValue": {
+      "da": "Fejl ved hentning af varer",
+      "en-US": "Error obtaining items",
+      "de-DE": "Fehler beim Abrufen der Elemente"
+    }
+  },
+  {
+    "Key": "ItemNotFound",
+    "LocalizedValue": {
+      "da": "Varen blev ikke fundet",
+      "en-US": "Item not found",
+      "de-DE": "Artikel nicht gefunden"
+    }
+  },
+  {
+    "Key": "ErrorWhileUpdateItem",
+    "LocalizedValue": {
+      "da": "Fejl under opdateringselementet",
+      "en-US": "Error while update item",
+      "de-DE": "Fehler beim Aktualisieren des Elements"
+    }
+  },
+  {
+    "Key": "ErrorWhileCreatingItem",
+    "LocalizedValue": {
+      "da": "Fejl under oprettelse af element",
+      "en-US": "Error while creating item",
+      "de-DE": "Fehler beim Erstellen des Elements"
+    }
+  },
+  {
+    "Key": "ErrorWhileDeleteItem",
+    "LocalizedValue": {
+      "da": "Fejl under sletning af element",
+      "en-US": "Error while delete item",
+      "de-DE": "Fehler beim Löschen des Elements"
+    }
+  },
+  {
+    "Key": "ErrorObtainingItemGroups",
+    "LocalizedValue": {
+      "da": "Fejl ved indhentning af varegrupper",
+      "en-US": "Error obtaining item groups",
+      "de-DE": "Fehler beim Abrufen der Elementgruppen"
+    }
+  },
+  {
+    "Key": "ItemGroupNotFound",
+    "LocalizedValue": {
+      "da": "Varegruppe blev ikke fundet",
+      "en-US": "Item group not found",
+      "de-DE": "Varegruppe blev ikke fundet"
+    }
+  },
+  {
+    "Key": "ErrorWhileGetItemGroup",
+    "LocalizedValue": {
+      "da": "Fejl under hent varegruppe",
+      "en-US": "Error while get item group",
+      "de-DE": "Fehler beim Abrufen der Artikelgruppe"
+    }
+  },
+  {
+    "Key": "ErrorWhileUpdateItemGroup",
+    "LocalizedValue": {
+      "da": "Fejl under opdatering af varegruppe",
+      "en-US": "Error while update item group",
+      "de-DE": "Fehler beim Aktualisieren der Elementgruppe"
+    }
+  },
+  {
+    "Key": "ErrorWhileCreatingItemGroup",
+    "LocalizedValue": {
+      "da": "Fejl under oprettelse af varegruppe",
+      "en-US": "Error while creating item group",
+      "de-DE": "Fejl under oprettelse af varegruppe"
+    }
+  },
+  {
+    "Key": "ErrorWhileDeleteItemGroup",
+    "LocalizedValue": {
+      "da": "Fejl under sletning af varegruppe",
+      "en-US": "Error while delete item group",
+      "de-DE": "Fehler beim Löschen der Artikelgruppe"
+    }
+  },
+  {
+    "Key": "InventoryItemTypeUpdatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Element type opdateret med succes",
+      "en-US": "Item type updated successfully",
+      "de-DE": "Artikeltyp erfolgreich aktualisiert"
+    }
+  },
+  {
+    "Key": "InventoryItemTypeDeletedSuccessfully",
+    "LocalizedValue": {
+      "da": "Element type slettet med succes",
+      "en-US": "Item type deleted successfully",
+      "de-DE": "Artikeltyp erfolgreich gelöscht"
+    }
+  },
+  {
+    "Key": "InventoryItemTypeCreatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Elementtype oprettet med succes",
+      "en-US": "Item type created successfully",
+      "de-DE": "Artikeltyp erfolgreich erstellt"
+    }
+  },
+  {
+    "Key": "ItemCreatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Element oprettet med succes",
+      "en-US": "Item created successfully",
+      "de-DE": "Artikel erfolgreich erstellt"
+    }
+  },
+  {
+    "Key": "ItemUpdatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Vare opdateret med succes",
+      "en-US": "Item updated successfully",
+      "de-DE": "Artikel erfolgreich aktualisiert"
+    }
+  },
+  {
+    "Key": "ItemDeletedSuccessfully",
+    "LocalizedValue": {
+      "da": "Element slettet med succes",
+      "en-US": "Item deleted successfully",
+      "de-DE": "Artikel erfolgreich gelöscht"
+    }
+  },
+  {
+    "Key": "ItemGroupUpdatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Item gruppe opdateret med succes",
+      "en-US": "Item group updated successfully",
+      "de-DE": "Artikelgruppe erfolgreich aktualisiert"
+    }
+  },
+  {
+    "Key": "ItemGroupCreatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Item gruppe oprettet med succes",
+      "en-US": "Item group created successfully",
+      "de-DE": "Artikelgruppe erfolgreich erstellt"
+    }
+  },
+  {
+    "Key": "ItemGroupDeletedSuccessfully",
+    "LocalizedValue": {
+      "da": "Item gruppe slettet med succes",
+      "en-US": "Item group deleted successfully",
+      "de-DE": "Artikelgruppe erfolgreich gelöscht"
+    }
+  }
+]

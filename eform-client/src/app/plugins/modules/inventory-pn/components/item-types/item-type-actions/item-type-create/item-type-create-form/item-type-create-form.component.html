@@ -1,0 +1,208 @@
+<mdb-card>
+  <mdb-card-body>
+    <form [formGroup]="createItemTypeForm">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-6 ng-select-wrapper">
+          <ng-select
+            class="custom"
+            dropdownPosition="'bottom'"
+            [placeholder]="'ItemGroup' | translate"
+            [items]="availableItemGroups"
+            formControlName="itemGroupId"
+            [clearable]="false"
+            [bindLabel]="'name'"
+            [bindValue]="'id'"
+            id="createItemGroupIdSelector"
+          ></ng-select>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-6 ng-select-wrapper">
+          <ng-select
+            class="custom"
+            dropdownPosition="'bottom'"
+            [placeholder]="'Tags' | translate"
+            [items]="availableTags"
+            formControlName="tagIds"
+            [clearable]="false"
+            [bindLabel]="'name'"
+            [bindValue]="'id'"
+            [multiple]="true"
+            id="createItemTypeTagsSelector"
+          ></ng-select>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="md-form">
+            <input
+              mdbInput
+              formControlName="name"
+              type="text"
+              id="createNameSelector"
+              name="createNameSelector"
+              class="form-control"
+            />
+            <label for="createNameSelector">{{ 'Name' | translate }}</label>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="md-form">
+            <input
+              mdbInput
+              formControlName="description"
+              type="text"
+              id="createDescriptionSelector"
+              name="createDescriptionSelector"
+              class="form-control"
+            />
+            <label for="createDescriptionSelector">{{
+              'Description' | translate
+            }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mdb-card>
+            <mdb-card-header>
+              {{ 'Dependent on the following products' | translate }}
+            </mdb-card-header>
+            <mdb-card-body>
+              <ng-container
+                *ngFor="
+                  let dependencyControl of dependencies.controls;
+                  let dependencyIndex = index
+                "
+              >
+                <mdb-card class="mb-2">
+                  <mdb-card-body>
+                    <ng-container [formGroup]="dependencyControl">
+                      <div class="row">
+                        <div
+                          class="col-md-4 col-sm-6 col-xs-6 ng-select-wrapper"
+                        >
+                          <ng-select
+                            class="custom"
+                            dropdownPosition="'bottom'"
+                            [placeholder]="'Dependent item group' | translate"
+                            [items]="availableItemGroups"
+                            formControlName="itemGroupId"
+                            (change)="
+                              onDependentItemGroupChanged(
+                                $event,
+                                dependencyIndex
+                              )
+                            "
+                            [clearable]="false"
+                            [bindLabel]="'name'"
+                            [bindValue]="'id'"
+                            id="dependentItemGroupId_{{ dependencyIndex }}"
+                          ></ng-select>
+                        </div>
+                        <div
+                          class="col-md-4 col-sm-6 col-xs-6 ng-select-wrapper"
+                        >
+                          <ng-select
+                            class="custom"
+                            dropdownPosition="'bottom'"
+                            [placeholder]="'Protective equipment' | translate"
+                            [items]="
+                              filteredItemTypes[dependencyIndex]
+                                ? filteredItemTypes[dependencyIndex]
+                                : []
+                            "
+                            formControlName="itemTypesIds"
+                            [clearable]="false"
+                            [bindLabel]="'name'"
+                            [bindValue]="'id'"
+                            [multiple]="true"
+                            id="dependentItemTypesIds_{{ dependencyIndex }}"
+                          ></ng-select>
+                        </div>
+                        <div
+                          class="d-flex align-items-center"
+                        >
+                          <button
+                            mdbBtn
+                            class="btn-danger btn-icon mt-3"
+                            id="removeDependencyBtn_{{ dependencyIndex }}"
+                            (click)="onDeleteDependency(dependencyIndex)"
+                            mdbTooltip="{{ 'Remove dependency' | translate }}"
+                          >
+                            <fa-icon
+                              icon="trash-alt"
+                              [fixedWidth]="true"
+                              size="lg"
+                            ></fa-icon>
+                          </button>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </mdb-card-body>
+                </mdb-card>
+              </ng-container>
+              <button
+                mdbBtn
+                class="btn-success btn-icon btn-sm m-0 ml-auto"
+                id="newDependencyBtn"
+                (click)="onCreateNewDependency()"
+                type="button"
+              >
+                <fa-icon icon="plus" [fixedWidth]="true" size="lg"></fa-icon>
+                {{ 'Add new' | translate }}
+              </button>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="md-form">
+            <input
+              mdbInput
+              formControlName="usage"
+              type="text"
+              id="createUsage"
+              name="createUsage"
+              class="form-control"
+            />
+            <label for="createUsage">{{ 'Usage' | translate }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <app-item-type-images
+            [imageType]="imageTypes.Pictogram"
+            [processedImages]="pictogramImagesPreview"
+            (imageProcessed)="onImageProcessed($event)"
+            (deleteImage)="onDeleteImage($event)"
+          ></app-item-type-images>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="md-form">
+            <input
+              mdbInput
+              formControlName="riskDescription"
+              type="text"
+              id="createRiskDescription"
+              name="createRiskDescription"
+              class="form-control"
+            />
+            <label for="createRiskDescription">{{
+              'Risk description' | translate
+            }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <app-item-type-images
+            [imageType]="imageTypes.DangerLabel"
+            [processedImages]="dangerLabelImagesPreview"
+            (imageProcessed)="onImageProcessed($event)"
+          ></app-item-type-images>
+        </div>
+      </div>
+    </form>
+  </mdb-card-body>
+</mdb-card>

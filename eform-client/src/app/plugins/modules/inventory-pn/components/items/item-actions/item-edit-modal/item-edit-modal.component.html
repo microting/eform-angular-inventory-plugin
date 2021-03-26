@@ -1,0 +1,124 @@
+<div
+  [config]="{ ignoreBackdropClick: true }"
+  mdbModal
+  class="modal fade"
+  #frame="mdbModal"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>{{ 'Edit item' | translate }}</h3>
+        <button class="close" data-dismiss="modal" (click)="frame.hide()">
+          <span>×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <ng-select
+                class="custom"
+                dropdownPosition="'bottom'"
+                [placeholder]="'ItemType' | translate"
+                [(ngModel)]="selectedItemModel.itemTypeId"
+                [required]="true"
+                [bindValue]="'id'"
+                [bindLabel]="'name'"
+                [items]="itemTypesList"
+                id="itemEditTypeSelector"
+              ></ng-select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="md-form" [owlDateTimeTrigger]="dt1">
+                <input
+                  mdbInput
+                  [owlDateTime]="dt1"
+                  [(ngModel)]="selectedItemModel.expirationDate"
+                  type="text"
+                  id="itemEditExpiresInput"
+                  name="itemEditExpiresInput"
+                  class="form-control"
+                />
+                <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                <label for="itemEditExpiresInput">{{
+                  'ExpirationDate' | translate
+                }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="md-form">
+                <input
+                  mdbInput
+                  type="text"
+                  [(ngModel)]="selectedItemModel.location"
+                  [required]="true"
+                  name="itemEditLocationInput"
+                  class="form-control"
+                  id="itemEditLocationInput"
+                />
+                <label for="itemEditLocationInput">{{
+                  'Location' | translate
+                }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="md-form">
+                <input
+                  mdbInput
+                  type="text"
+                  [(ngModel)]="selectedItemModel.sn"
+                  name="itemEditSNInput"
+                  class="form-control"
+                  id="itemEditSNInput"
+                />
+                <label for="itemEditSNInput">{{ 'SN' }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <ng-select
+                class="custom"
+                dropdownPosition="'bottom'"
+                [placeholder]="'Status' | translate"
+                [(ngModel)]="selectedItemModel.available"
+                [bindValue]="'value'"
+                [bindLabel]="'text'"
+                [items]="[
+                  { value: true, text: ('On' | translate) },
+                  { value: false, text: ('Off' | translate) }
+                ]"
+                id="itemEditAvailableSelector"
+              ></ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          id="itemEditConfirmBtn"
+          class="btn-success btn-small-height"
+          [disabled]="!selectedItemModel.itemGroupId || !selectedItemModel.location"
+          (click)="update()"
+        >
+          {{ 'Update' | translate }}
+        </button>
+        <button
+          mdbBtn
+          id="itemEditCancelBtn"
+          class="btn-accent text-black-50 btn-small-height"
+          (click)="frame.hide()"
+        >
+          {{ 'Cancel' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

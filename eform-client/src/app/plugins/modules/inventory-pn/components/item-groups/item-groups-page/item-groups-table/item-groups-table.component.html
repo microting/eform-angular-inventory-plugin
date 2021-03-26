@@ -1,0 +1,213 @@
+<div class="row p-1 table-responsive no-gutters">
+  <table
+    mdbTable
+    striped="true"
+    hover="true"
+    small="true"
+    class="z-depth-1 text-center"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="idTableHeader"
+          (click)="onSortTable('Id')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            ID
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'Id'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Id' &&
+                !itemGroupsRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Id' &&
+                itemGroupsRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="codeTableHeader"
+          (click)="onSortTable('Code')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            {{ 'Code' | translate }}
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'Code'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Code' &&
+                !itemGroupsRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Code' &&
+                itemGroupsRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="nameTableHeader"
+          (click)="onSortTable('Name')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            {{ 'Name' | translate }}
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'Name'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Name' &&
+                !itemGroupsRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Name' &&
+                itemGroupsRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="descriptionTableHeader"
+          (click)="onSortTable('Description')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            {{ 'Description' | translate }}
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'Description'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Description' &&
+                !itemGroupsRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'Description' &&
+                itemGroupsRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th
+          scope="col"
+          class="table-header-sortable"
+          id="parentGroupTableHeader"
+          (click)="onSortTable('ParentGroup')"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            {{ 'Parent group' | translate }}
+            <i
+              class="material-icons text-black-50"
+              *ngIf="localPageSettings.sort != 'ParentGroup'"
+              >unfold_more</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'ParentGroup' &&
+                !itemGroupsRequestModel.isSortDsc
+              "
+              >expand_less</i
+            >
+            <i
+              class="material-icons"
+              *ngIf="
+                localPageSettings.sort == 'ParentGroup' &&
+                itemGroupsRequestModel.isSortDsc
+              "
+              >expand_more</i
+            >
+          </div>
+        </th>
+        <th scope="col">
+          {{ 'Actions' | translate }}
+        </th>
+      </tr>
+    </thead>
+    <tbody id="tableBodyInventoryItemGroups">
+      <tr
+        *ngFor="let itemGroupModel of itemGroupsModel.entities; let i = index"
+      >
+        <td id="itemGroupId">
+          {{ itemGroupModel.id }}
+        </td>
+        <td id="itemGroupCode">
+          {{ itemGroupModel.code }}
+        </td>
+        <td id="itemGroupName">
+          {{ itemGroupModel.name }}
+        </td>
+        <td id="itemGroupDescription">
+          {{ itemGroupModel.description }}
+        </td>
+        <td id="itemGroupParent">
+          {{ itemGroupModel.parent ? itemGroupModel.parent.name : '' }}
+        </td>
+        <td>
+          <div class="d-flex flex-row justify-content-center">
+            <button
+              id="editItemGroupBtn"
+              class="btn btn-accent text-black-50 btn-icon mb-2"
+              mdbTooltip="{{ 'Edit item group' | translate }}"
+              (click)="onShowEditItemGroupModal(itemGroupModel)"
+            >
+              <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+            <button
+              id="deleteItemGroupBtn"
+              class="btn btn-danger btn-icon mb-2"
+              mdbTooltip="{{ 'Delete item group' | translate }}"
+              (click)="onShowDeleteItemGroupModal(itemGroupModel)"
+            >
+              <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

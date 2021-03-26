@@ -1,0 +1,42 @@
+<subheader-pn [title]="'New item type' | translate">
+  <div class="p-3">
+    <button
+      mdbBtn
+      id="itemTypeCreateSaveBtn"
+      class="btn-success btn-small-height"
+      [disabled]="!newItemTypeForm.valid"
+      (click)="createItemType()"
+    >
+      {{ 'Create' | translate }}
+    </button>
+    <button
+      mdbBtn
+      id="itemTypeCreateCancelBtn"
+      class="btn-accent text-black-50 btn-small-height"
+      (click)="goBack()"
+    >
+      {{ 'Cancel' | translate }}
+    </button>
+  </div>
+</subheader-pn>
+
+<div class="container-fluid">
+  <div class="row mt-4 mb-4">
+    <div class="col-md-12 col-xs-12" role="main">
+      <app-item-type-create-form
+        [createItemTypeForm]="newItemTypeForm"
+        [availableItemGroups]="availableItemGroups"
+        [availableTags]="availableTags"
+        [filteredItemTypes]="filteredItemTypes"
+        [dependencies]="itemTypeDependencies"
+        [pictogramImagesPreview]="pictogramImages"
+        [dangerLabelImagesPreview]="dangerLabelImages"
+        (dependentItemGroupChanged)="onDependentItemGroupChanged($event)"
+        (createNewDependency)="addNewDependency()"
+        (deleteDependency)="onDeleteDependency($event)"
+        (imageProcessed)="onImageProcessed($event)"
+        (deleteImage)="onDeleteImage($event)"
+      ></app-item-type-create-form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,115 @@
+<div class="row p-1 table-responsive no-gutters">
+  <table
+    mdbTable
+    striped="true"
+    hover="true"
+    small="true"
+    class="z-depth-1 text-center"
+  >
+    <thead
+      table-headers
+      [tableHeaders]="tableHeaders"
+      [currentSortName]="localPageSettings.sort"
+      (sortChanged)="onSortTable($event)"
+      [isSortDsc]="itemTypesRequestModel.isSortDsc"
+    ></thead>
+    <tbody id="tableBodyInventoryItemType">
+      <tr *ngFor="let itemTypeModel of itemTypesModel.entities; let i = index">
+        <td id="itemTypeId">
+          {{ itemTypeModel.id }}
+        </td>
+        <td id="itemTypeDate">
+          <date-formatter
+            [date]="itemTypeModel.createdDate"
+            [Format]="'datetime'"
+          ></date-formatter>
+        </td>
+        <td id="itemTypeCreatedBy">
+          {{ itemTypeModel.createdBy }}
+        </td>
+        <td id="itemParentType">
+          {{ itemTypeModel.parentTypeName }}
+        </td>
+        <td id="itemTypeName">
+          {{ itemTypeModel.name }}
+        </td>
+        <td id="itemTypeUsage">
+          {{ itemTypeModel.usage }}
+        </td>
+        <td id="itemTypeDescription">
+          {{ itemTypeModel.description }}
+        </td>
+        <td id="itemTypeRiscDescription">
+          {{ itemTypeModel.riskDescription }}
+        </td>
+        <td id="itemTypeComment">
+          {{ itemTypeModel.comment }}
+        </td>
+        <td id="itemTypeTags">
+          <div class="d-flex justify-content-center">
+            <div>
+              <p
+                class="badge badge-primary mb-1"
+                id="assignedTag"
+                *ngFor="let tag of itemTypeModel.tags"
+                style="cursor: pointer"
+                (click)="onTagSelected(tag.id)"
+              >
+                <fa-icon icon="tag"></fa-icon>
+                {{ tag.name }}
+              </p>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex flex-row justify-content-center">
+            <button
+              id="showPictogramImages"
+              *ngIf="itemTypeModel.pictogramImages && itemTypeModel.pictogramImages.length > 0"
+              (click)="openImagesModal(itemTypeModel.pictogramImages, true)"
+              class="btn btn-accent text-black-50 btn-icon mb-2"
+              mdbTooltip="{{ 'View pictogram images' | translate }}"
+            >
+              <fa-icon
+                icon="clipboard-list"
+                size="lg"
+                [fixedWidth]="true"
+              ></fa-icon>
+            </button>
+            <button
+              *ngIf="itemTypeModel.dangerLabelImages && itemTypeModel.dangerLabelImages.length > 0"
+              id="showDangerLabelImages"
+              (click)="
+                openImagesModal(itemTypeModel.dangerLabelImages, false)
+              "
+              class="btn btn-accent text-black-50 btn-icon mb-2"
+              mdbTooltip="{{ 'View danger label images' | translate }}"
+            >
+              <fa-icon
+                icon="clipboard-check"
+                size="lg"
+                [fixedWidth]="true"
+              ></fa-icon>
+            </button>
+            <button
+              id="editItemTypeBtn"
+              class="btn btn-accent text-black-50 btn-icon mb-2"
+              mdbTooltip="{{ 'Edit item type' | translate }}"
+              [routerLink]="['./edit', itemTypeModel.id]"
+            >
+              <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+            <button
+              id="deleteItemTypeBtn"
+              class="btn btn-danger btn-icon mb-2"
+              mdbTooltip="{{ 'Delete item type' | translate }}"
+              (click)="onShowDeleteItemTypeModal(itemTypeModel)"
+            >
+              <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
