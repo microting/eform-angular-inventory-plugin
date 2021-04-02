@@ -1,5 +1,14 @@
 # Changelog
 
+## [v2.0.78](https://github.com/microting/eform-angular-items-planning-plugin/tree/v2.0.78) (2021-03-29)
+
+[Full Changelog](https://github.com/microting/eform-angular-items-planning-plugin/compare/v2.0.77...v2.0.78)
+
+**Implemented enhancements:**
+
+- Bump Microting.eFormApi.BasePn from 2.0.106 to 2.0.107 [\#117](https://github.com/microting/eform-angular-items-planning-plugin/issues/117)
+- Bump Microting.eForm from 4.4.11 to 4.4.13 [\#116](https://github.com/microting/eform-angular-items-planning-plugin/issues/116)
+
 ## [v2.0.77](https://github.com/microting/eform-angular-items-planning-plugin/tree/v2.0.77) (2021-03-22)
 
 [Full Changelog](https://github.com/microting/eform-angular-items-planning-plugin/compare/v2.0.76...v2.0.77)
@@ -466,6 +475,10 @@
 
 [Full Changelog](https://github.com/microting/eform-angular-items-planning-plugin/compare/v2.0.2...v2.0.3)
 
+**Merged pull requests:**
+
+- Add name sorting fixes [\#17](https://github.com/microting/eform-angular-items-planning-plugin/pull/17) ([emleonid](https://github.com/emleonid))
+
 ## [v2.0.2](https://github.com/microting/eform-angular-items-planning-plugin/tree/v2.0.2) (2020-08-10)
 
 [Full Changelog](https://github.com/microting/eform-angular-items-planning-plugin/compare/v2.0.1...v2.0.2)
@@ -480,8 +493,8 @@
 
 **Merged pull requests:**
 
-- Add name sorting fixes [\#17](https://github.com/microting/eform-angular-items-planning-plugin/pull/17) ([emleonid](https://github.com/emleonid))
 - Item update fixes [\#15](https://github.com/microting/eform-angular-items-planning-plugin/pull/15) ([emleonid](https://github.com/emleonid))
+- Fix for tests [\#14](https://github.com/microting/eform-angular-items-planning-plugin/pull/14) ([Gid733](https://github.com/Gid733))
 - Updates [\#13](https://github.com/microting/eform-angular-items-planning-plugin/pull/13) ([Gid733](https://github.com/Gid733))
 - PR for tests [\#12](https://github.com/microting/eform-angular-items-planning-plugin/pull/12) ([Gid733](https://github.com/Gid733))
 - Updates [\#11](https://github.com/microting/eform-angular-items-planning-plugin/pull/11) ([Gid733](https://github.com/Gid733))
@@ -494,7 +507,6 @@
 
 **Merged pull requests:**
 
-- Fix for tests [\#14](https://github.com/microting/eform-angular-items-planning-plugin/pull/14) ([Gid733](https://github.com/Gid733))
 - Reworked plugin to work with plannings [\#1](https://github.com/microting/eform-angular-items-planning-plugin/pull/1) ([Gid733](https://github.com/Gid733))
 
 
