@@ -470,6 +470,7 @@
 **Merged pull requests:**
 
 - Added search filters [\#18](https://github.com/microting/eform-angular-items-planning-plugin/pull/18) ([emleonid](https://github.com/emleonid))
+- Updates [\#11](https://github.com/microting/eform-angular-items-planning-plugin/pull/11) ([Gid733](https://github.com/Gid733))
 
 ## [v2.0.3](https://github.com/microting/eform-angular-items-planning-plugin/tree/v2.0.3) (2020-08-12)
 
@@ -497,7 +498,6 @@
 - Fix for tests [\#14](https://github.com/microting/eform-angular-items-planning-plugin/pull/14) ([Gid733](https://github.com/Gid733))
 - Updates [\#13](https://github.com/microting/eform-angular-items-planning-plugin/pull/13) ([Gid733](https://github.com/Gid733))
 - PR for tests [\#12](https://github.com/microting/eform-angular-items-planning-plugin/pull/12) ([Gid733](https://github.com/Gid733))
-- Updates [\#11](https://github.com/microting/eform-angular-items-planning-plugin/pull/11) ([Gid733](https://github.com/Gid733))
 - Updates [\#10](https://github.com/microting/eform-angular-items-planning-plugin/pull/10) ([Gid733](https://github.com/Gid733))
 - Added reporting [\#9](https://github.com/microting/eform-angular-items-planning-plugin/pull/9) ([Gid733](https://github.com/Gid733))
 
