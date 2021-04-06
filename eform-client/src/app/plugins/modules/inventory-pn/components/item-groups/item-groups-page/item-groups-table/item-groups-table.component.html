@@ -9,9 +9,9 @@
     <thead
       table-headers
       [tableHeaders]="tableHeaders"
-      [currentSortName]="localPageSettings.sort"
+      [currentSortName]="itemGroupsStateService.getSort() | async"
       (sortChanged)="onSortTable($event)"
-      [isSortDsc]="itemGroupsRequestModel.isSortDsc"
+      [isSortDsc]="itemGroupsStateService.getIsSortDsc() | async"
     ></thead>
     <tbody id="tableBodyInventoryItemGroups">
       <tr

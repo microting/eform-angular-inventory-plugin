@@ -2,31 +2,19 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subject, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import {
-  PluginClaimsHelper,
-  updateTablePage,
-  updateTableSorting,
-} from 'src/app/common/helpers';
-import {
-  CommonDictionaryModel,
-  Paged,
-  PageSettingsModel,
-} from 'src/app/common/models';
-import { SharedPnService } from 'src/app/plugins/modules/shared/services';
+import { debounceTime } from 'rxjs/internal/operators/debounceTime';
+import { CommonDictionaryModel, Paged } from 'src/app/common/models';
 import { format } from 'date-fns';
 import {
   InventoryItemCreateModel,
   InventoryItemModel,
-  InventoryItemsRequestModel,
   InventoryItemUpdateModel,
 } from '../../../../models';
 import {
-  InventoryPnItemGroupsService,
   InventoryPnItemsService,
   InventoryPnItemTypesService,
 } from '../../../../services';
-import { getOffset } from 'src/app/common/helpers/pagination.helper';
+import { ItemsStateService } from '../../state/items-state-service';
 
 @AutoUnsubscribe()
 @Component({
@@ -39,14 +27,11 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
   @ViewChild('createItemModal', { static: false }) createItemModal;
   @ViewChild('editItemModal', { static: false }) editItemModal;
   SNSearchSubject = new Subject();
-  localPageSettings: PageSettingsModel = new PageSettingsModel();
   itemsModel: Paged<InventoryItemModel> = new Paged<InventoryItemModel>();
-  itemsRequestModel: InventoryItemsRequestModel = new InventoryItemsRequestModel();
   itemTypesList: CommonDictionaryModel[] = [];
   selectedItemGroupId: number | null = null;
 
   getItemsSub$: Subscription;
-  getItemGroupsDictionarySub$: Subscription;
   getItemTypesDictionarySub$: Subscription;
   activatedRouteSub$: Subscription;
   updateItemSub$: Subscription;
@@ -54,59 +39,37 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
   deleteItemSub$: Subscription;
 
   constructor(
-    private sharedPnService: SharedPnService,
     private itemsService: InventoryPnItemsService,
     private itemTypesService: InventoryPnItemTypesService,
-    private itemGroupsService: InventoryPnItemGroupsService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public itemsStateService: ItemsStateService
   ) {
     this.SNSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
-      this.itemsRequestModel.SNFilter = val.toString();
+      this.itemsStateService.updateSnFilter(val.toString());
       this.getItems();
     });
     this.activatedRouteSub$ = this.activatedRoute.params.subscribe((params) => {
       this.selectedItemGroupId = +params['itemGroupId'];
+      this.itemsStateService.setItemGroupId(this.selectedItemGroupId);
     });
   }
 
-  get pluginClaimsHelper() {
-    return PluginClaimsHelper;
-  }
+  // get pluginClaimsHelper() {
+  //   return PluginClaimsHelper;
+  // }
 
   ngOnInit() {
     this.initData();
   }
 
   initData() {
-    this.getLocalPageSettings();
     this.getItems();
     this.getItemTypesDictionary();
   }
 
-  getLocalPageSettings() {
-    this.localPageSettings = this.sharedPnService.getLocalPageSettings(
-      'inventoryPnSettings',
-      'Items'
-    ).settings;
-  }
-
-  updateLocalPageSettings() {
-    this.sharedPnService.updateLocalPageSettings(
-      'inventoryPnSettings',
-      this.localPageSettings,
-      'Items'
-    );
-    this.getItems();
-  }
-
   getItems() {
-    this.itemsRequestModel = {
-      ...this.itemsRequestModel,
-      ...this.localPageSettings,
-      itemGroupId: this.selectedItemGroupId,
-    };
-    this.getItemsSub$ = this.itemsService
-      .getAllItems(this.itemsRequestModel)
+    this.getItemsSub$ = this.itemsStateService
+      .getAllItems()
       .subscribe((data) => {
         if (data && data.success) {
           this.itemsModel = data.model;
@@ -130,14 +93,7 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         if (data && data.success) {
           this.deleteItemModal.hide();
-          this.itemsRequestModel = {
-            ...this.itemsRequestModel,
-            offset: getOffset(
-              this.itemsRequestModel.pageSize,
-              this.itemsRequestModel.offset,
-              this.itemsModel.total - 1
-            ),
-          };
+          this.itemsStateService.onDelete();
           this.getItems();
         }
       });
@@ -148,21 +104,13 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
   }
 
   sortTable(sort: string) {
-    this.localPageSettings = {
-      ...updateTableSorting(sort, this.localPageSettings),
-    };
-    this.updateLocalPageSettings();
+    this.itemsStateService.onSortTable(sort);
+    this.getItems();
   }
 
   changePage(offset: number) {
-    const updatedRequestModel = updateTablePage(offset, this.itemsRequestModel);
-    if (updatedRequestModel) {
-      this.itemsRequestModel = {
-        ...this.itemsRequestModel,
-        ...updatedRequestModel,
-      };
-      this.getItems();
-    }
+    this.itemsStateService.changePage(offset);
+    this.getItems();
   }
 
   onSNFilterChanged(name: string) {
@@ -209,5 +157,10 @@ export class ItemsContainerComponent implements OnInit, OnDestroy {
 
   showEditItemModal(model: InventoryItemModel) {
     this.editItemModal.show(model);
+  }
+
+  onPageSizeChanged(pageSize: number) {
+    this.itemsStateService.updatePageSize(pageSize);
+    this.getItems();
   }
 }

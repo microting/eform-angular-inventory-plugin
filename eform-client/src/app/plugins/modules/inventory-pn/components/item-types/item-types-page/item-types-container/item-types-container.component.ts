@@ -2,22 +2,13 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { updateTablePage, updateTableSorting } from 'src/app/common/helpers';
-import {
-  CommonDictionaryModel,
-  Paged,
-  PageSettingsModel,
-} from 'src/app/common/models';
-import { SharedPnService } from '../../../../../shared/services';
-import {
-  InventoryItemTypeSimpleModel,
-  InventoryItemTypesRequestModel,
-} from '../../../../models';
+import { CommonDictionaryModel, Paged } from 'src/app/common/models';
+import { InventoryItemTypeSimpleModel } from '../../../../models';
 import {
   InventoryPnItemTypeTagsService,
   InventoryPnItemTypesService,
 } from '../../../../services';
-import { getOffset } from 'src/app/common/helpers/pagination.helper';
+import { ItemTypesStateService } from '../../state/item-types-state-service';
 
 @AutoUnsubscribe()
 @Component({
@@ -31,9 +22,7 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
   @ViewChild('itemTypeTagsModal') itemTypeTagsModal: any;
 
   nameSearchSubject = new Subject();
-  localPageSettings: PageSettingsModel = new PageSettingsModel();
   itemTypesModel: Paged<InventoryItemTypeSimpleModel> = new Paged<InventoryItemTypeSimpleModel>();
-  itemTypesRequestModel: InventoryItemTypesRequestModel = new InventoryItemTypesRequestModel();
   selectedItemTypeModel: InventoryItemTypeSimpleModel = new InventoryItemTypeSimpleModel();
   availableTags: CommonDictionaryModel[] = [];
 
@@ -42,66 +31,24 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
   deleteItemTypeSub$: Subscription;
 
   constructor(
-    private sharedPnService: SharedPnService,
     private itemTypesService: InventoryPnItemTypesService,
-    private tagsService: InventoryPnItemTypeTagsService
+    private tagsService: InventoryPnItemTypeTagsService,
+    public itemTypesStateService: ItemTypesStateService
   ) {
     this.nameSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
-      this.itemTypesRequestModel.nameFilter = val.toString();
+      this.itemTypesStateService.updateNameFilter(val.toString());
       this.getItemTypes();
     });
   }
 
   ngOnInit() {
-    this.getLocalPageSettings();
     this.getTags();
     this.getItemTypes();
   }
 
-  getLocalPageSettings() {
-    this.localPageSettings = this.sharedPnService.getLocalPageSettings(
-      'inventoryPnSettings',
-      'ItemTypes'
-    ).settings;
-    this.localPageSettings.additional.forEach((value) => {
-      if (value.key === 'tagIds') {
-        this.itemTypesRequestModel.tagIds = JSON.parse(value.value);
-      }
-    });
-  }
-
-  updateLocalPageSettings() {
-    const index = this.localPageSettings.additional.findIndex(
-      (item) => item.key === 'tagIds'
-    );
-    if (index !== -1) {
-      this.localPageSettings.additional[index].value = JSON.stringify(
-        this.itemTypesRequestModel.tagIds
-      );
-    } else {
-      this.localPageSettings.additional = [
-        ...this.localPageSettings.additional,
-        {
-          key: 'tagIds',
-          value: JSON.stringify(this.itemTypesRequestModel.tagIds),
-        },
-      ];
-    }
-    this.sharedPnService.updateLocalPageSettings(
-      'inventoryPnSettings',
-      this.localPageSettings,
-      'ItemTypes'
-    );
-    this.getItemTypes();
-  }
-
   getItemTypes() {
-    this.itemTypesRequestModel = {
-      ...this.itemTypesRequestModel,
-      ...this.localPageSettings,
-    };
-    this.getInventoryTypesSub$ = this.itemTypesService
-      .getAllItemTypes(this.itemTypesRequestModel)
+    this.getInventoryTypesSub$ = this.itemTypesStateService
+      .getAllItemTypes()
       .subscribe((data) => {
         if (data && data.success) {
           this.itemTypesModel = data.model;
@@ -123,24 +70,13 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
   }
 
   sortTable(sort: string) {
-    this.localPageSettings = {
-      ...updateTableSorting(sort, this.localPageSettings),
-    };
-    this.updateLocalPageSettings();
+    this.itemTypesStateService.onSortTable(sort);
+    this.getItemTypes();
   }
 
   changePage(offset: number) {
-    const updatedRequestModel = updateTablePage(
-      offset,
-      this.itemTypesRequestModel
-    );
-    if (updatedRequestModel) {
-      this.itemTypesRequestModel = {
-        ...this.itemTypesRequestModel,
-        ...updatedRequestModel,
-      };
-      this.getItemTypes();
-    }
+    this.itemTypesStateService.changePage(offset);
+    this.getItemTypes();
   }
 
   onNameFilterChanged(name: string) {
@@ -152,27 +88,18 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
   }
 
   saveTag(e: any) {
-    if (!this.itemTypesRequestModel.tagIds.find((x) => x === e.id)) {
-      this.itemTypesRequestModel.tagIds.push(e.id);
-    }
-    this.updateLocalPageSettings();
+    this.itemTypesStateService.addOrRemoveTagIds(e.id);
+    this.getItemTypes();
   }
 
   removeSavedTag(e: any) {
-    this.itemTypesRequestModel.tagIds = this.itemTypesRequestModel.tagIds.filter(
-      (x) => x !== e.id
-    );
-    this.updateLocalPageSettings();
+    this.itemTypesStateService.addOrRemoveTagIds(e.value.id);
+    this.getItemTypes();
   }
 
   tagSelected(id: number) {
-    if (!this.itemTypesRequestModel.tagIds.find((x) => x === id)) {
-      this.itemTypesRequestModel.tagIds = [
-        ...this.itemTypesRequestModel.tagIds,
-        id,
-      ];
-      this.updateLocalPageSettings();
-    }
+    this.itemTypesStateService.addOrRemoveTagIds(id);
+    this.getItemTypes();
   }
 
   onDeleteItemType(model: InventoryItemTypeSimpleModel) {
@@ -180,14 +107,7 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
       .deleteItemType(model.id)
       .subscribe((data) => {
         if (data && data.success) {
-          this.itemTypesRequestModel = {
-            ...this.itemTypesRequestModel,
-            offset: getOffset(
-              this.itemTypesRequestModel.pageSize,
-              this.itemTypesRequestModel.offset,
-              this.itemTypesModel.total - 1
-            ),
-          };
+          this.itemTypesStateService.onDelete();
           this.getItemTypes();
           this.deleteItemTypeModal.hide();
         }
@@ -199,4 +119,9 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {}
+
+  onPageSizeChanged(pageSize: number) {
+    this.itemTypesStateService.updatePageSize(pageSize);
+    this.getItemTypes();
+  }
 }

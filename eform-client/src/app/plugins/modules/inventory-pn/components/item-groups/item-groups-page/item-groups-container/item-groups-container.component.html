@@ -14,12 +14,9 @@
 
 <div class="container-fluid">
   <app-item-groups-header
-    [itemGroupsRequestModel]="itemGroupsRequestModel"
     (nameFilterChanged)="onNameFilterChanged($event)"
   ></app-item-groups-header>
   <app-item-groups-table
-    [itemGroupsRequestModel]="itemGroupsRequestModel"
-    [localPageSettings]="localPageSettings"
     [itemGroupsModel]="itemGroupsModel"
     (showDeleteItemGroupModal)="showDeleteItemGroupModal($event)"
     (showEditItemGroupModal)="showEditItemGroupModal($event)"
@@ -28,20 +25,16 @@
   <div class="row justify-content-between mr-2 ml-2">
     <div class="col-md-1">
       <page-size-pn
-        [pageSize]="localPageSettings.pageSize"
-        (onPageSizeChanged)="
-          localPageSettings.pageSize = $event;
-          itemGroupsRequestModel.pageIndex = 1;
-          updateLocalPageSettings()
-        "
+        [pageSize]="itemGroupsStateService.getPageSize() | async"
+        (onPageSizeChanged)="onPageSizeChanged($event)"
       >
       </page-size-pn>
     </div>
     <div class="col-md-4 ml-auto d-flex justify-content-end p-2">
       <pagination-pn
-        [limit]="itemGroupsRequestModel.pageSize"
+        [limit]="itemGroupsStateService.getPageSize() | async"
         [size]="itemGroupsModel.total"
-        [offset]="itemGroupsRequestModel.offset"
+        [offset]="itemGroupsStateService.getOffset() | async"
         (onPageChanged)="changePage($event)"
       ></pagination-pn>
     </div>

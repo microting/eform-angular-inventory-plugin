@@ -1,13 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  Paged,
-  PageSettingsModel,
-  TableHeaderElementModel,
-} from 'src/app/common/models';
-import {
-  InventoryItemTypeSimpleModel,
-  InventoryItemTypesRequestModel,
-} from '../../../../models';
+import { Paged, TableHeaderElementModel } from 'src/app/common/models';
+import { InventoryItemTypeSimpleModel } from '../../../../models';
+import { ItemTypesStateService } from '../../state/item-types-state-service';
 
 @Component({
   selector: 'app-item-types-table',
@@ -15,9 +9,6 @@ import {
   styleUrls: ['./item-types-table.component.scss'],
 })
 export class ItemTypesTableComponent implements OnInit {
-  @Input() localPageSettings: PageSettingsModel = new PageSettingsModel();
-  @Input()
-  itemTypesRequestModel: InventoryItemTypesRequestModel = new InventoryItemTypesRequestModel();
   @Input()
   itemTypesModel: Paged<InventoryItemTypeSimpleModel> = new Paged<InventoryItemTypeSimpleModel>();
   @Output() sortTable: EventEmitter<string> = new EventEmitter<string>();
@@ -59,7 +50,7 @@ export class ItemTypesTableComponent implements OnInit {
     { name: 'Actions', elementId: '', sortable: false },
   ];
 
-  constructor() {}
+  constructor(public itemTypesStateService: ItemTypesStateService) {}
 
   ngOnInit(): void {}
 

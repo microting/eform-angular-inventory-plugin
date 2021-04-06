@@ -2,11 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   OnInit,
   Output,
 } from '@angular/core';
-import { InventoryItemGroupsRequestModel } from '../../../../models';
+import { ItemGroupsStateService } from '../../state/item-groups-state-service';
 
 @Component({
   selector: 'app-item-groups-header',
@@ -15,12 +14,10 @@ import { InventoryItemGroupsRequestModel } from '../../../../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemGroupsHeaderComponent implements OnInit {
-  @Input()
-  itemGroupsRequestModel: InventoryItemGroupsRequestModel = new InventoryItemGroupsRequestModel();
   @Output()
   nameFilterChanged: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor() {}
+  constructor(public itemGroupsStateService: ItemGroupsStateService) {}
 
   ngOnInit(): void {}
 

@@ -6,15 +6,9 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import {
-  Paged,
-  PageSettingsModel,
-  TableHeaderElementModel,
-} from 'src/app/common/models';
-import {
-  InventoryItemGroupModel,
-  InventoryItemGroupsRequestModel,
-} from '../../../../models';
+import { Paged, TableHeaderElementModel } from 'src/app/common/models';
+import { InventoryItemGroupModel } from '../../../../models';
+import { ItemGroupsStateService } from '../../state/item-groups-state-service';
 
 @Component({
   selector: 'app-item-groups-table',
@@ -23,9 +17,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemGroupsTableComponent implements OnInit {
-  @Input() localPageSettings: PageSettingsModel = new PageSettingsModel();
-  @Input()
-  itemGroupsRequestModel: InventoryItemGroupsRequestModel = new InventoryItemGroupsRequestModel();
   @Input()
   itemGroupsModel: Paged<InventoryItemGroupModel> = new Paged<InventoryItemGroupModel>();
   @Output() sortTable: EventEmitter<string> = new EventEmitter<string>();
@@ -54,7 +45,7 @@ export class ItemGroupsTableComponent implements OnInit {
     },
     { name: 'Actions', elementId: '', sortable: false },
   ];
-  constructor() {}
+  constructor(public itemGroupsStateService: ItemGroupsStateService) {}
 
   ngOnInit(): void {}
 
