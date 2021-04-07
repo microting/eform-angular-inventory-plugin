@@ -4,7 +4,8 @@
       <input
         mdbInput
         type="text"
-        (input)="onNameFilterChanged($event.target.value)"
+        [ngModel]="itemTypesStateService.getNameFilter() | async"
+        (ngModelChange)="onNameFilterChanged($event)"
         class="form-control input-sm"
         id="nameFilterInput"
       />
@@ -17,7 +18,7 @@
       dropdownPosition="'bottom'"
       [placeholder]="'Tags' | translate"
       [items]="availableTags"
-      [(ngModel)]="itemTypesRequestModel.tagIds"
+      [ngModel]="itemTypesStateService.getTagIds() | async"
       (add)="saveTag($event)"
       (remove)="removeSavedTag($event)"
       [clearable]="false"

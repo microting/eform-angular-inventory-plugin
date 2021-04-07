@@ -9,9 +9,9 @@
     <thead
       table-headers
       [tableHeaders]="tableHeaders"
-      [currentSortName]="localPageSettings.sort"
+      [currentSortName]="itemTypesStateService.getSort() | async"
       (sortChanged)="onSortTable($event)"
-      [isSortDsc]="itemTypesRequestModel.isSortDsc"
+      [isSortDsc]="itemTypesStateService.getIsSortDsc() | async"
     ></thead>
     <tbody id="tableBodyInventoryItemType">
       <tr *ngFor="let itemTypeModel of itemTypesModel.entities; let i = index">
@@ -65,7 +65,10 @@
           <div class="d-flex flex-row justify-content-center">
             <button
               id="showPictogramImages"
-              *ngIf="itemTypeModel.pictogramImages && itemTypeModel.pictogramImages.length > 0"
+              *ngIf="
+                itemTypeModel.pictogramImages &&
+                itemTypeModel.pictogramImages.length > 0
+              "
               (click)="openImagesModal(itemTypeModel.pictogramImages, true)"
               class="btn btn-accent text-black-50 btn-icon mb-2"
               mdbTooltip="{{ 'View pictogram images' | translate }}"
@@ -77,11 +80,12 @@
               ></fa-icon>
             </button>
             <button
-              *ngIf="itemTypeModel.dangerLabelImages && itemTypeModel.dangerLabelImages.length > 0"
-              id="showDangerLabelImages"
-              (click)="
-                openImagesModal(itemTypeModel.dangerLabelImages, false)
+              *ngIf="
+                itemTypeModel.dangerLabelImages &&
+                itemTypeModel.dangerLabelImages.length > 0
               "
+              id="showDangerLabelImages"
+              (click)="openImagesModal(itemTypeModel.dangerLabelImages, false)"
               class="btn btn-accent text-black-50 btn-icon mb-2"
               mdbTooltip="{{ 'View danger label images' | translate }}"
             >

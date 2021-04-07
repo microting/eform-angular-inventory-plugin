@@ -6,7 +6,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import {CommonDictionaryModel} from 'src/app/common/models';
+import { CommonDictionaryModel } from 'src/app/common/models';
 import {
   InventoryItemGroupModel,
   InventoryItemGroupUpdateModel,
@@ -24,14 +24,12 @@ export class ItemGroupEditModalComponent implements OnInit {
   updateItemGroup: EventEmitter<InventoryItemGroupUpdateModel> = new EventEmitter<InventoryItemGroupUpdateModel>();
   selectedItemGroupModel: InventoryItemGroupUpdateModel = new InventoryItemGroupUpdateModel();
 
-
   constructor() {}
 
   ngOnInit() {}
 
   show(model: InventoryItemGroupModel) {
     this.selectedItemGroupModel = new InventoryItemGroupUpdateModel();
-    debugger;
     this.selectedItemGroupModel = {
       id: model.id,
       description: model.description,

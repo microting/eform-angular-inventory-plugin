@@ -14,13 +14,10 @@
 
 <div class="container-fluid">
   <app-items-page-header
-    [itemsRequestModel]="itemsRequestModel"
     (SNFilterChanged)="onSNFilterChanged($event)"
   ></app-items-page-header>
   <app-items-page-table
     [selectedItemGroupId]="selectedItemGroupId"
-    [itemsRequestModel]="itemsRequestModel"
-    [localPageSettings]="localPageSettings"
     [itemsModel]="itemsModel"
     (showDeleteItemModal)="showDeleteItemModal($event)"
     (showEditItemModal)="showEditItemModal($event)"
@@ -29,21 +26,16 @@
   <div class="row justify-content-between mr-2 ml-2">
     <div class="col-md-1">
       <page-size-pn
-        [pageSize]="localPageSettings.pageSize"
-        (onPageSizeChanged)="
-          localPageSettings.pageSize = $event;
-          itemsRequestModel.pageIndex = 1;
-          updateLocalPageSettings()
-        "
+        [pageSize]="itemsStateService.getPageSize() | async"
+        (onPageSizeChanged)="onPageSizeChanged($event)"
       >
       </page-size-pn>
     </div>
     <div class="col-md-4 ml-auto d-flex justify-content-end p-2">
       <pagination-pn
-        *ngIf="itemsModel.total > itemsRequestModel.pageSize"
-        [limit]="itemsRequestModel.pageSize"
+        [limit]="itemsStateService.getPageSize() | async"
         [size]="itemsModel.total"
-        [offset]="itemsRequestModel.offset"
+        [offset]="itemsStateService.getOffset() | async"
         (onPageChanged)="changePage($event)"
       ></pagination-pn>
     </div>

@@ -6,15 +6,9 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import {
-  Paged,
-  PageSettingsModel,
-  TableHeaderElementModel,
-} from 'src/app/common/models';
-import {
-  InventoryItemModel,
-  InventoryItemsRequestModel,
-} from '../../../../models';
+import { Paged, TableHeaderElementModel } from 'src/app/common/models';
+import { InventoryItemModel } from '../../../../models';
+import { ItemsStateService } from '../../state/items-state-service';
 
 @Component({
   selector: 'app-items-page-table',
@@ -23,9 +17,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemsPageTableComponent implements OnInit {
-  @Input() localPageSettings: PageSettingsModel = new PageSettingsModel();
-  @Input()
-  itemsRequestModel: InventoryItemsRequestModel = new InventoryItemsRequestModel();
   @Input()
   itemsModel: Paged<InventoryItemModel> = new Paged<InventoryItemModel>();
   @Input() selectedItemGroupId: number;
@@ -46,7 +37,7 @@ export class ItemsPageTableComponent implements OnInit {
     { name: 'Actions', elementId: '', sortable: false },
   ];
 
-  constructor() {}
+  constructor(public itemsStateService: ItemsStateService) {}
 
   ngOnInit(): void {}
 
