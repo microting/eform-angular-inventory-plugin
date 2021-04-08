@@ -1,8 +1,14 @@
 # Changelog
 
-## [Unreleased](https://github.com/microting/eform-angular-items-planning-plugin/tree/HEAD)
+## [v2.0.81](https://github.com/microting/eform-angular-items-planning-plugin/tree/v2.0.81) (2021-04-08)
 
-[Full Changelog](https://github.com/microting/eform-angular-items-planning-plugin/compare/v2.0.80...HEAD)
+[Full Changelog](https://github.com/microting/eform-angular-items-planning-plugin/compare/v2.0.80...v2.0.81)
+
+**Implemented enhancements:**
+
+- Bump Microting.ItemsPlanningBase from 2.2.14 to 2.2.16 [\#156](https://github.com/microting/eform-angular-items-planning-plugin/issues/156)
+- Bump Microting.eFormApi.BasePn from 2.0.113 to 2.0.115 [\#155](https://github.com/microting/eform-angular-items-planning-plugin/issues/155)
+- Bump Microting.eForm from 4.4.21 to 4.4.23 [\#154](https://github.com/microting/eform-angular-items-planning-plugin/issues/154)
 
 **Merged pull requests:**
 
