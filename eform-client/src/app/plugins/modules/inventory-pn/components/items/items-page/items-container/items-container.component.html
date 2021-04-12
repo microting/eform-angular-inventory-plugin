@@ -1,4 +1,4 @@
-<subheader-pn>
+<eform-subheader>
   <div class="p-3">
     <button
       mdbBtn
@@ -10,7 +10,7 @@
       {{ 'New item' | translate }}
     </button>
   </div>
-</subheader-pn>
+</eform-subheader>
 
 <div class="container-fluid">
   <app-items-page-header
@@ -25,19 +25,19 @@
   ></app-items-page-table>
   <div class="row justify-content-between mr-2 ml-2">
     <div class="col-md-1">
-      <page-size-pn
+      <eform-page-size
         [pageSize]="itemsStateService.getPageSize() | async"
         (onPageSizeChanged)="onPageSizeChanged($event)"
       >
-      </page-size-pn>
+      </eform-page-size>
     </div>
     <div class="col-md-4 ml-auto d-flex justify-content-end p-2">
-      <pagination-pn
+      <eform-pagination
         [limit]="itemsStateService.getPageSize() | async"
         [size]="itemsModel.total"
         [offset]="itemsStateService.getOffset() | async"
         (onPageChanged)="changePage($event)"
-      ></pagination-pn>
+      ></eform-pagination>
     </div>
   </div>
 </div>
