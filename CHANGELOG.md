@@ -1,5 +1,15 @@
 # Changelog
 
+## [v2.0.84](https://github.com/microting/eform-angular-items-planning-plugin/tree/v2.0.84) (2021-04-12)
+
+[Full Changelog](https://github.com/microting/eform-angular-items-planning-plugin/compare/v2.0.83...v2.0.84)
+
+**Implemented enhancements:**
+
+- Bump Microting.ItemsPlanningBase from 2.2.18 to 2.2.19 [\#174](https://github.com/microting/eform-angular-items-planning-plugin/issues/174)
+- Bump Microting.eFormApi.BasePn from 2.0.117 to 2.0.118 [\#173](https://github.com/microting/eform-angular-items-planning-plugin/issues/173)
+- Bump Microting.eForm from 4.4.26 to 4.4.27 [\#172](https://github.com/microting/eform-angular-items-planning-plugin/issues/172)
+
 ## [v2.0.83](https://github.com/microting/eform-angular-items-planning-plugin/tree/v2.0.83) (2021-04-11)
 
 [Full Changelog](https://github.com/microting/eform-angular-items-planning-plugin/compare/v2.0.82...v2.0.83)
@@ -294,6 +304,7 @@
 **Merged pull requests:**
 
 - Fixed importing [\#53](https://github.com/microting/eform-angular-items-planning-plugin/pull/53) ([Gid733](https://github.com/Gid733))
+- Minor updates [\#52](https://github.com/microting/eform-angular-items-planning-plugin/pull/52) ([Gid733](https://github.com/Gid733))
 - Reworked reports [\#51](https://github.com/microting/eform-angular-items-planning-plugin/pull/51) ([Gid733](https://github.com/Gid733))
 
 ## [v2.0.45](https://github.com/microting/eform-angular-items-planning-plugin/tree/v2.0.45) (2021-01-14)
@@ -326,7 +337,6 @@
 
 **Merged pull requests:**
 
-- Minor updates [\#52](https://github.com/microting/eform-angular-items-planning-plugin/pull/52) ([Gid733](https://github.com/Gid733))
 - Bump Microsoft.NET.Test.Sdk from 16.7.1 to 16.8.3 in /eFormAPI/Plugins/ItemsPlanning.Pn [\#42](https://github.com/microting/eform-angular-items-planning-plugin/pull/42) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump HtmlToOpenXml.dll from 2.1.0 to 2.2.0 in /eFormAPI/Plugins/ItemsPlanning.Pn [\#40](https://github.com/microting/eform-angular-items-planning-plugin/pull/40) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump ClosedXML from 0.95.3 to 0.95.4 in /eFormAPI/Plugins/ItemsPlanning.Pn [\#38](https://github.com/microting/eform-angular-items-planning-plugin/pull/38) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
@@ -527,14 +537,11 @@
 **Merged pull requests:**
 
 - Added search filters [\#18](https://github.com/microting/eform-angular-items-planning-plugin/pull/18) ([emleonid](https://github.com/emleonid))
+- Add name sorting fixes [\#17](https://github.com/microting/eform-angular-items-planning-plugin/pull/17) ([emleonid](https://github.com/emleonid))
 
 ## [v2.0.3](https://github.com/microting/eform-angular-items-planning-plugin/tree/v2.0.3) (2020-08-12)
 
 [Full Changelog](https://github.com/microting/eform-angular-items-planning-plugin/compare/v2.0.2...v2.0.3)
-
-**Merged pull requests:**
-
-- Add name sorting fixes [\#17](https://github.com/microting/eform-angular-items-planning-plugin/pull/17) ([emleonid](https://github.com/emleonid))
 
 ## [v2.0.2](https://github.com/microting/eform-angular-items-planning-plugin/tree/v2.0.2) (2020-08-10)
 
