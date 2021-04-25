@@ -5,10 +5,10 @@ import { debounceTime } from 'rxjs/operators';
 import { CommonDictionaryModel, Paged } from 'src/app/common/models';
 import { InventoryItemTypeSimpleModel } from '../../../../models';
 import {
-  InventoryPnItemTypeTagsService,
   InventoryPnItemTypesService,
+  InventoryPnItemTypeTagsService,
 } from '../../../../services';
-import { ItemTypesStateService } from '../../state/item-types-state-service';
+import { ItemTypesStateService } from '../../store/item-types-state-service';
 
 @AutoUnsubscribe()
 @Component({

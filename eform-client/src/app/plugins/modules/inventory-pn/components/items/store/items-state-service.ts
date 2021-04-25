@@ -6,8 +6,8 @@ import { updateTableSort } from 'src/app/common/helpers';
 import { getOffset } from 'src/app/common/helpers/pagination.helper';
 import { map } from 'rxjs/operators';
 import { ItemsQuery } from './items-query';
-import { InventoryPnItemsService } from 'src/app/plugins/modules/inventory-pn/services';
-import { InventoryItemModel } from 'src/app/plugins/modules/inventory-pn/models';
+import { InventoryPnItemsService } from '../../../services';
+import { InventoryItemModel } from '../../../models';
 
 @Injectable({ providedIn: 'root' })
 export class ItemsStateService {
@@ -23,11 +23,11 @@ export class ItemsStateService {
   getAllItems(): Observable<OperationDataResult<Paged<InventoryItemModel>>> {
     return this.service
       .getAllItems({
-        isSortDsc: this.query.pageSetting.isSortDsc,
-        offset: this.query.pageSetting.offset,
-        pageSize: this.query.pageSetting.pageSize,
-        sort: this.query.pageSetting.sort,
-        SNFilter: this.query.pageSetting.snFilter,
+        isSortDsc: this.query.pageSetting.pagination.isSortDsc,
+        offset: this.query.pageSetting.pagination.offset,
+        pageSize: this.query.pageSetting.pagination.pageSize,
+        sort: this.query.pageSetting.pagination.sort,
+        SNFilter: this.query.pageSetting.pagination.nameFilter,
         pageIndex: 0,
         itemGroupId: this.itemGroupId,
       })
@@ -46,11 +46,22 @@ export class ItemsStateService {
   }
 
   updateSnFilter(snFilter: string) {
-    this.store.update({ snFilter: snFilter, offset: 0 });
+    this.store.update((state) => ({
+      pagination: {
+        ...state.pagination,
+        nameFilter: snFilter,
+        offset: 0,
+      },
+    }));
   }
 
   updatePageSize(pageSize: number) {
-    this.store.update({ pageSize: pageSize });
+    this.store.update((state) => ({
+      pagination: {
+        ...state.pagination,
+        pageSize: pageSize,
+      },
+    }));
     this.checkOffset();
   }
 
@@ -75,9 +86,12 @@ export class ItemsStateService {
   }
 
   changePage(offset: number) {
-    this.store.update({
-      offset: offset,
-    });
+    this.store.update((state) => ({
+      pagination: {
+        ...state.pagination,
+        offset: offset,
+      },
+    }));
   }
 
   onDelete() {
@@ -88,25 +102,31 @@ export class ItemsStateService {
   onSortTable(sort: string) {
     const localPageSettings = updateTableSort(
       sort,
-      this.query.pageSetting.sort,
-      this.query.pageSetting.isSortDsc
+      this.query.pageSetting.pagination.sort,
+      this.query.pageSetting.pagination.isSortDsc
     );
-    this.store.update({
-      isSortDsc: localPageSettings.isSortDsc,
-      sort: localPageSettings.sort,
-    });
+    this.store.update((state) => ({
+      pagination: {
+        ...state.pagination,
+        isSortDsc: localPageSettings.isSortDsc,
+        sort: localPageSettings.sort,
+      },
+    }));
   }
 
   checkOffset() {
     const newOffset = getOffset(
-      this.query.pageSetting.pageSize,
-      this.query.pageSetting.offset,
+      this.query.pageSetting.pagination.pageSize,
+      this.query.pageSetting.pagination.offset,
       this.total
     );
-    if (newOffset !== this.query.pageSetting.offset) {
-      this.store.update({
-        offset: newOffset,
-      });
+    if (newOffset !== this.query.pageSetting.pagination.offset) {
+      this.store.update((state) => ({
+        pagination: {
+          ...state.pagination,
+          offset: newOffset,
+        },
+      }));
     }
   }
 }
