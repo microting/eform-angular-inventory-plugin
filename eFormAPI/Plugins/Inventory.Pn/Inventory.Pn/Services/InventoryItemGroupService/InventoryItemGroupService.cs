@@ -189,7 +189,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                 await itemGroup.Update(_dbContext);
 
                 return new OperationResult(true,
-                    _inventoryLocalizationService.GetString("ItemGroupUpdatedSuccessfully")); 
+                    _inventoryLocalizationService.GetString("ItemGroupUpdatedSuccessfully"));
             }
             catch (Exception e)
             {
@@ -214,7 +214,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                 };
                 await itemGroup.Create(_dbContext);
                 return new OperationResult(true,
-                    _inventoryLocalizationService.GetString("ItemGroupCreatedSuccessfully")); 
+                    _inventoryLocalizationService.GetString("ItemGroupCreatedSuccessfully"));
             }
             catch (Exception e)
             {
@@ -310,14 +310,11 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                     Name = x.Name,
                     Code = x.Code,
                     Id = x.Id,
-                    // without this, such an object can send to front: parent: {id: 0, name: null}
-                    Parent = x.Parent.Name != null
-                        ? new ItemGroupDependencyItemGroup
-                        {
-                            Name = x.Parent.Name,
-                            Id = x.Parent.Id
-                        }
-                        : null,
+                    Parent = new ItemGroupDependencyItemGroup()
+                    {
+                        Name = x.Parent.Name,
+                        Id = x.Parent.Id
+                    },
                 });
         }
     }

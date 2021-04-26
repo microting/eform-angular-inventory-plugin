@@ -42,6 +42,7 @@ export class ItemGroupsTableComponent implements OnInit {
       name: 'ParentGroup',
       elementId: 'parentGroupTableHeader',
       sortable: true,
+      visibleName: 'Parent group',
     },
     { name: 'Actions', elementId: '', sortable: false },
   ];
