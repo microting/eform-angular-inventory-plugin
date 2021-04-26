@@ -310,11 +310,14 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                     Name = x.Name,
                     Code = x.Code,
                     Id = x.Id,
-                    Parent = new ItemGroupDependencyItemGroup()
-                    {
-                        Name = x.Parent.Name,
-                        Id = x.Parent.Id
-                    },
+                    // without this, such an object can send to front: parent: {id: 0, name: null}
+                    Parent = x.Parent.Name != null
+                        ? new ItemGroupDependencyItemGroup
+                        {
+                            Name = x.Parent.Name,
+                            Id = x.Parent.Id
+                        }
+                        : null,
                 });
         }
     }
