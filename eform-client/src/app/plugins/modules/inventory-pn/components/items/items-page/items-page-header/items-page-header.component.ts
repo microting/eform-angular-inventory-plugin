@@ -2,11 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   OnInit,
   Output,
 } from '@angular/core';
-import { InventoryItemsRequestModel } from '../../../../models';
+import { ItemsStateService } from '../../store/items-state-service';
 
 @Component({
   selector: 'app-items-page-header',
@@ -15,11 +14,9 @@ import { InventoryItemsRequestModel } from '../../../../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemsPageHeaderComponent implements OnInit {
-  @Input()
-  itemsRequestModel: InventoryItemsRequestModel = new InventoryItemsRequestModel();
   @Output() SNFilterChanged: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() {}
+  constructor(public itemsStateService: ItemsStateService) {}
 
   ngOnInit(): void {}
 

@@ -2,24 +2,14 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import {
-  PluginClaimsHelper,
-  updateTablePage,
-  updateTableSorting,
-} from 'src/app/common/helpers';
-import {
-  CommonDictionaryModel,
-  Paged,
-  PageSettingsModel,
-} from 'src/app/common/models';
-import { SharedPnService } from '../../../../../shared/services';
+import { CommonDictionaryModel, Paged } from 'src/app/common/models';
 import {
   InventoryItemGroupCreateModel,
   InventoryItemGroupModel,
-  InventoryItemGroupsRequestModel,
   InventoryItemGroupUpdateModel,
 } from '../../../../models';
 import { InventoryPnItemGroupsService } from '../../../../services';
+import { ItemGroupsStateService } from '../../store/item-groups-state-service';
 
 @AutoUnsubscribe()
 @Component({
@@ -32,9 +22,7 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
   @ViewChild('createItemGroupModal', { static: false }) createItemGroupModal;
   @ViewChild('editItemGroupModal', { static: false }) editItemGroupModal;
   nameSearchSubject = new Subject();
-  localPageSettings: PageSettingsModel = new PageSettingsModel();
   itemGroupsModel: Paged<InventoryItemGroupModel> = new Paged<InventoryItemGroupModel>();
-  itemGroupsRequestModel: InventoryItemGroupsRequestModel = new InventoryItemGroupsRequestModel();
   itemGroupsList: CommonDictionaryModel[];
   itemGroupsFilteredList: CommonDictionaryModel[];
 
@@ -45,48 +33,23 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
   deleteItemGroupSub$: Subscription;
 
   constructor(
-    private sharedPnService: SharedPnService,
-    private inventoryItemGroupsService: InventoryPnItemGroupsService
+    private inventoryItemGroupsService: InventoryPnItemGroupsService,
+    public itemGroupsStateService: ItemGroupsStateService
   ) {
     this.nameSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
-      this.itemGroupsRequestModel.nameFilter = val.toString();
+      this.itemGroupsStateService.updateNameFilter(val.toString());
       this.getItemGroups();
     });
   }
 
-  get pluginClaimsHelper() {
-    return PluginClaimsHelper;
-  }
-
   ngOnInit() {
-    this.getLocalPageSettings();
     this.getItemGroups();
     this.getItemGroupsDictionary();
   }
 
-  getLocalPageSettings() {
-    this.localPageSettings = this.sharedPnService.getLocalPageSettings(
-      'inventoryPnSettings',
-      'ItemGroups'
-    ).settings;
-  }
-
-  updateLocalPageSettings() {
-    this.sharedPnService.updateLocalPageSettings(
-      'inventoryPnSettings',
-      this.localPageSettings,
-      'ItemGroups'
-    );
-    this.getItemGroups();
-  }
-
   getItemGroups() {
-    this.itemGroupsRequestModel = {
-      ...this.itemGroupsRequestModel,
-      ...this.localPageSettings,
-    };
-    this.getItemGroupsSub$ = this.inventoryItemGroupsService
-      .getAllItemGroups(this.itemGroupsRequestModel)
+    this.getItemGroupsSub$ = this.itemGroupsStateService
+      .getAllItemGroups()
       .subscribe((data) => {
         if (data && data.success) {
           this.itemGroupsModel = data.model;
@@ -120,24 +83,13 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
   }
 
   sortTable(sort: string) {
-    this.localPageSettings = {
-      ...updateTableSorting(sort, this.localPageSettings),
-    };
-    this.updateLocalPageSettings();
+    this.itemGroupsStateService.onSortTable(sort);
+    this.getItemGroups();
   }
 
   changePage(offset: number | null) {
-    const updatedRequestModel = updateTablePage(
-      offset,
-      this.itemGroupsRequestModel
-    );
-    if (updatedRequestModel) {
-      this.itemGroupsRequestModel = {
-        ...this.itemGroupsRequestModel,
-        ...updatedRequestModel,
-      };
-      this.getItemGroups();
-    }
+    this.itemGroupsStateService.changePage(offset);
+    this.getItemGroups();
   }
 
   onNameFilterChanged(name: string) {
@@ -176,9 +128,15 @@ export class ItemGroupsContainerComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         if (data && data.success) {
           this.deleteItemGroupModal.hide();
+          this.itemGroupsStateService.onDelete();
           this.getItemGroups();
           this.getItemGroupsDictionary();
         }
       });
+  }
+
+  onPageSizeChanged(pageSize: number) {
+    this.itemGroupsStateService.updatePageSize(pageSize);
+    this.getItemGroups();
   }
 }

@@ -7,7 +7,7 @@ import {
   Output,
 } from '@angular/core';
 import { CommonDictionaryModel } from 'src/app/common/models';
-import { InventoryItemTypesRequestModel } from '../../../../models';
+import { ItemTypesStateService } from 'src/app/plugins/modules/inventory-pn/components/item-types/store/item-types-state-service';
 
 @Component({
   selector: 'app-item-types-header',
@@ -17,13 +17,11 @@ import { InventoryItemTypesRequestModel } from '../../../../models';
 })
 export class ItemTypesHeaderComponent implements OnInit {
   @Input() availableTags: CommonDictionaryModel[] = [];
-  @Input()
-  itemTypesRequestModel: InventoryItemTypesRequestModel = new InventoryItemTypesRequestModel();
   @Output() tagSaved: EventEmitter<any> = new EventEmitter<any>();
   @Output() savedTagRemoved: EventEmitter<any> = new EventEmitter<any>();
   @Output() nameFilterChanged: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() {}
+  constructor(public itemTypesStateService: ItemTypesStateService) {}
 
   ngOnInit(): void {}
 

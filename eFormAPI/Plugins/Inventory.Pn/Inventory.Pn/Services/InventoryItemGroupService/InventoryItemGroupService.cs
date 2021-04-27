@@ -189,7 +189,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                 await itemGroup.Update(_dbContext);
 
                 return new OperationResult(true,
-                    _inventoryLocalizationService.GetString("ItemGroupUpdatedSuccessfully")); 
+                    _inventoryLocalizationService.GetString("ItemGroupUpdatedSuccessfully"));
             }
             catch (Exception e)
             {
@@ -214,7 +214,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                 };
                 await itemGroup.Create(_dbContext);
                 return new OperationResult(true,
-                    _inventoryLocalizationService.GetString("ItemGroupCreatedSuccessfully")); 
+                    _inventoryLocalizationService.GetString("ItemGroupCreatedSuccessfully"));
             }
             catch (Exception e)
             {

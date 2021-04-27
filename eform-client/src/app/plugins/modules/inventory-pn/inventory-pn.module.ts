@@ -18,7 +18,6 @@ import {
 import { OwlDateTimeModule } from 'ng-pick-datetime-ex';
 import { EformSharedTagsModule } from 'src/app/common/modules/eform-shared-tags/eform-shared-tags.module';
 import { EformSharedModule } from 'src/app/common/modules/eform-shared/eform-shared.module';
-import { SharedPnModule } from '../shared/shared-pn.module';
 import {
   InventoryFoldersModalComponent,
   InventorySettingsComponent,
@@ -41,12 +40,12 @@ import {
   ItemTypeDeleteModalComponent,
   ItemTypeEditContainerComponent,
   ItemTypeEditFormComponent,
+  ItemTypeImagesComponent,
+  ItemTypeImagesModalComponent,
   ItemTypesContainerComponent,
   ItemTypesHeaderComponent,
   ItemTypesTableComponent,
   ItemTypeTagsComponent,
-  ItemTypeImagesComponent,
-  ItemTypeImagesModalComponent,
 } from './components';
 import { InventoryPnRouting } from './inventory-pn.routing';
 import { InventoryPnLayoutComponent } from './layouts';
@@ -57,6 +56,7 @@ import {
   InventoryPnItemTypeTagsService,
   InventoryPnSettingsService,
 } from './services';
+import { inventoryStoreProviders } from './store-providers.config';
 
 @NgModule({
   declarations: [
@@ -103,7 +103,6 @@ import {
     NgSelectModule,
     ModalModule,
     EformSharedModule,
-    SharedPnModule,
     WavesModule,
     EformSharedTagsModule,
     OwlDateTimeModule,
@@ -117,6 +116,7 @@ import {
     InventoryPnItemGroupsService,
     InventoryPnItemTypesService,
     InventoryPnItemTypeTagsService,
+    ...inventoryStoreProviders,
   ],
 })
 export class InventoryPnModule {}

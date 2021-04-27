@@ -1,4 +1,4 @@
-<subheader-pn>
+<eform-subheader>
   <div class="p-3">
     <button
       mdbBtn
@@ -20,19 +20,16 @@
       {{ 'New type' | translate }}
     </button>
   </div>
-</subheader-pn>
+</eform-subheader>
 
 <div class="container-fluid">
   <app-item-types-header
     [availableTags]="availableTags"
-    [itemTypesRequestModel]="itemTypesRequestModel"
     (nameFilterChanged)="onNameFilterChanged($event)"
     (savedTagRemoved)="removeSavedTag($event)"
     (tagSaved)="saveTag($event)"
   ></app-item-types-header>
   <app-item-types-table
-    [itemTypesRequestModel]="itemTypesRequestModel"
-    [localPageSettings]="localPageSettings"
     [itemTypesModel]="itemTypesModel"
     (deleteItemType)="showDeleteItemTypeModal($event)"
     (sortTable)="sortTable($event)"
@@ -41,24 +38,19 @@
   ></app-item-types-table>
   <div class="row justify-content-between mr-2 ml-2">
     <div class="col-md-1">
-      <page-size-pn
-        [pageSize]="localPageSettings.pageSize"
-        (onPageSizeChanged)="
-          localPageSettings.pageSize = $event;
-          itemTypesRequestModel.pageIndex = 1;
-          updateLocalPageSettings()
-        "
+      <eform-page-size
+        [pageSize]="itemTypesStateService.getPageSize() | async"
+        (onPageSizeChanged)="onPageSizeChanged($event)"
       >
-      </page-size-pn>
+      </eform-page-size>
     </div>
     <div class="col-md-4 ml-auto d-flex justify-content-end p-2">
-      <pagination-pn
-        *ngIf="itemTypesModel.total > itemTypesRequestModel.pageSize"
-        [limit]="itemTypesRequestModel.pageSize"
+      <eform-pagination
+        [limit]="itemTypesStateService.getPageSize() | async"
         [size]="itemTypesModel.total"
-        [offset]="itemTypesRequestModel.offset"
+        [offset]="itemTypesStateService.getOffset() | async"
         (onPageChanged)="changePage($event)"
-      ></pagination-pn>
+      ></eform-pagination>
     </div>
   </div>
 </div>

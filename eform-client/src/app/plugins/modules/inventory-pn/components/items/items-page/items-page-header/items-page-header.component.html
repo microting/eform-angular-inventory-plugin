@@ -4,7 +4,8 @@
       <input
         mdbInput
         type="text"
-        (input)="onSNFilterChanged($event.target.value)"
+        [ngModel]="itemsStateService.getSnFilter() | async"
+        (ngModelChange)="onSNFilterChanged($event)"
         class="form-control input-sm"
         id="SNFilterInput"
       />

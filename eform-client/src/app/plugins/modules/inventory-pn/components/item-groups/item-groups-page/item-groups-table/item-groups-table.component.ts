@@ -6,11 +6,9 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Paged, PageSettingsModel } from 'src/app/common/models';
-import {
-  InventoryItemGroupModel,
-  InventoryItemGroupsRequestModel,
-} from '../../../../models';
+import { Paged, TableHeaderElementModel } from 'src/app/common/models';
+import { InventoryItemGroupModel } from '../../../../models';
+import { ItemGroupsStateService } from '../../store/item-groups-state-service';
 
 @Component({
   selector: 'app-item-groups-table',
@@ -19,9 +17,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemGroupsTableComponent implements OnInit {
-  @Input() localPageSettings: PageSettingsModel = new PageSettingsModel();
-  @Input()
-  itemGroupsRequestModel: InventoryItemGroupsRequestModel = new InventoryItemGroupsRequestModel();
   @Input()
   itemGroupsModel: Paged<InventoryItemGroupModel> = new Paged<InventoryItemGroupModel>();
   @Output() sortTable: EventEmitter<string> = new EventEmitter<string>();
@@ -30,7 +25,28 @@ export class ItemGroupsTableComponent implements OnInit {
   @Output()
   showEditItemGroupModal: EventEmitter<InventoryItemGroupModel> = new EventEmitter<InventoryItemGroupModel>();
 
-  constructor() {}
+  tableHeaders: TableHeaderElementModel[] = [
+    { name: 'Id', elementId: 'idTableHeader', sortable: true },
+    {
+      name: 'Code',
+      elementId: 'codeTableHeader',
+      sortable: true,
+    },
+    { name: 'Name', elementId: 'nameTableHeader', sortable: true },
+    {
+      name: 'Description',
+      elementId: 'descriptionTableHeader',
+      sortable: true,
+    },
+    {
+      name: 'ParentGroup',
+      elementId: 'parentGroupTableHeader',
+      sortable: true,
+      visibleName: 'Parent group',
+    },
+    { name: 'Actions', elementId: '', sortable: false },
+  ];
+  constructor(public itemGroupsStateService: ItemGroupsStateService) {}
 
   ngOnInit(): void {}
 

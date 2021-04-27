@@ -9,9 +9,9 @@
     <thead
       table-headers
       [tableHeaders]="tableHeaders"
-      [currentSortName]="localPageSettings.sort"
+      [currentSortName]="itemsStateService.getSort() | async"
       (sortChanged)="onSortTable($event)"
-      [isSortDsc]="itemsRequestModel.isSortDsc"
+      [isSortDsc]="itemsStateService.getIsSortDsc() | async"
     ></thead>
     <tbody id="tableBodyInventoryItems">
       <tr *ngFor="let itemModel of itemsModel.entities; let i = index">

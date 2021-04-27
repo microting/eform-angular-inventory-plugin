@@ -156,7 +156,6 @@ export class ItemTypeEditContainerComponent implements OnInit, OnDestroy {
       .getAllItemTypesDictionary(itemGroupId)
       .subscribe((data) => {
         if (data && data.success) {
-          debugger;
           if (this.filteredItemTypes[dependencyIndex]) {
             // If dependency found - update only types on change
             this.filteredItemTypes = R.update(
