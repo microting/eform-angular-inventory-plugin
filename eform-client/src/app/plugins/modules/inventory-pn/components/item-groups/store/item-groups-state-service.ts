@@ -6,8 +6,8 @@ import { updateTableSort } from 'src/app/common/helpers';
 import { getOffset } from 'src/app/common/helpers/pagination.helper';
 import { map } from 'rxjs/operators';
 import { ItemGroupsQuery } from './item-groups-query';
-import { InventoryPnItemGroupsService } from 'src/app/plugins/modules/inventory-pn/services';
-import { InventoryItemGroupModel } from 'src/app/plugins/modules/inventory-pn/models';
+import { InventoryPnItemGroupsService } from '../../../services';
+import { InventoryItemGroupModel } from '../../../models';
 
 @Injectable({ providedIn: 'root' })
 export class ItemGroupsStateService {
@@ -24,11 +24,11 @@ export class ItemGroupsStateService {
   > {
     return this.service
       .getAllItemGroups({
-        isSortDsc: this.query.pageSetting.isSortDsc,
-        offset: this.query.pageSetting.offset,
-        pageSize: this.query.pageSetting.pageSize,
-        sort: this.query.pageSetting.sort,
-        nameFilter: this.query.pageSetting.nameFilter,
+        isSortDsc: this.query.pageSetting.pagination.isSortDsc,
+        offset: this.query.pageSetting.pagination.offset,
+        pageSize: this.query.pageSetting.pagination.pageSize,
+        sort: this.query.pageSetting.pagination.sort,
+        nameFilter: this.query.pageSetting.pagination.nameFilter,
         pageIndex: 0,
       })
       .pipe(
@@ -42,11 +42,22 @@ export class ItemGroupsStateService {
   }
 
   updateNameFilter(nameFilter: string) {
-    this.store.update({ nameFilter: nameFilter, offset: 0 });
+    this.store.update((state) => ({
+      pagination: {
+        ...state.pagination,
+        nameFilter: nameFilter,
+        offset: 0,
+      },
+    }));
   }
 
   updatePageSize(pageSize: number) {
-    this.store.update({ pageSize: pageSize });
+    this.store.update((state) => ({
+      pagination: {
+        ...state.pagination,
+        pageSize: pageSize,
+      },
+    }));
     this.checkOffset();
   }
 
@@ -71,9 +82,12 @@ export class ItemGroupsStateService {
   }
 
   changePage(offset: number) {
-    this.store.update({
-      offset: offset,
-    });
+    this.store.update((state) => ({
+      pagination: {
+        ...state.pagination,
+        offset: offset,
+      },
+    }));
   }
 
   onDelete() {
@@ -84,25 +98,31 @@ export class ItemGroupsStateService {
   onSortTable(sort: string) {
     const localPageSettings = updateTableSort(
       sort,
-      this.query.pageSetting.sort,
-      this.query.pageSetting.isSortDsc
+      this.query.pageSetting.pagination.sort,
+      this.query.pageSetting.pagination.isSortDsc
     );
-    this.store.update({
-      isSortDsc: localPageSettings.isSortDsc,
-      sort: localPageSettings.sort,
-    });
+    this.store.update((state) => ({
+      pagination: {
+        ...state.pagination,
+        isSortDsc: localPageSettings.isSortDsc,
+        sort: localPageSettings.sort,
+      },
+    }));
   }
 
   checkOffset() {
     const newOffset = getOffset(
-      this.query.pageSetting.pageSize,
-      this.query.pageSetting.offset,
+      this.query.pageSetting.pagination.pageSize,
+      this.query.pageSetting.pagination.offset,
       this.total
     );
-    if (newOffset !== this.query.pageSetting.offset) {
-      this.store.update({
-        offset: newOffset,
-      });
+    if (newOffset !== this.query.pageSetting.pagination.offset) {
+      this.store.update((state) => ({
+        pagination: {
+          ...state.pagination,
+          offset: newOffset,
+        },
+      }));
     }
   }
 }

@@ -7,10 +7,10 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { SiteNameDto, FolderDto } from 'src/app/common/models';
-import { AuthService, FoldersService } from 'src/app/common/services';
+import { FolderDto, SiteNameDto } from 'src/app/common/models';
+import { FoldersService } from 'src/app/common/services';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { Subscription } from 'rxjs';
+import { AuthStateService } from 'src/app/common/store';
 
 @AutoUnsubscribe()
 @Component({
@@ -24,16 +24,15 @@ export class InventoryFoldersModalComponent implements OnInit, OnDestroy {
   folderSelected: EventEmitter<FolderDto> = new EventEmitter<FolderDto>();
   sitesDto: Array<SiteNameDto> = [];
   @Input() folders: FolderDto[] = [];
-  getAllFolders$: Subscription;
   selectedFolderId: number;
 
   get userClaims() {
-    return this.authService.userClaims;
+    return this.authStateService.currentUserClaims;
   }
 
   constructor(
     private folderService: FoldersService,
-    private authService: AuthService
+    private authStateService: AuthStateService
   ) {}
 
   ngOnInit() {}

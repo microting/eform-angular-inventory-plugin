@@ -1,16 +1,11 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-
 import { Observable } from 'rxjs';
 import { CommonDictionaryModel, Paged } from 'src/app/common/models';
 import {
   OperationDataResult,
   OperationResult,
 } from 'src/app/common/models/operation.models';
-import { BaseService } from 'src/app/common/services/base.service';
-import { InventoryPnImageTypesEnum } from 'src/app/plugins/modules/inventory-pn/enums';
+import { InventoryPnImageTypesEnum } from '../enums';
 import {
   InventoryItemTypeCreateModel,
   InventoryItemTypeModel,
@@ -18,6 +13,7 @@ import {
   InventoryItemTypesRequestModel,
   InventoryItemTypeUpdateModel,
 } from '../models';
+import { ApiBaseService } from 'src/app/common/services';
 
 export const InventoryPnItemTypesMethods = {
   ItemTypes: 'api/inventory-pn/item-types',
@@ -29,25 +25,22 @@ export const InventoryPnItemTypesMethods = {
 @Injectable({
   providedIn: 'root',
 })
-export class InventoryPnItemTypesService extends BaseService {
-  constructor(
-    private _http: HttpClient,
-    router: Router,
-    toastrService: ToastrService
-  ) {
-    super(_http, router, toastrService);
-  }
+export class InventoryPnItemTypesService {
+  constructor(private apiBaseService: ApiBaseService) {}
 
   getAllItemTypes(
     model: InventoryItemTypesRequestModel
   ): Observable<OperationDataResult<Paged<InventoryItemTypeSimpleModel>>> {
-    return this.post(InventoryPnItemTypesMethods.ItemTypesIndex, model);
+    return this.apiBaseService.post(
+      InventoryPnItemTypesMethods.ItemTypesIndex,
+      model
+    );
   }
 
   getAllItemTypesDictionary(
     itemGroupId?: number
   ): Observable<OperationDataResult<CommonDictionaryModel[]>> {
-    return this.get(
+    return this.apiBaseService.get(
       InventoryPnItemTypesMethods.ItemTypesDictionary,
       itemGroupId ? { itemGroupId } : null
     );
@@ -56,29 +49,37 @@ export class InventoryPnItemTypesService extends BaseService {
   getSingleItemType(
     itemTypeId: number
   ): Observable<OperationDataResult<InventoryItemTypeModel>> {
-    return this.get(`${InventoryPnItemTypesMethods.ItemTypes}/${itemTypeId}`);
+    return this.apiBaseService.get(
+      `${InventoryPnItemTypesMethods.ItemTypes}/${itemTypeId}`
+    );
   }
 
   updateItemType(
     model: InventoryItemTypeUpdateModel
   ): Observable<OperationResult> {
-    return this.put(InventoryPnItemTypesMethods.ItemTypes, model);
+    return this.apiBaseService.put(
+      InventoryPnItemTypesMethods.ItemTypes,
+      model
+    );
   }
 
   createItemType(
     model: InventoryItemTypeCreateModel
   ): Observable<OperationDataResult<number>> {
-    return this.post(InventoryPnItemTypesMethods.ItemTypes, model);
+    return this.apiBaseService.post(
+      InventoryPnItemTypesMethods.ItemTypes,
+      model
+    );
   }
 
   deleteItemType(itemTypeId: number): Observable<OperationResult> {
-    return this.delete(
+    return this.apiBaseService.delete(
       `${InventoryPnItemTypesMethods.ItemTypes}/${itemTypeId}`
     );
   }
 
   getItemTypeImage(name: string): Observable<any> {
-    return this.getBlobData(
+    return this.apiBaseService.getBlobData(
       `${InventoryPnItemTypesMethods.ItemTypesImages}/${name}`
     );
   }
@@ -88,7 +89,7 @@ export class InventoryPnItemTypesService extends BaseService {
     itemTypeImageType: InventoryPnImageTypesEnum;
     files: Blob[];
   }): Observable<any> {
-    return this.uploadFiles(
+    return this.apiBaseService.uploadFiles(
       InventoryPnItemTypesMethods.ItemTypesImages,
       model.files,
       {

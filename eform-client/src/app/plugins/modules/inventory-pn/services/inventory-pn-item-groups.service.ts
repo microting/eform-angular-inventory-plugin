@@ -1,25 +1,17 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
 import {
   OperationDataResult,
   OperationResult,
 } from 'src/app/common/models/operation.models';
-import { BaseService } from 'src/app/common/services/base.service';
-import {
-  CommonDictionaryModel,
-  Paged,
-  PagedEntityRequest,
-} from 'src/app/common/models';
+import { CommonDictionaryModel, Paged } from 'src/app/common/models';
 import {
   InventoryItemGroupCreateModel,
   InventoryItemGroupModel,
   InventoryItemGroupsRequestModel,
   InventoryItemGroupUpdateModel,
 } from '../models';
+import { ApiBaseService } from 'src/app/common/services';
 
 export let InventoryPnItemGroupsMethods = {
   ItemGroups: 'api/inventory-pn/item-groups',
@@ -30,25 +22,22 @@ export let InventoryPnItemGroupsMethods = {
 @Injectable({
   providedIn: 'root',
 })
-export class InventoryPnItemGroupsService extends BaseService {
-  constructor(
-    private _http: HttpClient,
-    router: Router,
-    toastrService: ToastrService
-  ) {
-    super(_http, router, toastrService);
-  }
+export class InventoryPnItemGroupsService {
+  constructor(private apiBaseService: ApiBaseService) {}
 
   getAllItemGroups(
     model: InventoryItemGroupsRequestModel
   ): Observable<OperationDataResult<Paged<InventoryItemGroupModel>>> {
-    return this.post(InventoryPnItemGroupsMethods.ItemGroupsIndex, model);
+    return this.apiBaseService.post(
+      InventoryPnItemGroupsMethods.ItemGroupsIndex,
+      model
+    );
   }
 
   getSingleItemGroup(
     itemGroupId: number
   ): Observable<OperationDataResult<InventoryItemGroupModel>> {
-    return this.get(
+    return this.apiBaseService.get(
       InventoryPnItemGroupsMethods.ItemGroups + '/' + itemGroupId
     );
   }
@@ -56,23 +45,31 @@ export class InventoryPnItemGroupsService extends BaseService {
   getAllItemGroupsDictionary(): Observable<
     OperationDataResult<CommonDictionaryModel[]>
   > {
-    return this.get(InventoryPnItemGroupsMethods.ItemGroupsDictionary);
+    return this.apiBaseService.get(
+      InventoryPnItemGroupsMethods.ItemGroupsDictionary
+    );
   }
 
   updateItemGroup(
     model: InventoryItemGroupUpdateModel
   ): Observable<OperationResult> {
-    return this.put(InventoryPnItemGroupsMethods.ItemGroups, model);
+    return this.apiBaseService.put(
+      InventoryPnItemGroupsMethods.ItemGroups,
+      model
+    );
   }
 
   createItemGroup(
     model: InventoryItemGroupCreateModel
   ): Observable<OperationResult> {
-    return this.post(InventoryPnItemGroupsMethods.ItemGroups, model);
+    return this.apiBaseService.post(
+      InventoryPnItemGroupsMethods.ItemGroups,
+      model
+    );
   }
 
   deleteItemGroup(itemGroupId: number): Observable<OperationResult> {
-    return this.delete(
+    return this.apiBaseService.delete(
       InventoryPnItemGroupsMethods.ItemGroups + '/' + itemGroupId
     );
   }

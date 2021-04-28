@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Paged, TableHeaderElementModel } from 'src/app/common/models';
 import { InventoryItemTypeSimpleModel } from '../../../../models';
-import { ItemTypesStateService } from '../../state/item-types-state-service';
+import { ItemTypesStateService } from '../../store/item-types-state-service';
 
 @Component({
   selector: 'app-item-types-table',
