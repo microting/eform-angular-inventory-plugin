@@ -15,7 +15,7 @@ import {
   TooltipModule,
   WavesModule,
 } from 'angular-bootstrap-md';
-import { OwlDateTimeModule } from 'ng-pick-datetime-ex';
+import { OwlDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import { EformSharedTagsModule } from 'src/app/common/modules/eform-shared-tags/eform-shared-tags.module';
 import { EformSharedModule } from 'src/app/common/modules/eform-shared/eform-shared.module';
 import {
