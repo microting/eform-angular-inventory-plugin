@@ -120,16 +120,12 @@ namespace Inventory.Pn
         public void ConfigureDbContext(IServiceCollection services, string connectionString)
         {
             _connectionString = connectionString;
-            if (connectionString.ToLower().Contains("convert zero datetime"))
+            services.AddDbContext<InventoryPnDbContext>(o => o.UseMySql(connectionString, new MariaDbServerVersion(
+                new Version(10, 4, 0)), mySqlOptionsAction: builder =>
             {
-                services.AddDbContext<InventoryPnDbContext>(o => o.UseMySql(connectionString,
-                    b => b.MigrationsAssembly(PluginAssembly().FullName).EnableRetryOnFailure()));
-            }
-            else
-            {
-                services.AddDbContext<InventoryPnDbContext>(o => o.UseSqlServer(connectionString,
-                    b => b.MigrationsAssembly(PluginAssembly().FullName)));
-            }
+                builder.EnableRetryOnFailure();
+                builder.MigrationsAssembly(PluginAssembly().FullName);
+            }));
 
             var contextFactory = new InventoryPnContextFactory();
             var context = contextFactory.CreateDbContext(new[] { connectionString });
