@@ -32,9 +32,7 @@
     </div>
     <div class="col-md-4 ml-auto d-flex justify-content-end p-2">
       <eform-pagination
-        [limit]="itemGroupsStateService.getPageSize() | async"
-        [size]="itemGroupsModel.total"
-        [offset]="itemGroupsStateService.getOffset() | async"
+        [pagination]="itemGroupsStateService.getPagination() | async"
         (onPageChanged)="changePage($event)"
       ></eform-pagination>
     </div>

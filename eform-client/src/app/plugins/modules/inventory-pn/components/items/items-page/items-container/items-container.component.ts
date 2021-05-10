@@ -14,7 +14,7 @@ import {
   InventoryPnItemsService,
   InventoryPnItemTypesService,
 } from '../../../../services';
-import { ItemsStateService } from '../../store/items-state-service';
+import { ItemsStateService } from '../../store';
 
 @AutoUnsubscribe()
 @Component({

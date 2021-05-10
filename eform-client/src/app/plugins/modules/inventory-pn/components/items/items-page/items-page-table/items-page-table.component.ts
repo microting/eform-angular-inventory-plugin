@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Paged, TableHeaderElementModel } from 'src/app/common/models';
 import { InventoryItemModel } from '../../../../models';
-import { ItemsStateService } from '../../store/items-state-service';
+import { ItemsStateService } from '../../store';
 
 @Component({
   selector: 'app-items-page-table',
