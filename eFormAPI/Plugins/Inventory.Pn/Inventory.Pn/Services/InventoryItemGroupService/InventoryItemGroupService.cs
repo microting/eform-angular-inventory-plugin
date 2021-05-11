@@ -310,11 +310,11 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                     Name = x.Name,
                     Code = x.Code,
                     Id = x.Id,
-                    Parent = new ItemGroupDependencyItemGroup()
+                    Parent = x.ParentId != null ? new ItemGroupDependencyItemGroup
                     {
                         Name = x.Parent.Name,
                         Id = x.Parent.Id
-                    },
+                    } : null
                 });
         }
     }
