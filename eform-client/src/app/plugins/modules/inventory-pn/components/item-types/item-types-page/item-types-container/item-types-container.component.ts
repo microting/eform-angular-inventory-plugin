@@ -35,15 +35,19 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
     private tagsService: InventoryPnItemTypeTagsService,
     public itemTypesStateService: ItemTypesStateService
   ) {
-    this.nameSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
-      this.itemTypesStateService.updateNameFilter(val.toString());
+    this.nameSearchSubject.pipe(debounceTime(500)).subscribe((val: string) => {
+      this.itemTypesStateService.updateNameFilter(val);
       this.getItemTypes();
     });
   }
 
   ngOnInit() {
-    this.getTags();
+    this.getAllInitialData();
+  }
+
+  getAllInitialData() {
     this.getItemTypes();
+    this.getTags();
   }
 
   getItemTypes() {

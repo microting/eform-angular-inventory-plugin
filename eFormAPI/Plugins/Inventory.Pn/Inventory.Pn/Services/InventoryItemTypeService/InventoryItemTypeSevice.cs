@@ -25,7 +25,6 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
     using Microsoft.EntityFrameworkCore;
     using Microting.eForm.Infrastructure.Constants;
     using Microting.eFormApi.BasePn.Abstractions;
-    using Microting.eFormApi.BasePn.Infrastructure.Extensions;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using Microting.eFormInventoryBase.Infrastructure.Data;
     using Microting.eFormInventoryBase.Infrastructure.Data.Entities;
@@ -314,7 +313,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                 var inventoryItemTypeMappedQuery = AddSelectToItemTypeQuery(inventoryItemTypeQuery);
 
                 // sort
-                QueryHelper.AddSortToQuery(inventoryItemTypeMappedQuery, itemTypeRequest.Sort,
+                inventoryItemTypeMappedQuery = QueryHelper.AddSortToQuery(inventoryItemTypeMappedQuery, itemTypeRequest.Sort,
                     itemTypeRequest.IsSortDsc);
 
                 // take objects from db
