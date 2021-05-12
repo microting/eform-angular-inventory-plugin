@@ -9,7 +9,7 @@ import {
   InventoryItemGroupUpdateModel,
 } from '../../../../models';
 import { InventoryPnItemGroupsService } from '../../../../services';
-import { ItemGroupsStateService } from '../../store/item-groups-state-service';
+import { ItemGroupsStateService } from '../../store';
 
 @AutoUnsubscribe()
 @Component({

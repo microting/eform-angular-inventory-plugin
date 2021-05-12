@@ -25,7 +25,6 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
     using Microsoft.EntityFrameworkCore;
     using Microting.eForm.Infrastructure.Constants;
     using Microting.eFormApi.BasePn.Abstractions;
-    using Microting.eFormApi.BasePn.Infrastructure.Extensions;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using Microting.eFormInventoryBase.Infrastructure.Data;
     using Microting.eFormInventoryBase.Infrastructure.Data.Entities;
@@ -34,6 +33,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microting.eFormApi.BasePn.Infrastructure.Helpers;
     using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Microting.eFormInventoryBase.Infrastructure.Const;
 
@@ -301,31 +301,31 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                         .Skip(itemTypeRequest.Offset)
                         .Take(itemTypeRequest.PageSize);
 
+                // get userIds for get full name users
+                var fullNamesUserWithId = new List<KeyValuePair<int, string>>();
+                foreach (var userId in inventoryItemTypeQuery.Select(x => x.CreatedByUserId).Distinct())
+                {
+                    // get full names users
+                    fullNamesUserWithId.Add(new KeyValuePair<int, string>(userId, await _userService.GetFullNameUserByUserIdAsync(userId)));
+                }
+
                 // add select
-                var inventoryItemTypeMappedQuery = AddSelectToItemTypeQuery(inventoryItemTypeQuery, _userService);
+                var inventoryItemTypeMappedQuery = AddSelectToItemTypeQuery(inventoryItemTypeQuery);
 
                 // sort
-                if (!string.IsNullOrEmpty(itemTypeRequest.Sort))
-                {
-                    if (itemTypeRequest.IsSortDsc)
-                    {
-                        inventoryItemTypeMappedQuery = inventoryItemTypeMappedQuery
-                            .CustomOrderByDescending(itemTypeRequest.Sort);
-                    }
-                    else
-                    {
-                        inventoryItemTypeMappedQuery = inventoryItemTypeMappedQuery
-                            .CustomOrderBy(itemTypeRequest.Sort);
-                    }
-                }
-                else
-                {
-                    inventoryItemTypeMappedQuery = inventoryItemTypeMappedQuery
-                        .OrderBy(x => x.Id);
-                }
+                inventoryItemTypeMappedQuery = QueryHelper.AddSortToQuery(inventoryItemTypeMappedQuery, itemTypeRequest.Sort,
+                    itemTypeRequest.IsSortDsc);
 
                 // take objects from db
                 var inventoryItemTypeFromDb = await inventoryItemTypeMappedQuery.ToListAsync();
+
+                foreach (var (userId, fullNameUser) in fullNamesUserWithId)
+                {
+                    foreach (var itemTypeSimpleModel in inventoryItemTypeFromDb.Where(x=>x.CreatedByUserId == userId))
+                    {
+                        itemTypeSimpleModel.CreatedBy = fullNameUser;
+                    }
+                }
 
                 var returnValue = new Paged<ItemTypeSimpleModel>
                 {
@@ -505,7 +505,7 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
             }
         }
 
-        private static IQueryable<ItemTypeSimpleModel> AddSelectToItemTypeQuery(IQueryable<ItemType> itemTypeQuery, IUserService userService)
+        private static IQueryable<ItemTypeSimpleModel> AddSelectToItemTypeQuery(IQueryable<ItemType> itemTypeQuery)
         {
             return itemTypeQuery
                 .Select(x => new ItemTypeSimpleModel
@@ -518,7 +518,8 @@ namespace Inventory.Pn.Services.InventoryItemTypeService
                     Name = x.Name,
                     Id = x.Id,
                     CreatedDate = x.CreatedAt,
-                    CreatedBy = userService.GetFullNameUserByUserIdAsync(x.CreatedByUserId).Result,
+                    CreatedBy = "",
+                    CreatedByUserId = x.CreatedByUserId,
                     DangerLabelImages = x.ItemTypeUploadedDatas
                         .Where(y => y.WorkflowState != Constants.WorkflowStates.Removed)
                         .Where(y => y.Type == TypeUploadedData.Danger)

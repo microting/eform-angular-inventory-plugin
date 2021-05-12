@@ -52,5 +52,7 @@ namespace Inventory.Pn.Infrastructure.Models.ItemType
 
         public List<CommonTagModel> Tags { get; set; }
             = new List<CommonTagModel>();
+
+        public int CreatedByUserId { get; set; }
     }
 }
