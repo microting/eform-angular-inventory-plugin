@@ -31,6 +31,7 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
     using Microting.eForm.Infrastructure.Constants;
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Extensions;
+    using Microting.eFormApi.BasePn.Infrastructure.Helpers;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Microting.eFormInventoryBase.Infrastructure.Data;
@@ -62,25 +63,11 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
             {
                 var inventoryItemGroupQuery = _dbContext.ItemGroups
                     .AsQueryable();
+
                 // sort
-                if (!string.IsNullOrEmpty(itemGroupRequestModel.Sort) && itemGroupRequestModel.Sort != "ParentGroup")
-                {
-                    if (itemGroupRequestModel.IsSortDsc)
-                    {
-                        inventoryItemGroupQuery = inventoryItemGroupQuery
-                            .CustomOrderByDescending(itemGroupRequestModel.Sort);
-                    }
-                    else
-                    {
-                        inventoryItemGroupQuery = inventoryItemGroupQuery
-                            .CustomOrderBy(itemGroupRequestModel.Sort);
-                    }
-                }
-                else
-                {
-                    inventoryItemGroupQuery = _dbContext.ItemGroups
-                        .OrderBy(x => x.Id);
-                }
+                var excludeSort = new List<string> {"ParentGroup"};
+                inventoryItemGroupQuery = QueryHelper.AddSortToQuery(inventoryItemGroupQuery,
+                    itemGroupRequestModel.Sort, itemGroupRequestModel.IsSortDsc, excludeSort);
 
                 // filter by name
                 if (!string.IsNullOrEmpty(itemGroupRequestModel.NameFilter))
@@ -310,11 +297,11 @@ namespace Inventory.Pn.Services.InventoryItemGroupService
                     Name = x.Name,
                     Code = x.Code,
                     Id = x.Id,
-                    Parent = new ItemGroupDependencyItemGroup()
+                    Parent = x.ParentId != null ? new ItemGroupDependencyItemGroup
                     {
                         Name = x.Parent.Name,
                         Id = x.Parent.Id
-                    },
+                    } : null
                 });
         }
     }

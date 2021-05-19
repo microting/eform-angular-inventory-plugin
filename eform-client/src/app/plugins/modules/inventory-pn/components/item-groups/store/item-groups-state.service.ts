@@ -1,55 +1,53 @@
 import { Injectable } from '@angular/core';
-import { ItemsStore } from './items-store';
 import { Observable } from 'rxjs';
-import { OperationDataResult, Paged } from 'src/app/common/models';
-import { updateTableSort } from 'src/app/common/helpers';
-import { getOffset } from 'src/app/common/helpers/pagination.helper';
+import {
+  OperationDataResult,
+  Paged,
+  PaginationModel,
+  SortModel,
+} from 'src/app/common/models';
+import { updateTableSort, getOffset } from 'src/app/common/helpers';
 import { map } from 'rxjs/operators';
-import { ItemsQuery } from './items-query';
-import { InventoryPnItemsService } from '../../../services';
-import { InventoryItemModel } from '../../../models';
+import { ItemGroupsQuery, ItemGroupsStore } from './';
+import { InventoryPnItemGroupsService } from '../../../services';
+import { InventoryItemGroupModel } from '../../../models';
 
 @Injectable({ providedIn: 'root' })
-export class ItemsStateService {
+export class ItemGroupsStateService {
   constructor(
-    private store: ItemsStore,
-    private service: InventoryPnItemsService,
-    private query: ItemsQuery
+    private store: ItemGroupsStore,
+    private service: InventoryPnItemGroupsService,
+    private query: ItemGroupsQuery
   ) {}
 
-  private total: number;
-  private itemGroupId: number;
-
-  getAllItems(): Observable<OperationDataResult<Paged<InventoryItemModel>>> {
+  getAllItemGroups(): Observable<
+    OperationDataResult<Paged<InventoryItemGroupModel>>
+  > {
     return this.service
-      .getAllItems({
-        isSortDsc: this.query.pageSetting.pagination.isSortDsc,
-        offset: this.query.pageSetting.pagination.offset,
-        pageSize: this.query.pageSetting.pagination.pageSize,
-        sort: this.query.pageSetting.pagination.sort,
-        SNFilter: this.query.pageSetting.pagination.nameFilter,
-        pageIndex: 0,
-        itemGroupId: this.itemGroupId,
+      .getAllItemGroups({
+        ...this.query.pageSetting.pagination,
+        ...this.query.pageSetting.filters,
       })
       .pipe(
         map((response) => {
           if (response && response.success && response.model) {
-            this.total = response.model.total;
+            this.store.update(() => ({
+              total: response.model.total,
+            }));
           }
           return response;
         })
       );
   }
 
-  setItemGroupId(itemGroupId: number) {
-    this.itemGroupId = itemGroupId;
-  }
-
-  updateSnFilter(snFilter: string) {
+  updateNameFilter(nameFilter: string) {
     this.store.update((state) => ({
+      filters: {
+        ...state.filters,
+        nameFilter: nameFilter,
+      },
       pagination: {
         ...state.pagination,
-        nameFilter: snFilter,
         offset: 0,
       },
     }));
@@ -65,24 +63,16 @@ export class ItemsStateService {
     this.checkOffset();
   }
 
-  getOffset(): Observable<number> {
-    return this.query.selectOffset$;
-  }
-
   getPageSize(): Observable<number> {
     return this.query.selectPageSize$;
   }
 
-  getSort(): Observable<string> {
+  getSort(): Observable<SortModel> {
     return this.query.selectSort$;
   }
 
-  getIsSortDsc(): Observable<boolean> {
-    return this.query.selectIsSortDsc$;
-  }
-
-  getSnFilter(): Observable<string> {
-    return this.query.selectSnFilter$;
+  getNameFilter(): Observable<string> {
+    return this.query.selectNameFilter$;
   }
 
   changePage(offset: number) {
@@ -95,7 +85,9 @@ export class ItemsStateService {
   }
 
   onDelete() {
-    this.total -= 1;
+    this.store.update((state) => ({
+      total: state.total - 1,
+    }));
     this.checkOffset();
   }
 
@@ -118,7 +110,7 @@ export class ItemsStateService {
     const newOffset = getOffset(
       this.query.pageSetting.pagination.pageSize,
       this.query.pageSetting.pagination.offset,
-      this.total
+      this.query.pageSetting.total
     );
     if (newOffset !== this.query.pageSetting.pagination.offset) {
       this.store.update((state) => ({
@@ -128,5 +120,9 @@ export class ItemsStateService {
         },
       }));
     }
+  }
+
+  getPagination(): Observable<PaginationModel> {
+    return this.query.selectPagination$;
   }
 }

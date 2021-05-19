@@ -5,7 +5,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ItemsStateService } from '../../store/items-state-service';
+import { ItemsStateService } from '../../store';
 
 @Component({
   selector: 'app-items-page-header',

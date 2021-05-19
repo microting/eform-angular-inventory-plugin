@@ -7,7 +7,7 @@ import {
   Output,
 } from '@angular/core';
 import { CommonDictionaryModel } from 'src/app/common/models';
-import { ItemTypesStateService } from 'src/app/plugins/modules/inventory-pn/components/item-types/store/item-types-state-service';
+import { ItemTypesStateService } from '../../store';
 
 @Component({
   selector: 'app-item-types-header',

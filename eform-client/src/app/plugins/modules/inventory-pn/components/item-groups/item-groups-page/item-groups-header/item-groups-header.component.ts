@@ -5,7 +5,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ItemGroupsStateService } from '../../store/item-groups-state-service';
+import { ItemGroupsStateService } from '../../store';
 
 @Component({
   selector: 'app-item-groups-header',
