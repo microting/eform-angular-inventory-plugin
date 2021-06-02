@@ -2,12 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   OnInit,
   Output,
 } from '@angular/core';
-import { InventoryItemsRequestModel } from '../../../../models';
-import { ItemsStateService } from '../../state/items-state-service';
+import { ItemsStateService } from '../../store';
 
 @Component({
   selector: 'app-items-page-header',

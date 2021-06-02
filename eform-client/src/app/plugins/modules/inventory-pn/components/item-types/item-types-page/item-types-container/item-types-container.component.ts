@@ -5,10 +5,10 @@ import { debounceTime } from 'rxjs/operators';
 import { CommonDictionaryModel, Paged } from 'src/app/common/models';
 import { InventoryItemTypeSimpleModel } from '../../../../models';
 import {
-  InventoryPnItemTypeTagsService,
   InventoryPnItemTypesService,
+  InventoryPnItemTypeTagsService,
 } from '../../../../services';
-import { ItemTypesStateService } from '../../state/item-types-state-service';
+import { ItemTypesStateService } from '../../store';
 
 @AutoUnsubscribe()
 @Component({
@@ -35,15 +35,19 @@ export class ItemTypesContainerComponent implements OnInit, OnDestroy {
     private tagsService: InventoryPnItemTypeTagsService,
     public itemTypesStateService: ItemTypesStateService
   ) {
-    this.nameSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
-      this.itemTypesStateService.updateNameFilter(val.toString());
+    this.nameSearchSubject.pipe(debounceTime(500)).subscribe((val: string) => {
+      this.itemTypesStateService.updateNameFilter(val);
       this.getItemTypes();
     });
   }
 
   ngOnInit() {
-    this.getTags();
+    this.getAllInitialData();
+  }
+
+  getAllInitialData() {
     this.getItemTypes();
+    this.getTags();
   }
 
   getItemTypes() {

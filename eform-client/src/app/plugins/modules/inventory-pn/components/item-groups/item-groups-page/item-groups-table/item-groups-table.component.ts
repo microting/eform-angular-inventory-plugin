@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Paged, TableHeaderElementModel } from 'src/app/common/models';
 import { InventoryItemGroupModel } from '../../../../models';
-import { ItemGroupsStateService } from '../../state/item-groups-state-service';
+import { ItemGroupsStateService } from '../../store';
 
 @Component({
   selector: 'app-item-groups-table',
@@ -42,6 +42,7 @@ export class ItemGroupsTableComponent implements OnInit {
       name: 'ParentGroup',
       elementId: 'parentGroupTableHeader',
       sortable: true,
+      visibleName: 'Parent group',
     },
     { name: 'Actions', elementId: '', sortable: false },
   ];
