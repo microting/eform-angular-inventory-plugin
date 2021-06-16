@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ItemsStore } from './items.store';
 import { Observable } from 'rxjs';
 import {
   OperationDataResult,
@@ -7,10 +6,9 @@ import {
   PaginationModel,
   SortModel,
 } from 'src/app/common/models';
-import { updateTableSort } from 'src/app/common/helpers';
-import { getOffset } from 'src/app/common/helpers/pagination.helper';
+import { updateTableSort, getOffset } from 'src/app/common/helpers';
 import { map } from 'rxjs/operators';
-import { ItemsQuery } from './items.query';
+import { ItemsQuery, ItemsStore } from './';
 import { InventoryPnItemsService } from '../../../services';
 import { InventoryItemModel } from '../../../models';
 
@@ -29,7 +27,7 @@ export class ItemsStateService {
       .getAllItems({
         ...this.query.pageSetting.pagination,
         ...this.query.pageSetting.filters,
-        SNFilter: this.query.pageSetting.pagination.nameFilter,
+        SNFilter: this.query.pageSetting.filters.nameFilter,
         itemGroupId: this.itemGroupId,
       })
       .pipe(
