@@ -256,7 +256,10 @@ namespace Inventory.Pn.Services.InventoryItemService
                             var language = await sdkDbContext.Languages.SingleAsync(x => x.Id == siteLanguageId);
                             var mainElement = await theCore.ReadeForm(option.InventoryFormId, language);
 
-                            await theCore.CaseDelete(mainElement.MicrotingUId, assignedSite.SiteUid);
+                            if (mainElement.MicrotingUId != null)
+                            {
+                                await theCore.CaseDelete((int)mainElement.MicrotingUId, assignedSite.SiteUid);
+                            }
                         }
                     }
                 }

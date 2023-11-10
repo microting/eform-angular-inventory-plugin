@@ -28,11 +28,9 @@ namespace Inventory.Pn.Controllers
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
-    using OpenStack.NetCoreSwiftClient.Extensions;
     using Services.InventoryItemTypeService;
     using Services.UploadedDataService;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Threading.Tasks;
 
@@ -148,17 +146,18 @@ namespace Inventory.Pn.Controllers
 
             if (core.GetSdkSetting(Settings.swiftEnabled).Result.ToLower() == "true")
             {
-                var ss = await core.GetFileFromSwiftStorage(fileName);
+                var ss = await core.GetFileFromS3Storage(fileName);
 
                 if (ss == null)
                 {
                     return new NotFoundResult();
                 }
 
-                Response.ContentType = ss.ContentType;
+                //Response.ContentType = ss.ContentType;
                 Response.ContentLength = ss.ContentLength;
+                return File(ss.ResponseStream, ss.Headers.ContentType);
 
-                return File(ss.ObjectStreamContent, ss.ContentType.IfNullOrEmpty(fileType), fileName);
+                //return File(ss.ObjectStreamContent, ss.ContentType.IfNullOrEmpty(fileType), fileName);
             }
 
             if (core.GetSdkSetting(Settings.s3Enabled).Result.ToLower() == "true")

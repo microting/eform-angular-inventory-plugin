@@ -90,7 +90,13 @@ namespace Inventory.Pn.Services.InventoryPnSettingsService
                     .AsNoTracking()
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .Where(x => siteIds.Contains((int)x.MicrotingUid))
-                    .Select(x => new SiteNameDto((int)x.MicrotingUid, x.Name, x.CreatedAt, x.UpdatedAt))
+                    .Select(x => new SiteNameDto
+                    {
+                        SiteUId = (int)x.MicrotingUid!,
+                        SiteName = x.Name,
+                        CreatedAt = (DateTime)x.CreatedAt,
+                        UpdatedAt = (DateTime)x.UpdatedAt,
+                    })
                     .ToList();
 
                 var settings = new InventorySettingsModel
