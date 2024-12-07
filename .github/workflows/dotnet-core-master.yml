@@ -48,7 +48,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         path: main
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4.1.7
       with:
         name: inventory-container
     - run: docker load -i inventory-container.tar
