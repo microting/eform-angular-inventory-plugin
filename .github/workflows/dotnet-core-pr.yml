@@ -34,7 +34,7 @@ jobs:
           docker build . -t microtingas/frontend-container:latest --build-arg GITVERSION=1.0.0 --build-arg PLUGINVERSION=1.0.0
         shell: bash
       - run: docker save microtingas/frontend-container:latest -o inventory-container.tar
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: inventory-container
           path: inventory-container.tar
@@ -45,7 +45,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         path: main
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: inventory-container
     - run: docker load -i inventory-container.tar
@@ -111,7 +111,7 @@ jobs:
         cat docker_run_log
     - name: Archive screenshot artifacts
       if: ${{ failure() }}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: error Screenshots
         path: |
