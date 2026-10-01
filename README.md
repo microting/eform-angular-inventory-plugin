@@ -1,6 +1,7 @@
 # eform-angular-inventory-plugin
-Build status
-[![Build Status](https://travis-ci.org/microting/eform-angular-inventory-plugin.svg?branch=stable)](https://travis-ci.org/microting/eform-angular-inventory-plugin)
+
+> **Retired.** The inventory plugin is no longer maintained: no tenant uses it, and its UI does not
+> build against the current eForm Angular Frontend. See microting/eform-angular-inventory-plugin#38.
 
 ## NOTICE! this is not a standalone project and needs to be used with eForm Angular Frontend.
 
