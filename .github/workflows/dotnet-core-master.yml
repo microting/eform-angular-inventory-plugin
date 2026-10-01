@@ -37,7 +37,7 @@ jobs:
           docker build . -t microtingas/frontend-container:latest --build-arg GITVERSION=1.0.0 --build-arg PLUGINVERSION=1.0.0
         shell: bash
       - run: docker save microtingas/frontend-container:latest -o inventory-container.tar
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: inventory-container
           path: inventory-container.tar
@@ -48,7 +48,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         path: main
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: inventory-container
     - run: docker load -i inventory-container.tar
@@ -70,7 +70,7 @@ jobs:
     - name: Use Node.ts
       uses: actions/setup-node@v3
       with:
-        node-version: 18
+        node-version: 22
     - name: 'Preparing Frontend checkout'
       uses: actions/checkout@v3
       with:
@@ -80,46 +80,31 @@ jobs:
     - name: Copy dependencies
       run: |
         cp -av main/eform-client/src/app/plugins/modules/inventory-pn eform-angular-frontend/eform-client/src/app/plugins/modules/inventory-pn
-        cp -av main/eform-client/e2e/Tests/inventory-settings eform-angular-frontend/eform-client/e2e/Tests/inventory-settings
-        cp -av main/eform-client/e2e/Tests/inventory-general eform-angular-frontend/eform-client/e2e/Tests/inventory-general
-        cp -av main/eform-client/e2e/Page\ objects/Inventory eform-angular-frontend/eform-client/e2e/Page\ objects/Inventory
-        cp -av main/eform-client/wdio-headless-plugin-step2.conf.js eform-angular-frontend/eform-client/wdio-headless-plugin-step2.conf.js
-        cp -av main/eform-client/wdio-plugin-step2.conf.js eform-angular-frontend/eform-client/wdio-plugin-step2.conf.js
-        mkdir -p eform-angular-frontend/eFormAPI/eFormAPI.Web/Plugins
-        cp -av main/eFormAPI/eFormAPI.Web/Plugins/Inventory eform-angular-frontend/eFormAPI/eFormAPI.Web/Plugins/Inventory
         cd eform-angular-frontend/eform-client && ../../main/testinginstallpn.sh
     - name: yarn install
       run: cd eform-angular-frontend/eform-client && yarn install
-    - name: Create errorShots directory
-      run: mkdir /home/runner/work/eform-angular-inventory-plugin/eform-angular-inventory-plugin/eform-angular-frontend/eform-client/errorShots
     - name: Pretest changes to work with Docker container
-      run: sed -i 's/localhost/mariadbtest/g' eform-angular-frontend/eform-client/e2e/Constants/DatabaseConfigurationConstants.ts
+      run: sed -i 's/localhost/mariadbtest/g' eform-angular-frontend/eform-client/playwright/e2e/Constants/DatabaseConfigurationConstants.ts
+    - name: Install Playwright browsers
+      run: cd eform-angular-frontend/eform-client && npx playwright install --with-deps chromium
+    - name: Wait for app
+      run: npx wait-on http://localhost:4200 --timeout 120000
     - name: DB Configuration
-      uses: cypress-io/github-action@v4
-      with:
-        start: echo 'hi'
-        wait-on: "http://localhost:4200"
-        wait-on-timeout: 120
-        browser: chrome
-        record: false
-        spec: cypress/e2e/db/*
-        config-file: cypress.config.ts
-        working-directory: eform-angular-frontend/eform-client
-        command-prefix: "--"
-    - name: Plugin testing
-      run: cd eform-angular-frontend/eform-client && npm run testheadlessplugin
+      run: cd eform-angular-frontend/eform-client && npx playwright test playwright/e2e/Tests/database-configuration/
+    # The legacy WDIO plugin suite (npm run testheadlessplugin) was removed upstream
+    # in eform-angular-frontend, and no Playwright inventory suite exists yet.
+    #- name: Plugin testing
+    #  run: cd eform-angular-frontend/eform-client && npm run testheadlessplugin
     - name: The job has failed
       if: ${{ failure() }}
       run: |
         cat docker_run_log
-    - name: Archive screenshot artifacts
+    - name: Archive Playwright report
       if: ${{ failure() }}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: error Screenshots
-        path: |
-          /home/runner/work/eform-angular-inventory-plugin/eform-angular-inventory-plugin/eform-angular-frontend/eform-client/errorShots/chrome*.png
-          /home/runner/work/eform-angular-inventory-plugin/eform-angular-inventory-plugin/eform-angular-frontend/eform-client/cypress/videos/*.mp4
+        name: playwright-report
+        path: eform-angular-frontend/eform-client/playwright-report/
         retention-days: 2
   test-dotnet:
     runs-on: ubuntu-latest
@@ -138,7 +123,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 10.0.x
     - name: Build
       run: dotnet build eFormAPI/Plugins/Inventory.Pn/Inventory.Pn.sln
     - name: Unit Tests

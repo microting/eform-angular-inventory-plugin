@@ -1,11 +1,11 @@
-FROM node:18-bookworm-slim as node-env
+FROM node:22-bookworm-slim as node-env
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY eform-angular-frontend/eform-client ./
 RUN yarn install
-RUN npm run build
+RUN yarn build
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS build-env
 WORKDIR /app
 ARG GITVERSION
 ARG PLUGINVERSION
@@ -17,12 +17,12 @@ RUN dotnet publish eFormAPI.Web -o eFormAPI.Web/out /p:Version=$GITVERSION --run
 RUN dotnet publish Inventory.Pn -o Inventory.Pn/out /p:Version=$PLUGINVERSION --runtime linux-x64 --configuration Release
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble
 WORKDIR /app
 COPY --from=build-env /app/eFormAPI.Web/out .
 RUN mkdir -p ./Plugins/Inventory.Pn
 COPY --from=build-env /app/Inventory.Pn/out ./Plugins/Inventory.Pn
-COPY --from=node-env /app/dist wwwroot
+COPY --from=node-env /app/dist/browser wwwroot
 RUN rm connection.json; exit 0
 
 ENV DEBIAN_FRONTEND noninteractive
